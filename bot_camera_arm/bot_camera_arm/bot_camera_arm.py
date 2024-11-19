@@ -4,7 +4,7 @@ import time
 
 from rclpy.node import Node
 
-from std_msgs.msg import Float32
+from std_msgs.msg import Float32, String
 from rclpy import qos
 from threading import Lock
 
@@ -13,7 +13,7 @@ DRIVE_INTERFACE_STS_INIT = 0
 DRIVE_INTERFACE_STS_RUN = 1
 
 # Class -----------------------------------------------------------------------
-class ResqDriveInterface(Node):
+class camera_arm(Node):
     # This class represents the drive interface node.
     # It is a bridge between the ros network and the arduino drive controller
 
@@ -22,15 +22,12 @@ class ResqDriveInterface(Node):
         super().__init__('drive_interface')
 
         # Create private variables
-        self.__time_last_joy_msg = 0.0
-        self.__time_since_last_joy_msg = 0.0
+        #self.__safety = 1
 
         # Status see timer callback for description
         self.__state = DRIVE_INTERFACE_STS_INIT
-        self.__cmd_vel = 0.0
-        self.__cmd_vel_lock = Lock()
-        self.__cmd_angle = 0.0
-        self.__cmd_angle_lock = Lock()
+        self.__cmd_arm_movements = String()
+        self.__cmd_arm_movements_lock = Lock()
 
 
         # Init class -> read parameters, create subscribers, create timer (for update loop)
@@ -40,24 +37,18 @@ class ResqDriveInterface(Node):
 
     def __velCallback(self, msg):
 
-        self.__cmd_vel_lock.acquire()
-        self.__cmd_vel = msg.data
-        self.__cmd_vel_lock.release()
+        self.__cmd_arm_movements_lock.acquire()
+        self.__cmd_arm_movements = msg.data + "\n"
+        self.__cmd_arm_movements_lock.release()
 
-    def __angleCallback(self, msg):
-        # Called when a message is received on the right wheel topic
-        #self.get_logger().info('Right wheel speed: %f' % msg.data)
 
-        self.__cmd_angle_lock.acquire()
-        self.__cmd_angle = msg.data
-        self.__cmd_angle_lock.release()
-
-    def __handshake(self):
+    def handshake(self):
         # Statemachine to handle connect and reconnect to arduino
         # if it is unplugged while node is running
         # Try to connect to arduino, otherwise stay in init state
         # Open serial connection with every port and look for correct Arduino
         handshake = False
+        print("handshake")
         for portNo in range (0, 10): 
             comPort = format("/dev/ttyACM{}".format(int(portNo)))
             try:
@@ -66,8 +57,7 @@ class ResqDriveInterface(Node):
                     baudrate = self._serial_baudrate.value, 
                     timeout = self._serial_timeout.value)
                 # Flush old data from buffers
-                time.sleep(0.5)
-                self.__driveInterface.flush()
+                #self.__driveInterface.flush()
                 tx_msg = format("Who are you?\n")
                 self.__driveInterface.write(tx_msg.encode('utf-8'))
                 print(comPort)
@@ -75,21 +65,20 @@ class ResqDriveInterface(Node):
                 rx_msg = self.__driveInterface.readline().strip().decode("utf-8")
                 print(rx_msg)
 
-                if rx_msg == "driveInterface":
-                    print("rx" + rx_msg)
-                    tx_msg = format("Hello driveInterface\n")
-                    print("tx" + tx_msg)
+                if rx_msg == 'ArmController':
+                    tx_msg = format("Hello ArmController\n")
                     self.__driveInterface.write(tx_msg.encode('utf-8'))
                     time.sleep(0.5)
 
-                    #rx_msg = self.__driveInterface.readline().strip().decode("utf-8")
-                    #print("rx" + rx_msg)
+                    rx_msg = self.__driveInterface.readline().strip().decode("utf-8")
+                    print(rx_msg)
                     while handshake == False:
                         rx_msg = self.__driveInterface.readline().strip().decode("utf-8")
-                        print("rx" + rx_msg)
+                        print(rx_msg)
                         if rx_msg == 'confirmed':
                             # Log success
-                            self.get_logger().info('Connected to flipperInterface at ' + comPort)
+                            
+                            self.get_logger().info('Connected to ArmController at ' + comPort)
                             #transition to run state
                             self.__state = DRIVE_INTERFACE_STS_RUN
                             handshake = True
@@ -98,65 +87,30 @@ class ResqDriveInterface(Node):
                             time.sleep(0.5)
                     break 
                 else:
+                    self.__driveInterface.close()
                     continue
             except:
                 # Log error
                 self.get_logger().error('Could not connect to driveInterface')
+
+
+
     
     def __timerCallback(self):
-        # Called when the timer is triggered with the update rate specified in the parameters
-        #self.get_logger().info('Timer callback')
 
-        # Statemachine to handle connect and reconnect to arduino uno
-        # if it is unplugged while node is running
 
-        # Init state
-        # Try to connect to arduino uno, otherwise stay in init state
         if self.__state == DRIVE_INTERFACE_STS_INIT:
-            self.__handshake()
+            self.handshake()
+
         # Run state
         # Transmit data to arduino uno
         elif self.__state == DRIVE_INTERFACE_STS_RUN:
-
-            # ----- Timout error check -----
-            # If the time difference between the last recived flipper msg and now is greater then the timeout, DISABLE the motor rpm output
-            if (self.__time_last_joy_msg != 0.0 and self.__Joy_timeout != 0.0):
-                # Calculate the time difference
-                self.__time_since_last_joy_msg = time.time() - self.__time_last_joy_msg
-
-                # If there was a joy msg before, the output is in ENABLED status but the time since the last joy msg was received
-                # is greater than the timout time, DISABLE the flipper output and print a msg for the user that there was a timeout.
-                if (self.__joy_enabled == True and self.__time_since_last_joy_msg > self.__Joy_timeout):
-                    self._joy_enabled = False
-                    self.get_logger().error("Joy msg timeout")
-            else:
-                self.__joy_enabled = True
-
-
-            # Get speeds thread safe
-            self.__cmd_vel_lock.acquire()
-            cmd_vel = int(self.__cmd_vel * 100)
-            self.__cmd_vel_lock.release()
-
-            self.__cmd_angle_lock.acquire()
-            cmd_angle = int(self.__cmd_angle)
-            self.__cmd_angle_lock.release()
-
-            # Create tx message depending on enable-state
-            if (self.__joy_enabled == True):
-                tx_msg = format("V{}A{}\n".format(int(cmd_vel), int(cmd_angle)));
-            else:
-                tx_msg = format("V{}A{}\n".format(0, 0));
             
-
-            # Log message / uncomment for debugging
-            #self.get_logger().info('TX: %s' % tx_msg)
-
-            # Send message
             try:
-                self.__driveInterface.write(tx_msg.encode('utf-8'))
-                print(tx_msg)
 
+                self.__driveInterface.write(self.__cmd_arm_movements.encode('utf-8'))
+                print(self.__cmd_arm_movements.encode('utf-8'))
+                
             except:
                 # Transition to init state
                 self.__state = DRIVE_INTERFACE_STS_INIT
@@ -164,30 +118,19 @@ class ResqDriveInterface(Node):
 
                 # Log error
                 self.get_logger().error('Could not send data to arduino uno -> Transition to init state')
-            '''
-            # Read message
-            try:
-                self.__serial.reset_input_buffer()
-                rx_msg = self.__serial.readline().decode('utf-8').rstrip()
-
-                # Log message / uncomment for debugging
-                self.get_logger().info('RX: %s' % rx_msg)
-
-            except:
-                # Transition to init state
-                self.__state = DRIVE_INTERFACE_STS_INIT
-                self.__serial.close()
-
-                # Log error
-                self.get_logger().error('Could not read data from arduino uno -> Transition to init state')
-            '''
+            
+            #safety counts from 1 to 100 as a backup check, that new tx_message
+            #if self.__safety < 100:
+             #   self.__safety = self.__safety + 1
+            #else:
+             #   self.__safety = 1
 
     def __readParams(self):
         # Declare parameters
         self.declare_parameter('update_rate_hz', 10.0)
         self.declare_parameter('serial_timeout_sec', 0.1)
         self.declare_parameter('serial_name', '/dev/ttyACM0')
-        self.declare_parameter('serial_baudrate', 115200)
+        self.declare_parameter('serial_baudrate', 9600)
         self.declare_parameter('Joy_timeout', 1)
 
         # Read parameters
@@ -227,16 +170,9 @@ class ResqDriveInterface(Node):
         # Create subscribers
 
         self._sub_vel = self.create_subscription(
-            Float32,
-            'movement/velocity',
+            String,
+            'movement/arm',
             self.__velCallback,
-            1,
-        )
-
-        self._sub_angle = self.create_subscription(
-            Float32,
-            'movement/angle',
-            self.__angleCallback,
             1,
         )
 
@@ -253,7 +189,7 @@ class ResqDriveInterface(Node):
 def main(args=None):
     rclpy.init(args=args)
 
-    drive_interface = ResqDriveInterface()
+    drive_interface = camera_arm()
 
     rclpy.spin(drive_interface)
 

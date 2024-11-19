@@ -1,5 +1,6 @@
 import rclpy
 import serial
+import time
 
 from rclpy.node import Node
 
@@ -33,7 +34,9 @@ class ResqFlipperInterface(Node):
         self.__cmd_speed_rearLeft_lock = Lock()
         self.__cmd_speed_rearRight = 0.0
         self.__cmd_speed_rearRight_lock = Lock()
-        self.__flushCountdown = 0
+        
+        self.__time_since_last_joy_msg = 0.0
+        self.__time_last_joy_msg = 0.0
 
 
         # Init class -> read parameters, create subscribers, create timer (for update loop)
@@ -73,39 +76,78 @@ class ResqFlipperInterface(Node):
         self.__cmd_speed_rearRight = msg.data
         self.__cmd_speed_rearRight_lock.release()
     
+    def __handshake(self):
+        # Statemachine to handle connect and reconnect to arduino
+        # if it is unplugged while node is running
+        # Try to connect to arduino, otherwise stay in init state
+        # Open serial connection with every port and look for correct Arduino
+        handshake = False
+        for portNo in range (0, 10): 
+            comPort = format("/dev/ttyACM{}".format(int(portNo)))
+            try:
+                self.__flipperInterface = serial.Serial(
+                    port = comPort, 
+                    baudrate = self._serial_baudrate.value, 
+                    timeout = self._serial_timeout.value)
+                # Flush old data from buffers
+                time.sleep(10)
+                self.__flipperInterface.flush()
+                tx_msg = format("Who are you?\n")
+                self.__flipperInterface.write(tx_msg.encode('utf-8'))
+                print(comPort)
+                time.sleep(0.5)
+                rx_msg = self.__flipperInterface.readline().strip().decode("utf-8")
+                print(rx_msg)
+
+                if rx_msg == "flipperInterface":
+                    print("rx" + rx_msg)
+                    tx_msg = format("Hello flipperInterface\n")
+                    print("tx" + tx_msg)
+                    self.__flipperInterface.write(tx_msg.encode('utf-8'))
+                    time.sleep(0.5)
+
+                    rx_msg = self.__flipperInterface.readline().strip().decode("utf-8")
+                    print("rx" + rx_msg)
+                    while handshake == False:
+                        rx_msg = self.__flipperInterface.readline().strip().decode("utf-8")
+                        print("rx" + rx_msg)
+                        if rx_msg == 'confirmed':
+                            # Log success
+                            self.get_logger().info('Connected to flipperInterface at ' + comPort)
+                            #transition to run state
+                            self.__state = FLIPPER_INTERFACE_STS_RUN
+                            handshake = True
+                            return
+                        else:
+                            time.sleep(0.5)
+                    break 
+                else:
+                    continue
+            except:
+                # Log error
+                self.get_logger().error('Could not connect to flipperInterface')
+
     def __timerCallback(self):
         # Called when the timer is triggered with the update rate specified in the parameters
-        #self.get_logger().info('Timer callback')
-
-        # Statemachine to handle connect and reconnect to arduino uno
-        # if it is unplugged while node is running
-
         # Init state
-        # Try to connect to arduino uno, otherwise stay in init state
         if self.__state == FLIPPER_INTERFACE_STS_INIT:
-            try:
-                # Open serial connection
-                self.__serial = serial.Serial(self._serial_name.value, self._serial_baudrate.value, timeout=self._serial_timeout.value)
-                
-                # Flush old data from buffers
-                self.__serial.flush()
-
-                # Transition to run state
-                self.__state = FLIPPER_INTERFACE_STS_RUN
-
-                # Log success
-                self.get_logger().info('Connected to arduino uno at %s' % self._serial_name.value)
-            except:
-                # Stay in init state
-                self.__state = FLIPPER_INTERFACE_STS_INIT
-
-                # Log error
-                self.get_logger().error('Could not connect to arduino uno at %s' % self._serial_name.value)
-                
-
-        # Run state
-        # Transmit data to arduino uno
+            self.__handshake()
+        # Run state: transmit data to arduino
         elif self.__state == FLIPPER_INTERFACE_STS_RUN:
+
+            # ----- Timout error check -----
+            # If the time difference between the last recived flipper msg and now is greater then the timeout, DISABLE the motor rpm output
+            if (self.__time_last_joy_msg != 0.0 and self.__Joy_timeout != 0.0):
+                # Calculate the time difference
+                self.__time_since_last_joy_msg = time.time() - self.__time_last_joy_msg
+
+                # If there was a joy msg before, the output is in ENABLED status but the time since the last joy msg was received
+                # is greater than the timout time, DISABLE the flipper output and print a msg for the user that there was a timeout.
+                if (self.__joy_enabled == True and self.__time_since_last_joy_msg > self.__Joy_timeout):
+                    self._joy_enabled = False
+                    self.get_logger().error("Joy msg timeout")
+            else:
+                self.__joy_enabled = True
 
             # Get speeds thread safe
             self.__cmd_speed_frontLeft_lock.acquire()
@@ -125,19 +167,22 @@ class ResqFlipperInterface(Node):
             self.__cmd_speed_rearRight_lock.release()
 
             # Create tx message
-            tx_msg = format("FL{}FR{}RL{}RR{}\n".format(int(cmd_speed_frontLeft), int(cmd_speed_frontRight), int(cmd_speed_rearLeft), int(cmd_speed_rearRight)));
-
+            if (self.__joy_enabled == True):
+                tx_msg = format("FL{}FR{}RL{}RR{}\n".format(int(cmd_speed_frontLeft), int(cmd_speed_frontRight), int(cmd_speed_rearLeft), int(cmd_speed_rearRight)));
+            else:
+                tx_msg = format("FL{}FR{}RL{}RR{}\n".format(0, 0, 0, 0));
+            
             # Log message / uncomment for debugging
-            self.get_logger().info('TX: %s' % tx_msg)
+            #self.get_logger().info('TX: %s' % tx_msg)
 
             # Send message
             try:
-                self.__serial.write(tx_msg.encode('utf-8'))
+                self.__flipperInterface.write(tx_msg.encode('utf-8'))
 
             except:
                 # Transition to init state
                 self.__state = FLIPPER_INTERFACE_STS_INIT
-                self.__serial.close()
+                self.__flipperInterface.close()
 
                 # Log error
                 self.get_logger().error('Could not send data to arduino uno -> Transition to init state')
@@ -166,6 +211,7 @@ class ResqFlipperInterface(Node):
         self.declare_parameter('serial_timeout_sec', 0.1)
         self.declare_parameter('serial_name', '/dev/ttyACM1')
         self.declare_parameter('serial_baudrate', 115200)
+        self.declare_parameter('Joy_timeout', 1)
 
         # Read parameters
 
@@ -192,6 +238,8 @@ class ResqFlipperInterface(Node):
             rclpy.Parameter.Type.INTEGER,
             115200
         )
+
+        self.__Joy_timeout = 1
         
         # Check for valid settings
         if (1.0 / self._update_rate_hz.value) < self._serial_timeout.value:

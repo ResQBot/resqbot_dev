@@ -9,7 +9,7 @@ from ament_index_python import get_package_share_directory
 def generate_launch_description():
 
     #get directories
-    chain_package = get_package_share_directory ('chain_controller')
+    tele_op_package = get_package_share_directory ('tele_op')
 
     joy_node = Node(
         package='joy',
@@ -19,7 +19,7 @@ def generate_launch_description():
     )
 
     chain_controller_node = IncludeLaunchDescription(
-        os.path.join(chain_package, 'launch', 'default_launch.py'),
+        os.path.join(tele_op_package, 'launch', 'default_launch.py'),
     )
     
     uncompress_cam1 = Node(
@@ -48,17 +48,24 @@ def generate_launch_description():
         ]
     )
     
-    web_video_server_node= Node(
-        package='web_video_server',
-        namespace='web_video_server',
-        executable='web_video_server',
-        name='Video_Server'
+    uncompress_cam3 = Node(
+        package='image_transport',
+        executable='republish',
+        arguments= [
+            'compressed',
+            'raw',
+        ],
+        remappings=[
+            ('in/compressed', 'usb_cam_3/image_raw/compressed'),
+            ('out', 'usb_cam_3/image_raw/uncompressed')
+        ]
     )
+
  
     return LaunchDescription([
         joy_node,
         chain_controller_node,
         uncompress_cam1,
         uncompress_cam2,
-        web_video_server_node
+        uncompress_cam3
     ])
