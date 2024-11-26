@@ -10,4 +10,5 @@ bot_camera_arm.egg-info/entry_points.txt
 bot_camera_arm.egg-info/requires.txt
 bot_camera_arm.egg-info/top_level.txt
 bot_camera_arm.egg-info/zip-safe
+launch/default_launch.py
 resource/bot_camera_arm

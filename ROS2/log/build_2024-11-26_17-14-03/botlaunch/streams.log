@@ -1,0 +1,18 @@
+[4.135s] Invoking command in '/home/paul/resqbot_dev/ROS2/build/botlaunch': PYTHONPATH=/home/paul/resqbot_dev/ROS2/build/botlaunch/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/paul/resqbot_dev/ROS2/install/botlaunch/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated setup.py develop --editable --build-directory /home/paul/resqbot_dev/ROS2/build/botlaunch/build --no-deps symlink_data
+[5.033s] running develop
+[5.035s] /usr/lib/python3/dist-packages/setuptools/command/easy_install.py:158: EasyInstallDeprecationWarning: easy_install command is deprecated. Use build and pip and other standards-based tools.
+[5.035s]   warnings.warn(
+[5.642s] running egg_info
+[5.642s] writing botlaunch.egg-info/PKG-INFO
+[5.647s] writing dependency_links to botlaunch.egg-info/dependency_links.txt
+[5.647s] writing entry points to botlaunch.egg-info/entry_points.txt
+[5.648s] writing requirements to botlaunch.egg-info/requires.txt
+[5.648s] writing top-level names to botlaunch.egg-info/top_level.txt
+[5.669s] reading manifest file 'botlaunch.egg-info/SOURCES.txt'
+[5.670s] writing manifest file 'botlaunch.egg-info/SOURCES.txt'
+[5.679s] running build_ext
+[5.680s] Creating /home/paul/resqbot_dev/ROS2/install/botlaunch/lib/python3.10/site-packages/botlaunch.egg-link (link to .)
+[5.682s] 
+[5.682s] Installed /home/paul/resqbot_dev/ROS2/build/botlaunch
+[5.682s] running symlink_data
+[5.811s] Invoked command in '/home/paul/resqbot_dev/ROS2/build/botlaunch' returned '0': PYTHONPATH=/home/paul/resqbot_dev/ROS2/build/botlaunch/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/paul/resqbot_dev/ROS2/install/botlaunch/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated setup.py develop --editable --build-directory /home/paul/resqbot_dev/ROS2/build/botlaunch/build --no-deps symlink_data

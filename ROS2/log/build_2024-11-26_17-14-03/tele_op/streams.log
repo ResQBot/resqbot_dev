@@ -1,0 +1,19 @@
+[4.126s] Invoking command in '/home/paul/resqbot_dev/ROS2/build/tele_op': PYTHONPATH=/home/paul/resqbot_dev/ROS2/build/tele_op/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/paul/resqbot_dev/ROS2/install/tele_op/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated setup.py develop --editable --build-directory /home/paul/resqbot_dev/ROS2/build/tele_op/build --no-deps symlink_data
+[4.847s] running develop
+[4.849s] /usr/lib/python3/dist-packages/setuptools/command/easy_install.py:158: EasyInstallDeprecationWarning: easy_install command is deprecated. Use build and pip and other standards-based tools.
+[4.849s]   warnings.warn(
+[5.272s] running egg_info
+[5.273s] writing tele_op.egg-info/PKG-INFO
+[5.273s] writing dependency_links to tele_op.egg-info/dependency_links.txt
+[5.274s] writing entry points to tele_op.egg-info/entry_points.txt
+[5.274s] writing requirements to tele_op.egg-info/requires.txt
+[5.274s] writing top-level names to tele_op.egg-info/top_level.txt
+[5.280s] reading manifest file 'tele_op.egg-info/SOURCES.txt'
+[5.282s] writing manifest file 'tele_op.egg-info/SOURCES.txt'
+[5.287s] running build_ext
+[5.288s] Creating /home/paul/resqbot_dev/ROS2/install/tele_op/lib/python3.10/site-packages/tele-op.egg-link (link to .)
+[5.290s] Installing tele_op script to /home/paul/resqbot_dev/ROS2/install/tele_op/lib/tele_op
+[5.291s] 
+[5.291s] Installed /home/paul/resqbot_dev/ROS2/build/tele_op
+[5.292s] running symlink_data
+[5.446s] Invoked command in '/home/paul/resqbot_dev/ROS2/build/tele_op' returned '0': PYTHONPATH=/home/paul/resqbot_dev/ROS2/build/tele_op/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/paul/resqbot_dev/ROS2/install/tele_op/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated setup.py develop --editable --build-directory /home/paul/resqbot_dev/ROS2/build/tele_op/build --no-deps symlink_data
