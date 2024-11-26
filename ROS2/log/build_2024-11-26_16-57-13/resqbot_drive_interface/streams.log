@@ -1,0 +1,28 @@
+[3.714s] Invoking command in '/home/paul/resqbot_dev/ROS2/build/resqbot_drive_interface': PYTHONPATH=/home/paul/resqbot_dev/ROS2/build/resqbot_drive_interface/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/paul/resqbot_dev/ROS2/install/resqbot_drive_interface/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated setup.py develop --editable --build-directory /home/paul/resqbot_dev/ROS2/build/resqbot_drive_interface/build --no-deps symlink_data
+[4.532s] running develop
+[4.533s] /usr/lib/python3/dist-packages/setuptools/command/easy_install.py:158: EasyInstallDeprecationWarning: easy_install command is deprecated. Use build and pip and other standards-based tools.
+[4.535s]   warnings.warn(
+[4.833s] running egg_info
+[4.833s] creating resqbot_drive_interface.egg-info
+[4.834s] writing resqbot_drive_interface.egg-info/PKG-INFO
+[4.834s] writing dependency_links to resqbot_drive_interface.egg-info/dependency_links.txt
+[4.835s] writing entry points to resqbot_drive_interface.egg-info/entry_points.txt
+[4.835s] writing requirements to resqbot_drive_interface.egg-info/requires.txt
+[4.835s] writing top-level names to resqbot_drive_interface.egg-info/top_level.txt
+[4.836s] writing manifest file 'resqbot_drive_interface.egg-info/SOURCES.txt'
+[4.840s] reading manifest file 'resqbot_drive_interface.egg-info/SOURCES.txt'
+[4.842s] writing manifest file 'resqbot_drive_interface.egg-info/SOURCES.txt'
+[4.845s] running build_ext
+[4.845s] Creating /home/paul/resqbot_dev/ROS2/install/resqbot_drive_interface/lib/python3.10/site-packages/resqbot-drive-interface.egg-link (link to .)
+[4.847s] Installing drive_interface script to /home/paul/resqbot_dev/ROS2/install/resqbot_drive_interface/lib/resqbot_drive_interface
+[4.848s] 
+[4.848s] Installed /home/paul/resqbot_dev/ROS2/build/resqbot_drive_interface
+[4.848s] running symlink_data
+[4.848s] creating /home/paul/resqbot_dev/ROS2/install/resqbot_drive_interface/share/ament_index
+[4.849s] creating /home/paul/resqbot_dev/ROS2/install/resqbot_drive_interface/share/ament_index/resource_index
+[4.849s] creating /home/paul/resqbot_dev/ROS2/install/resqbot_drive_interface/share/ament_index/resource_index/packages
+[4.849s] symbolically linking /home/paul/resqbot_dev/ROS2/build/resqbot_drive_interface/resource/resqbot_drive_interface -> /home/paul/resqbot_dev/ROS2/install/resqbot_drive_interface/share/ament_index/resource_index/packages
+[4.851s] symbolically linking /home/paul/resqbot_dev/ROS2/build/resqbot_drive_interface/package.xml -> /home/paul/resqbot_dev/ROS2/install/resqbot_drive_interface/share/resqbot_drive_interface
+[4.851s] creating /home/paul/resqbot_dev/ROS2/install/resqbot_drive_interface/share/resqbot_drive_interface/launch
+[4.851s] symbolically linking /home/paul/resqbot_dev/ROS2/build/resqbot_drive_interface/launch/default_launch.py -> /home/paul/resqbot_dev/ROS2/install/resqbot_drive_interface/share/resqbot_drive_interface/launch/
+[4.941s] Invoked command in '/home/paul/resqbot_dev/ROS2/build/resqbot_drive_interface' returned '0': PYTHONPATH=/home/paul/resqbot_dev/ROS2/build/resqbot_drive_interface/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/paul/resqbot_dev/ROS2/install/resqbot_drive_interface/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated setup.py develop --editable --build-directory /home/paul/resqbot_dev/ROS2/build/resqbot_drive_interface/build --no-deps symlink_data

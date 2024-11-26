@@ -1,0 +1,24 @@
+running develop
+/usr/lib/python3/dist-packages/setuptools/command/easy_install.py:158: EasyInstallDeprecationWarning: easy_install command is deprecated. Use build and pip and other standards-based tools.
+  warnings.warn(
+running egg_info
+creating bot_camera_arm.egg-info
+writing bot_camera_arm.egg-info/PKG-INFO
+writing dependency_links to bot_camera_arm.egg-info/dependency_links.txt
+writing entry points to bot_camera_arm.egg-info/entry_points.txt
+writing requirements to bot_camera_arm.egg-info/requires.txt
+writing top-level names to bot_camera_arm.egg-info/top_level.txt
+writing manifest file 'bot_camera_arm.egg-info/SOURCES.txt'
+reading manifest file 'bot_camera_arm.egg-info/SOURCES.txt'
+writing manifest file 'bot_camera_arm.egg-info/SOURCES.txt'
+running build_ext
+Creating /home/paul/resqbot_dev/ROS2/install/bot_camera_arm/lib/python3.10/site-packages/bot-camera-arm.egg-link (link to .)
+Installing arm_interface script to /home/paul/resqbot_dev/ROS2/install/bot_camera_arm/lib/bot_camera_arm
+
+Installed /home/paul/resqbot_dev/ROS2/build/bot_camera_arm
+running symlink_data
+creating /home/paul/resqbot_dev/ROS2/install/bot_camera_arm/share/ament_index
+creating /home/paul/resqbot_dev/ROS2/install/bot_camera_arm/share/ament_index/resource_index
+creating /home/paul/resqbot_dev/ROS2/install/bot_camera_arm/share/ament_index/resource_index/packages
+symbolically linking /home/paul/resqbot_dev/ROS2/build/bot_camera_arm/resource/bot_camera_arm -> /home/paul/resqbot_dev/ROS2/install/bot_camera_arm/share/ament_index/resource_index/packages
+symbolically linking /home/paul/resqbot_dev/ROS2/build/bot_camera_arm/package.xml -> /home/paul/resqbot_dev/ROS2/install/bot_camera_arm/share/bot_camera_arm

@@ -1,0 +1,3 @@
+[console_scripts]
+arm_interface = bot_camera_arm.bot_camera_arm:main
+

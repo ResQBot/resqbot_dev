@@ -1,0 +1,9 @@
+source;share/tele_op/hook/pythonpath.ps1
+source;share/tele_op/hook/pythonpath.dsv
+source;share/tele_op/hook/pythonpath.sh
+source;share/tele_op/hook/ament_prefix_path.ps1
+source;share/tele_op/hook/ament_prefix_path.dsv
+source;share/tele_op/hook/ament_prefix_path.sh
+source;../../build/tele_op/share/tele_op/hook/pythonpath_develop.ps1
+source;../../build/tele_op/share/tele_op/hook/pythonpath_develop.dsv
+source;../../build/tele_op/share/tele_op/hook/pythonpath_develop.sh

@@ -1,0 +1,3 @@
+[console_scripts]
+drive_interface = resqbot_drive_interface.drive_interface:main
+

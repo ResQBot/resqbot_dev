@@ -1,0 +1,15 @@
+package.xml
+setup.cfg
+setup.py
+botlaunch/__init__.py
+botlaunch.egg-info/PKG-INFO
+botlaunch.egg-info/SOURCES.txt
+botlaunch.egg-info/dependency_links.txt
+botlaunch.egg-info/entry_points.txt
+botlaunch.egg-info/requires.txt
+botlaunch.egg-info/top_level.txt
+botlaunch.egg-info/zip-safe
+launch/bot_auto.launch.py
+launch/operator.launch.py
+launch/robot.launch.py
+resource/botlaunch

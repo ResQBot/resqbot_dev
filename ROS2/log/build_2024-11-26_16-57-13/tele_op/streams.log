@@ -1,0 +1,28 @@
+[3.706s] Invoking command in '/home/paul/resqbot_dev/ROS2/build/tele_op': PYTHONPATH=/home/paul/resqbot_dev/ROS2/build/tele_op/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/paul/resqbot_dev/ROS2/install/tele_op/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated setup.py develop --editable --build-directory /home/paul/resqbot_dev/ROS2/build/tele_op/build --no-deps symlink_data
+[4.535s] running develop
+[4.536s] /usr/lib/python3/dist-packages/setuptools/command/easy_install.py:158: EasyInstallDeprecationWarning: easy_install command is deprecated. Use build and pip and other standards-based tools.
+[4.537s]   warnings.warn(
+[4.865s] running egg_info
+[4.866s] creating tele_op.egg-info
+[4.866s] writing tele_op.egg-info/PKG-INFO
+[4.866s] writing dependency_links to tele_op.egg-info/dependency_links.txt
+[4.867s] writing entry points to tele_op.egg-info/entry_points.txt
+[4.867s] writing requirements to tele_op.egg-info/requires.txt
+[4.867s] writing top-level names to tele_op.egg-info/top_level.txt
+[4.868s] writing manifest file 'tele_op.egg-info/SOURCES.txt'
+[4.871s] reading manifest file 'tele_op.egg-info/SOURCES.txt'
+[4.872s] writing manifest file 'tele_op.egg-info/SOURCES.txt'
+[4.875s] running build_ext
+[4.875s] Creating /home/paul/resqbot_dev/ROS2/install/tele_op/lib/python3.10/site-packages/tele-op.egg-link (link to .)
+[4.877s] Installing tele_op script to /home/paul/resqbot_dev/ROS2/install/tele_op/lib/tele_op
+[4.878s] 
+[4.878s] Installed /home/paul/resqbot_dev/ROS2/build/tele_op
+[4.878s] running symlink_data
+[4.878s] creating /home/paul/resqbot_dev/ROS2/install/tele_op/share/ament_index
+[4.879s] creating /home/paul/resqbot_dev/ROS2/install/tele_op/share/ament_index/resource_index
+[4.879s] creating /home/paul/resqbot_dev/ROS2/install/tele_op/share/ament_index/resource_index/packages
+[4.879s] symbolically linking /home/paul/resqbot_dev/ROS2/build/tele_op/resource/tele_op -> /home/paul/resqbot_dev/ROS2/install/tele_op/share/ament_index/resource_index/packages
+[4.880s] symbolically linking /home/paul/resqbot_dev/ROS2/build/tele_op/package.xml -> /home/paul/resqbot_dev/ROS2/install/tele_op/share/tele_op
+[4.880s] creating /home/paul/resqbot_dev/ROS2/install/tele_op/share/tele_op/launch
+[4.880s] symbolically linking /home/paul/resqbot_dev/ROS2/build/tele_op/launch/default_launch.py -> /home/paul/resqbot_dev/ROS2/install/tele_op/share/tele_op/launch/
+[4.971s] Invoked command in '/home/paul/resqbot_dev/ROS2/build/tele_op' returned '0': PYTHONPATH=/home/paul/resqbot_dev/ROS2/build/tele_op/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/paul/resqbot_dev/ROS2/install/tele_op/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated setup.py develop --editable --build-directory /home/paul/resqbot_dev/ROS2/build/tele_op/build --no-deps symlink_data

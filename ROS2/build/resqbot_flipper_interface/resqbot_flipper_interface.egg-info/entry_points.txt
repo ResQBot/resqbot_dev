@@ -1,0 +1,3 @@
+[console_scripts]
+flipper_interface = resqbot_flipper_interface.flipper_interface:main
+

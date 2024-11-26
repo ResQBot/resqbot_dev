@@ -1,0 +1,13 @@
+package.xml
+setup.cfg
+setup.py
+bot_camera_arm/__init__.py
+bot_camera_arm/bot_camera_arm.py
+bot_camera_arm.egg-info/PKG-INFO
+bot_camera_arm.egg-info/SOURCES.txt
+bot_camera_arm.egg-info/dependency_links.txt
+bot_camera_arm.egg-info/entry_points.txt
+bot_camera_arm.egg-info/requires.txt
+bot_camera_arm.egg-info/top_level.txt
+bot_camera_arm.egg-info/zip-safe
+resource/bot_camera_arm

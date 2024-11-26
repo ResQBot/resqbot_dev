@@ -1,0 +1,9 @@
+source;share/resqbot_drive_interface/hook/pythonpath.ps1
+source;share/resqbot_drive_interface/hook/pythonpath.dsv
+source;share/resqbot_drive_interface/hook/pythonpath.sh
+source;share/resqbot_drive_interface/hook/ament_prefix_path.ps1
+source;share/resqbot_drive_interface/hook/ament_prefix_path.dsv
+source;share/resqbot_drive_interface/hook/ament_prefix_path.sh
+source;../../build/resqbot_drive_interface/share/resqbot_drive_interface/hook/pythonpath_develop.ps1
+source;../../build/resqbot_drive_interface/share/resqbot_drive_interface/hook/pythonpath_develop.dsv
+source;../../build/resqbot_drive_interface/share/resqbot_drive_interface/hook/pythonpath_develop.sh

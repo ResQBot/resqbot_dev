@@ -1,0 +1,28 @@
+[3.426s] Invoking command in '/home/paul/resqbot_dev/ROS2/build/resqbot_flipper_interface': PYTHONPATH=/home/paul/resqbot_dev/ROS2/build/resqbot_flipper_interface/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/paul/resqbot_dev/ROS2/install/resqbot_flipper_interface/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated setup.py develop --editable --build-directory /home/paul/resqbot_dev/ROS2/build/resqbot_flipper_interface/build --no-deps symlink_data
+[4.060s] running develop
+[4.060s] /usr/lib/python3/dist-packages/setuptools/command/easy_install.py:158: EasyInstallDeprecationWarning: easy_install command is deprecated. Use build and pip and other standards-based tools.
+[4.061s]   warnings.warn(
+[4.403s] running egg_info
+[4.403s] creating resqbot_flipper_interface.egg-info
+[4.404s] writing resqbot_flipper_interface.egg-info/PKG-INFO
+[4.404s] writing dependency_links to resqbot_flipper_interface.egg-info/dependency_links.txt
+[4.405s] writing entry points to resqbot_flipper_interface.egg-info/entry_points.txt
+[4.406s] writing requirements to resqbot_flipper_interface.egg-info/requires.txt
+[4.406s] writing top-level names to resqbot_flipper_interface.egg-info/top_level.txt
+[4.406s] writing manifest file 'resqbot_flipper_interface.egg-info/SOURCES.txt'
+[4.411s] reading manifest file 'resqbot_flipper_interface.egg-info/SOURCES.txt'
+[4.413s] writing manifest file 'resqbot_flipper_interface.egg-info/SOURCES.txt'
+[4.416s] running build_ext
+[4.417s] Creating /home/paul/resqbot_dev/ROS2/install/resqbot_flipper_interface/lib/python3.10/site-packages/resqbot-flipper-interface.egg-link (link to .)
+[4.419s] Installing flipper_interface script to /home/paul/resqbot_dev/ROS2/install/resqbot_flipper_interface/lib/resqbot_flipper_interface
+[4.428s] 
+[4.429s] Installed /home/paul/resqbot_dev/ROS2/build/resqbot_flipper_interface
+[4.429s] running symlink_data
+[4.429s] creating /home/paul/resqbot_dev/ROS2/install/resqbot_flipper_interface/share/ament_index
+[4.430s] creating /home/paul/resqbot_dev/ROS2/install/resqbot_flipper_interface/share/ament_index/resource_index
+[4.430s] creating /home/paul/resqbot_dev/ROS2/install/resqbot_flipper_interface/share/ament_index/resource_index/packages
+[4.430s] symbolically linking /home/paul/resqbot_dev/ROS2/build/resqbot_flipper_interface/resource/resqbot_flipper_interface -> /home/paul/resqbot_dev/ROS2/install/resqbot_flipper_interface/share/ament_index/resource_index/packages
+[4.430s] symbolically linking /home/paul/resqbot_dev/ROS2/build/resqbot_flipper_interface/package.xml -> /home/paul/resqbot_dev/ROS2/install/resqbot_flipper_interface/share/resqbot_flipper_interface
+[4.431s] creating /home/paul/resqbot_dev/ROS2/install/resqbot_flipper_interface/share/resqbot_flipper_interface/launch
+[4.431s] symbolically linking /home/paul/resqbot_dev/ROS2/build/resqbot_flipper_interface/launch/default_launch.py -> /home/paul/resqbot_dev/ROS2/install/resqbot_flipper_interface/share/resqbot_flipper_interface/launch/
+[4.566s] Invoked command in '/home/paul/resqbot_dev/ROS2/build/resqbot_flipper_interface' returned '0': PYTHONPATH=/home/paul/resqbot_dev/ROS2/build/resqbot_flipper_interface/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/paul/resqbot_dev/ROS2/install/resqbot_flipper_interface/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated setup.py develop --editable --build-directory /home/paul/resqbot_dev/ROS2/build/resqbot_flipper_interface/build --no-deps symlink_data

@@ -1,0 +1,24 @@
+running develop
+running egg_info
+creating resqbot_drive_interface.egg-info
+writing resqbot_drive_interface.egg-info/PKG-INFO
+writing dependency_links to resqbot_drive_interface.egg-info/dependency_links.txt
+writing entry points to resqbot_drive_interface.egg-info/entry_points.txt
+writing requirements to resqbot_drive_interface.egg-info/requires.txt
+writing top-level names to resqbot_drive_interface.egg-info/top_level.txt
+writing manifest file 'resqbot_drive_interface.egg-info/SOURCES.txt'
+reading manifest file 'resqbot_drive_interface.egg-info/SOURCES.txt'
+writing manifest file 'resqbot_drive_interface.egg-info/SOURCES.txt'
+running build_ext
+Creating /home/paul/resqbot_dev/ROS2/install/resqbot_drive_interface/lib/python3.10/site-packages/resqbot-drive-interface.egg-link (link to .)
+Installing drive_interface script to /home/paul/resqbot_dev/ROS2/install/resqbot_drive_interface/lib/resqbot_drive_interface
+
+Installed /home/paul/resqbot_dev/ROS2/build/resqbot_drive_interface
+running symlink_data
+creating /home/paul/resqbot_dev/ROS2/install/resqbot_drive_interface/share/ament_index
+creating /home/paul/resqbot_dev/ROS2/install/resqbot_drive_interface/share/ament_index/resource_index
+creating /home/paul/resqbot_dev/ROS2/install/resqbot_drive_interface/share/ament_index/resource_index/packages
+symbolically linking /home/paul/resqbot_dev/ROS2/build/resqbot_drive_interface/resource/resqbot_drive_interface -> /home/paul/resqbot_dev/ROS2/install/resqbot_drive_interface/share/ament_index/resource_index/packages
+symbolically linking /home/paul/resqbot_dev/ROS2/build/resqbot_drive_interface/package.xml -> /home/paul/resqbot_dev/ROS2/install/resqbot_drive_interface/share/resqbot_drive_interface
+creating /home/paul/resqbot_dev/ROS2/install/resqbot_drive_interface/share/resqbot_drive_interface/launch
+symbolically linking /home/paul/resqbot_dev/ROS2/build/resqbot_drive_interface/launch/default_launch.py -> /home/paul/resqbot_dev/ROS2/install/resqbot_drive_interface/share/resqbot_drive_interface/launch/

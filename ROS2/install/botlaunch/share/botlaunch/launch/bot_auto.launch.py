@@ -1,0 +1,1 @@
+/home/paul/resqbot_dev/ROS2/build/botlaunch/launch/bot_auto.launch.py

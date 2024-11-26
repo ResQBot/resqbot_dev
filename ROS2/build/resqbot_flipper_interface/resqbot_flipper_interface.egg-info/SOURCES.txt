@@ -1,0 +1,14 @@
+package.xml
+setup.cfg
+setup.py
+launch/default_launch.py
+resource/resqbot_flipper_interface
+resqbot_flipper_interface/__init__.py
+resqbot_flipper_interface/flipper_interface.py
+resqbot_flipper_interface.egg-info/PKG-INFO
+resqbot_flipper_interface.egg-info/SOURCES.txt
+resqbot_flipper_interface.egg-info/dependency_links.txt
+resqbot_flipper_interface.egg-info/entry_points.txt
+resqbot_flipper_interface.egg-info/requires.txt
+resqbot_flipper_interface.egg-info/top_level.txt
+resqbot_flipper_interface.egg-info/zip-safe
