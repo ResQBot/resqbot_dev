@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="Lotti">
+
+<!-- included files for properties etc.-->
+    <xacro:include filename="urdf_inertial_shapes.xacro" />
+    <xacro:include filename="urdf_materials.xacro"/>
+    <xacro:include filename="Lotti_arm.xacro"/>
+    <xacro:include filename="Lotti_body.xacro"/>
+    <xacro:include filename="Lotti_gazebo_control.xacro"/>
+    <xacro:include filename="Lotti_ros2_control.xacro"/>
+
+<!-- world origin --> 
+    <link name="world"></link>
+
+
+
+</robot>
