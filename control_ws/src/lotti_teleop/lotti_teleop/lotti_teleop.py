@@ -4,7 +4,7 @@ import math
 import time
 
 from sensor_msgs.msg import Joy
-from geometry_msgs.msg import Vector3
+from geometry_msgs.msg import Twist
 from std_msgs.msg import Int8
 from std_msgs.msg import String
 from threading import Lock
@@ -110,10 +110,13 @@ class TeleOp(Node):
         self.__flipper_cmd_rl = Int8()
 
         #chain controlls
-        self.__chain_msg = Vector3()
+        self.__chain_msg = Twist()
         self.__speed = float(0)
         self.__angle = float(0)
-        self.__chain_msg.z = float(0.0)
+        self.__chain_msg.linear.y = float(0)
+        self.__chain_msg.linear.z = float(0)
+        self.__chain_msg.angular.y = float(0)
+        self.__chain_msg.angular.x = float(0)
 
         #Init class ->create subscriber, create timer
         self.__readParams()
@@ -234,8 +237,8 @@ class TeleOp(Node):
         """
 
         #construct messages to be sent
-        self.__chain_msg.x = self.__axes_left_stick_x
-        self.__chain_msg.y = self.__axes_left_stick_y
+        self.__chain_msg.linear.x = self.__axes_left_stick_y
+        self.__chain_msg.angular.z = self.__axes_left_stick_x
 
         #send movement commands
         if (self.__joy_enabled == True):
@@ -378,8 +381,8 @@ class TeleOp(Node):
         # Create publishers
 
         self.__chainPub = self.create_publisher(
-            Vector3,
-            'cmd/chains',
+            Twist,
+            'diffbot_base_controller/cmd_vel_unstamped',
             1
         )
 
