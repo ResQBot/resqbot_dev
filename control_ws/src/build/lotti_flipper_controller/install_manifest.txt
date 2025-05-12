@@ -1,0 +1,3 @@
+/home/paul/resqbot_dev/control_ws/src/install/lotti_flipper_controller/lib/liblotti_flipper_controller.so
+/home/paul/resqbot_dev/control_ws/src/install/lotti_flipper_controller/share/lotti_flipper_controller/cmake/export_lotti_flipper_controllerExport.cmake
+/home/paul/resqbot_dev/control_ws/src/install/lotti_flipper_controller/share/lotti_flipper_controller/cmake/export_lotti_flipper_controllerExport-noconfig.cmake

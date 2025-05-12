@@ -1,0 +1,2 @@
+Invoking command in '/home/paul/resqbot_dev/control_ws/src/build/lotti_flipper_controller': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake --build /home/paul/resqbot_dev/control_ws/src/build/lotti_flipper_controller -- -j8 -l8
+Invoked command in '/home/paul/resqbot_dev/control_ws/src/build/lotti_flipper_controller' returned '2': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake --build /home/paul/resqbot_dev/control_ws/src/build/lotti_flipper_controller -- -j8 -l8

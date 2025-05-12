@@ -1,0 +1,18 @@
+[0.018s] Invoking command in '/home/paul/resqbot_dev/control_ws/src/build/lotti_flipper_controller': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake --build /home/paul/resqbot_dev/control_ws/src/build/lotti_flipper_controller -- -j8 -l8
+[0.145s] [ 50%] [32mBuilding CXX object CMakeFiles/lotti_flipper_controller.dir/src/lotti_flipper_controller.cpp.o[0m
+[0.145s] [ 50%] [32mBuilding CXX object CMakeFiles/flipper_controller.dir/src/lotti_flipper_controller.cpp.o[0m
+[0.162s] [01m[K/home/paul/resqbot_dev/control_ws/src/lotti_flipper_controller/src/lotti_flipper_controller.cpp:1:10:[m[K [01;31m[Kfatal error: [m[Klotti_flipper_controller/lotti_flipper_controller.hpp: No such file or directory
+[0.162s]     1 | #include [01;31m[K"lotti_flipper_controller/lotti_flipper_controller.hpp"[m[K
+[0.163s]       |          [01;31m[K^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[m[K
+[0.163s] compilation terminated.
+[0.163s] [01m[K/home/paul/resqbot_dev/control_ws/src/lotti_flipper_controller/src/lotti_flipper_controller.cpp:1:10:[m[K [01;31m[Kfatal error: [m[Klotti_flipper_controller/lotti_flipper_controller.hpp: No such file or directory
+[0.163s]     1 | #include [01;31m[K"lotti_flipper_controller/lotti_flipper_controller.hpp"[m[K
+[0.163s]       |          [01;31m[K^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[m[K
+[0.164s] compilation terminated.
+[0.164s] gmake[2]: *** [CMakeFiles/lotti_flipper_controller.dir/build.make:76: CMakeFiles/lotti_flipper_controller.dir/src/lotti_flipper_controller.cpp.o] Error 1
+[0.164s] gmake[2]: *** [CMakeFiles/flipper_controller.dir/build.make:76: CMakeFiles/flipper_controller.dir/src/lotti_flipper_controller.cpp.o] Error 1
+[0.164s] gmake[1]: *** [CMakeFiles/Makefile2:165: CMakeFiles/flipper_controller.dir/all] Error 2
+[0.164s] gmake[1]: *** Waiting for unfinished jobs....
+[0.164s] gmake[1]: *** [CMakeFiles/Makefile2:139: CMakeFiles/lotti_flipper_controller.dir/all] Error 2
+[0.165s] gmake: *** [Makefile:146: all] Error 2
+[0.169s] Invoked command in '/home/paul/resqbot_dev/control_ws/src/build/lotti_flipper_controller' returned '2': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake --build /home/paul/resqbot_dev/control_ws/src/build/lotti_flipper_controller -- -j8 -l8

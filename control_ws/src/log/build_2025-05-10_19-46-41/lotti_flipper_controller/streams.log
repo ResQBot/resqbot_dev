@@ -1,0 +1,48 @@
+[0.019s] Invoking command in '/home/paul/resqbot_dev/control_ws/src/build/lotti_flipper_controller': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake /home/paul/resqbot_dev/control_ws/src/lotti_flipper_controller -DAMENT_CMAKE_SYMLINK_INSTALL=1 -DCMAKE_INSTALL_PREFIX=/home/paul/resqbot_dev/control_ws/src/install/lotti_flipper_controller
+[0.994s] -- The C compiler identification is GNU 11.4.0
+[1.154s] -- The CXX compiler identification is GNU 11.4.0
+[1.184s] -- Detecting C compiler ABI info
+[1.363s] -- Detecting C compiler ABI info - done
+[1.388s] -- Check for working C compiler: /usr/bin/cc - skipped
+[1.389s] -- Detecting C compile features
+[1.391s] -- Detecting C compile features - done
+[1.401s] -- Detecting CXX compiler ABI info
+[1.564s] -- Detecting CXX compiler ABI info - done
+[1.582s] -- Check for working CXX compiler: /usr/bin/c++ - skipped
+[1.583s] -- Detecting CXX compile features
+[1.584s] -- Detecting CXX compile features - done
+[1.607s] -- Found ament_cmake: 1.3.11 (/opt/ros/humble/share/ament_cmake/cmake)
+[1.797s] -- Found Python3: /usr/bin/python3 (found version "3.10.12") found components: Interpreter 
+[1.882s] -- Override CMake install command with custom implementation using symlinks instead of copying resources
+[1.995s] -- Found pluginlib: 5.1.0 (/opt/ros/humble/share/pluginlib/cmake)
+[2.092s] -- Found controller_interface: 2.50.0 (/opt/ros/humble/share/controller_interface/cmake)
+[2.172s] -- Found rosidl_generator_c: 3.1.6 (/opt/ros/humble/share/rosidl_generator_c/cmake)
+[2.185s] -- Found rosidl_adapter: 3.1.6 (/opt/ros/humble/share/rosidl_adapter/cmake)
+[2.203s] -- Found rosidl_generator_cpp: 3.1.6 (/opt/ros/humble/share/rosidl_generator_cpp/cmake)
+[2.230s] -- Using all available rosidl_typesupport_c: rosidl_typesupport_fastrtps_c;rosidl_typesupport_introspection_c
+[2.255s] -- Using all available rosidl_typesupport_cpp: rosidl_typesupport_fastrtps_cpp;rosidl_typesupport_introspection_cpp
+[2.559s] -- Found rmw_implementation_cmake: 6.1.2 (/opt/ros/humble/share/rmw_implementation_cmake/cmake)
+[2.567s] -- Found rmw_fastrtps_cpp: 6.2.7 (/opt/ros/humble/share/rmw_fastrtps_cpp/cmake)
+[2.617s] -- Found TinyXML2 via Config file: TinyXML2_DIR-NOTFOUND
+[2.750s] -- Found OpenSSL: /usr/lib/x86_64-linux-gnu/libcrypto.so (found version "3.0.2")  
+[2.754s] -- Found TinyXML2 via Config file: TinyXML2_DIR-NOTFOUND
+[2.776s] -- Found FastRTPS: /opt/ros/humble/include  
+[2.779s] -- Found TinyXML2 via Config file: TinyXML2_DIR-NOTFOUND
+[2.793s] -- Found TinyXML2 via Config file: TinyXML2_DIR-NOTFOUND
+[2.811s] -- Using RMW implementation 'rmw_fastrtps_cpp' as default
+[2.833s] -- Looking for pthread.h
+[3.012s] -- Looking for pthread.h - found
+[3.012s] -- Performing Test CMAKE_HAVE_LIBC_PTHREAD
+[3.207s] -- Performing Test CMAKE_HAVE_LIBC_PTHREAD - Success
+[3.211s] -- Found Threads: TRUE  
+[3.324s] -- Found realtime_tools: 2.13.0 (/opt/ros/humble/share/realtime_tools/cmake)
+[3.373s] [31mCMake Error at /opt/ros/humble/share/ament_cmake_core/cmake/symlink_install/ament_cmake_symlink_install_targets.cmake:67 (message):
+[3.373s]   ament_cmake_symlink_install_targets() 'listener' is not a target
+[3.374s] Call Stack (most recent call first):
+[3.374s]   /opt/ros/humble/share/ament_cmake_core/cmake/symlink_install/install.cmake:37 (ament_cmake_symlink_install_targets)
+[3.374s]   CMakeLists.txt:51 (install)
+[3.374s] 
+[3.374s] [0m
+[3.374s] -- Configuring incomplete, errors occurred!
+[3.374s] See also "/home/paul/resqbot_dev/control_ws/src/build/lotti_flipper_controller/CMakeFiles/CMakeOutput.log".
+[3.385s] Invoked command in '/home/paul/resqbot_dev/control_ws/src/build/lotti_flipper_controller' returned '1': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake /home/paul/resqbot_dev/control_ws/src/lotti_flipper_controller -DAMENT_CMAKE_SYMLINK_INSTALL=1 -DCMAKE_INSTALL_PREFIX=/home/paul/resqbot_dev/control_ws/src/install/lotti_flipper_controller

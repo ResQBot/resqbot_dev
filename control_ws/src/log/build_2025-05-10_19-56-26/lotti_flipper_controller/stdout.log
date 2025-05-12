@@ -1,0 +1,5 @@
+[35m[1mConsolidate compiler generated dependencies of target lotti_flipper_controller[0m
+[ 25%] [32mBuilding CXX object CMakeFiles/flipper_controller.dir/src/lotti_flipper_controller.cpp.o[0m
+[ 50%] [32mBuilding CXX object CMakeFiles/lotti_flipper_controller.dir/src/lotti_flipper_controller.cpp.o[0m
+[ 75%] [32m[1mLinking CXX shared library liblotti_flipper_controller.so[0m
+[ 75%] Built target lotti_flipper_controller

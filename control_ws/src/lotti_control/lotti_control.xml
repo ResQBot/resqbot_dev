@@ -1,0 +1,63 @@
+<library path="lotti_control">
+
+  <!-- hardware interfaces-->
+  <class name="arm_interface/ArmInterface"
+         type="arm_interface::ArmInterface"
+         base_class_type="hardware_interface::SystemInterface">
+    <description>
+      Interface to drive Lotti's robot arm
+    </description>
+  </class>
+  
+  <class name="flipper_interface/FlipperInterface"
+         type="flipper_interface::FlipperInterface"
+         base_class_type="hardware_interface::SystemInterface">
+    <description>
+      Interface to drive Lotti's flippers
+    </description>
+  </class>
+  
+  <class name="chain_interface/ChainInterface"
+         type="chain_interface::ChainInterface"
+         base_class_type="hardware_interface::SystemInterface">
+    <description>
+      Interface to drive Lotti's chains
+    </description>
+  </class>  
+
+  <class name="diffdrive_lotti/DiffDriveLotti"
+         type="diffdrive_lotti::DiffDriveLotti"
+         base_class_type="hardware_interface::SystemInterface">
+    <description>
+      Interface to drive Lotti's chains
+    </description>
+  </class>  
+
+  <!-- controller interfaces-->
+  <class name="arm_teleop/ArmController"
+         type="arm_teleop::ArmController"
+         base_class_type="controller_interface::ControllerInterface">
+    <description>
+      Robot controller plugin for Lotti arm
+    </description>
+  </class>
+
+  <class name="chain_controller/ChainController"
+         type="chain_controller::ChainController"
+         base_class_type="controller_interface::ControllerInterface">
+    <description>
+      Robot controller plugin for Lotti chains
+    </description>
+  </class>
+  
+  <!-- 
+  <class name="flipper_controller/FlipperController"
+             type="flipper_controller::FlipperController"
+             base_class_type="controller_interface::ControllerInterface">
+      <description>
+      Robot controller plugin for Lotti flippers
+      </description>
+  </class>
+   -->
+
+  </library>

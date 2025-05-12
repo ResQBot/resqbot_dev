@@ -1,0 +1,31 @@
+[0.021s] Invoking command in '/home/paul/resqbot_dev/control_ws/src/build/lotti_flipper_controller': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake /home/paul/resqbot_dev/control_ws/src/lotti_flipper_controller -DAMENT_CMAKE_SYMLINK_INSTALL=1 -DCMAKE_INSTALL_PREFIX=/home/paul/resqbot_dev/control_ws/src/install/lotti_flipper_controller
+[0.040s] -- Found ament_cmake: 1.3.11 (/opt/ros/humble/share/ament_cmake/cmake)
+[0.188s] -- Override CMake install command with custom implementation using symlinks instead of copying resources
+[0.208s] -- Found pluginlib: 5.1.0 (/opt/ros/humble/share/pluginlib/cmake)
+[0.263s] -- Found controller_interface: 2.50.0 (/opt/ros/humble/share/controller_interface/cmake)
+[0.281s] -- Found rosidl_generator_c: 3.1.6 (/opt/ros/humble/share/rosidl_generator_c/cmake)
+[0.284s] -- Found rosidl_adapter: 3.1.6 (/opt/ros/humble/share/rosidl_adapter/cmake)
+[0.291s] -- Found rosidl_generator_cpp: 3.1.6 (/opt/ros/humble/share/rosidl_generator_cpp/cmake)
+[0.302s] -- Using all available rosidl_typesupport_c: rosidl_typesupport_fastrtps_c;rosidl_typesupport_introspection_c
+[0.314s] -- Using all available rosidl_typesupport_cpp: rosidl_typesupport_fastrtps_cpp;rosidl_typesupport_introspection_cpp
+[0.479s] -- Found rmw_implementation_cmake: 6.1.2 (/opt/ros/humble/share/rmw_implementation_cmake/cmake)
+[0.481s] -- Found rmw_fastrtps_cpp: 6.2.7 (/opt/ros/humble/share/rmw_fastrtps_cpp/cmake)
+[0.501s] -- Found TinyXML2 via Config file: TinyXML2_DIR-NOTFOUND
+[0.515s] -- Found TinyXML2 via Config file: TinyXML2_DIR-NOTFOUND
+[0.540s] -- Found TinyXML2 via Config file: TinyXML2_DIR-NOTFOUND
+[0.553s] -- Found TinyXML2 via Config file: TinyXML2_DIR-NOTFOUND
+[0.571s] -- Using RMW implementation 'rmw_fastrtps_cpp' as default
+[0.623s] -- Found realtime_tools: 2.13.0 (/opt/ros/humble/share/realtime_tools/cmake)
+[0.659s] -- Found ament_lint_auto: 0.12.12 (/opt/ros/humble/share/ament_lint_auto/cmake)
+[0.757s] -- Added test 'cppcheck' to perform static code analysis on C / C++ code
+[0.757s] -- Configured cppcheck include dirs: $<BUILD_INTERFACE:/home/paul/resqbot_dev/control_ws/src/lotti_flipper_controller/src/include>
+[0.758s] -- Configured cppcheck exclude dirs and/or files: 
+[0.758s] -- Added test 'lint_cmake' to check CMake code style
+[0.760s] -- Added test 'uncrustify' to check C / C++ code style
+[0.760s] -- Configured uncrustify additional arguments: 
+[0.760s] -- Added test 'xmllint' to check XML markup files
+[0.762s] -- Configuring done
+[0.816s] [0mCMake Error: INSTALL(EXPORT) given unknown export "export_lotti_flipper_controller"[0m
+[0.816s] -- Generating done
+[0.818s] [0mCMake Generate step failed.  Build files cannot be regenerated correctly.[0m
+[0.831s] Invoked command in '/home/paul/resqbot_dev/control_ws/src/build/lotti_flipper_controller' returned '1': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake /home/paul/resqbot_dev/control_ws/src/lotti_flipper_controller -DAMENT_CMAKE_SYMLINK_INSTALL=1 -DCMAKE_INSTALL_PREFIX=/home/paul/resqbot_dev/control_ws/src/install/lotti_flipper_controller

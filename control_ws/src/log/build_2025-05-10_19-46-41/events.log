@@ -1,0 +1,91 @@
+[0.000000] (-) TimerEvent: {}
+[0.000883] (-) JobUnselected: {'identifier': 'lotti_arm_controller'}
+[0.000995] (-) JobUnselected: {'identifier': 'lotti_control'}
+[0.001040] (-) JobUnselected: {'identifier': 'lotti_teleop'}
+[0.001084] (lotti_flipper_controller) JobQueued: {'identifier': 'lotti_flipper_controller', 'dependencies': OrderedDict()}
+[0.001129] (lotti_flipper_controller) JobStarted: {'identifier': 'lotti_flipper_controller'}
+[0.018781] (lotti_flipper_controller) JobProgress: {'identifier': 'lotti_flipper_controller', 'progress': 'cmake'}
+[0.019477] (lotti_flipper_controller) Command: {'cmd': ['/usr/bin/cmake', '/home/paul/resqbot_dev/control_ws/src/lotti_flipper_controller', '-DAMENT_CMAKE_SYMLINK_INSTALL=1', '-DCMAKE_INSTALL_PREFIX=/home/paul/resqbot_dev/control_ws/src/install/lotti_flipper_controller'], 'cwd': '/home/paul/resqbot_dev/control_ws/src/build/lotti_flipper_controller', 'env': OrderedDict([('LESSOPEN', '| /usr/bin/lesspipe %s'), ('USER', 'paul'), ('LC_TIME', 'de_AT.UTF-8'), ('XDG_SESSION_TYPE', 'wayland'), ('SHLVL', '1'), ('LD_LIBRARY_PATH', '/home/paul/ros2_ws/install/ros2_control_demo_example_9/lib:/home/paul/ros2_ws/install/ros2_control_demo_example_8/lib:/home/paul/ros2_ws/install/ros2_control_demo_example_7/lib:/home/paul/ros2_ws/install/ros2_control_demo_example_6/lib:/home/paul/ros2_ws/install/ros2_control_demo_example_5/lib:/home/paul/ros2_ws/install/ros2_control_demo_example_4/lib:/home/paul/ros2_ws/install/ros2_control_demo_example_3/lib:/home/paul/ros2_ws/install/ros2_control_demo_example_2/lib:/home/paul/ros2_ws/install/ros2_control_demo_example_14/lib:/home/paul/ros2_ws/install/ros2_control_demo_example_12/lib:/home/paul/ros2_ws/install/ros2_control_demo_example_11/lib:/home/paul/ros2_ws/install/ros2_control_demo_example_10/lib:/home/paul/ros2_ws/install/ros2_control_demo_example_1/lib:/home/paul/ws_livox/install/livox_ros_driver2/lib:/usr/lib/x86_64-linux-gnu/gazebo-11/plugins:/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/x86_64-linux-gnu:/opt/ros/humble/lib'), ('HOME', '/home/paul'), ('DESKTOP_SESSION', 'ubuntu'), ('ROS_PYTHON_VERSION', '3'), ('GNOME_SHELL_SESSION_MODE', 'ubuntu'), ('GTK_MODULES', 'gail:atk-bridge'), ('LC_MONETARY', 'de_AT.UTF-8'), ('DBUS_STARTER_BUS_TYPE', 'session'), ('SYSTEMD_EXEC_PID', '1562'), ('DBUS_SESSION_BUS_ADDRESS', 'unix:path=/run/user/1000/bus,guid=6a4d08a85f80e24618b7e94c681f29d9'), ('COLORTERM', 'truecolor'), ('IM_CONFIG_PHASE', '1'), ('WAYLAND_DISPLAY', 'wayland-0'), ('COLCON_PREFIX_PATH', '/home/paul/ws_livox/install:/home/paul/ros2_ws/install'), ('ROS_DISTRO', 'humble'), ('LOGNAME', 'paul'), ('_', '/usr/bin/colcon'), ('ROS_VERSION', '2'), ('XDG_SESSION_CLASS', 'user'), ('USERNAME', 'paul'), ('TERM', 'xterm-256color'), ('GNOME_DESKTOP_SESSION_ID', 'this-is-deprecated'), ('ROS_LOCALHOST_ONLY', '0'), ('PATH', '/opt/ros/humble/bin:/home/paul/.local/bin:/home/paul/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/snap/bin'), ('SESSION_MANAGER', 'local/paul-pc:@/tmp/.ICE-unix/1562,unix/paul-pc:/tmp/.ICE-unix/1562'), ('XDG_MENU_PREFIX', 'gnome-'), ('LC_ADDRESS', 'de_AT.UTF-8'), ('GNOME_TERMINAL_SCREEN', '/org/gnome/Terminal/screen/4fc96e23_3e61_42d4_b098_7efc285c6380'), ('GNOME_SETUP_DISPLAY', ':1'), ('XDG_RUNTIME_DIR', '/run/user/1000'), ('DISPLAY', ':0'), ('LANG', 'en_US.UTF-8'), ('XDG_CURRENT_DESKTOP', 'ubuntu:GNOME'), ('LC_TELEPHONE', 'de_AT.UTF-8'), ('XMODIFIERS', '@im=ibus'), ('XDG_SESSION_DESKTOP', 'ubuntu'), ('XAUTHORITY', '/run/user/1000/.mutter-Xwaylandauth.7GCW52'), ('LS_COLORS', 'rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.webp=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:'), ('GNOME_TERMINAL_SERVICE', ':1.208'), ('SSH_AGENT_LAUNCHER', 'gnome-keyring'), ('SSH_AUTH_SOCK', '/run/user/1000/keyring/ssh'), ('ROS_DOMAIN_ID', '17'), ('AMENT_PREFIX_PATH', '/home/paul/ros2_ws/install/ros2_control_demos:/home/paul/ros2_ws/install/ros2_control_demo_example_9:/home/paul/ros2_ws/install/ros2_control_demo_example_8:/home/paul/ros2_ws/install/ros2_control_demo_example_7:/home/paul/ros2_ws/install/ros2_control_demo_example_6:/home/paul/ros2_ws/install/ros2_control_demo_example_15:/home/paul/ros2_ws/install/ros2_control_demo_example_13:/home/paul/ros2_ws/install/ros2_control_demo_example_5:/home/paul/ros2_ws/install/ros2_control_demo_example_4:/home/paul/ros2_ws/install/ros2_control_demo_example_3:/home/paul/ros2_ws/install/ros2_control_demo_example_2:/home/paul/ros2_ws/install/ros2_control_demo_example_14:/home/paul/ros2_ws/install/ros2_control_demo_example_12:/home/paul/ros2_ws/install/ros2_control_demo_example_11:/home/paul/ros2_ws/install/ros2_control_demo_example_10:/home/paul/ros2_ws/install/ros2_control_demo_example_1:/home/paul/ros2_ws/install/ros2_control_demo_description:/home/paul/ws_livox/install/livox_ros_driver2:/opt/ros/humble'), ('SHELL', '/bin/bash'), ('LC_NAME', 'de_AT.UTF-8'), ('QT_ACCESSIBILITY', '1'), ('ROS_MASTER_URI', 'http://localhost:11311'), ('GDMSESSION', 'ubuntu'), ('LESSCLOSE', '/usr/bin/lesspipe %s %s'), ('LC_MEASUREMENT', 'de_AT.UTF-8'), ('LC_IDENTIFICATION', 'de_AT.UTF-8'), ('QT_IM_MODULE', 'ibus'), ('PWD', '/home/paul/resqbot_dev/control_ws/src/build/lotti_flipper_controller'), ('LC_ALL', 'en_US.UTF-8'), ('XDG_CONFIG_DIRS', '/etc/xdg/xdg-ubuntu:/etc/xdg'), ('DBUS_STARTER_ADDRESS', 'unix:path=/run/user/1000/bus,guid=6a4d08a85f80e24618b7e94c681f29d9'), ('XDG_DATA_DIRS', '/usr/share/ubuntu:/usr/local/share/:/usr/share/:/var/lib/snapd/desktop'), ('PYTHONPATH', '/home/paul/ws_livox/install/livox_ros_driver2/local/lib/python3.10/dist-packages:/opt/ros/humble/lib/python3.10/site-packages:/opt/ros/humble/local/lib/python3.10/dist-packages'), ('LC_NUMERIC', 'de_AT.UTF-8'), ('LC_PAPER', 'de_AT.UTF-8'), ('COLCON', '1'), ('VTE_VERSION', '6800'), ('CMAKE_PREFIX_PATH', '/home/paul/ros2_ws/install/ros2_control_demos:/home/paul/ros2_ws/install/ros2_control_demo_example_9:/home/paul/ros2_ws/install/ros2_control_demo_example_8:/home/paul/ros2_ws/install/ros2_control_demo_example_7:/home/paul/ros2_ws/install/ros2_control_demo_example_6:/home/paul/ros2_ws/install/ros2_control_demo_example_15:/home/paul/ros2_ws/install/ros2_control_demo_example_13:/home/paul/ros2_ws/install/ros2_control_demo_example_5:/home/paul/ros2_ws/install/ros2_control_demo_example_4:/home/paul/ros2_ws/install/ros2_control_demo_example_3:/home/paul/ros2_ws/install/ros2_control_demo_example_2:/home/paul/ros2_ws/install/ros2_control_demo_example_14:/home/paul/ros2_ws/install/ros2_control_demo_example_12:/home/paul/ros2_ws/install/ros2_control_demo_example_11:/home/paul/ros2_ws/install/ros2_control_demo_example_10:/home/paul/ros2_ws/install/ros2_control_demo_example_1:/home/paul/ros2_ws/install/ros2_control_demo_description:/home/paul/ws_livox/install/livox_ros_driver2:/opt/ros/humble')]), 'shell': False}
+[0.099969] (-) TimerEvent: {}
+[0.200730] (-) TimerEvent: {}
+[0.301200] (-) TimerEvent: {}
+[0.401666] (-) TimerEvent: {}
+[0.502164] (-) TimerEvent: {}
+[0.602660] (-) TimerEvent: {}
+[0.703158] (-) TimerEvent: {}
+[0.803644] (-) TimerEvent: {}
+[0.904100] (-) TimerEvent: {}
+[0.994630] (lotti_flipper_controller) StdoutLine: {'line': b'-- The C compiler identification is GNU 11.4.0\n'}
+[1.004175] (-) TimerEvent: {}
+[1.104474] (-) TimerEvent: {}
+[1.154984] (lotti_flipper_controller) StdoutLine: {'line': b'-- The CXX compiler identification is GNU 11.4.0\n'}
+[1.184927] (lotti_flipper_controller) StdoutLine: {'line': b'-- Detecting C compiler ABI info\n'}
+[1.204603] (-) TimerEvent: {}
+[1.305015] (-) TimerEvent: {}
+[1.364457] (lotti_flipper_controller) StdoutLine: {'line': b'-- Detecting C compiler ABI info - done\n'}
+[1.389301] (lotti_flipper_controller) StdoutLine: {'line': b'-- Check for working C compiler: /usr/bin/cc - skipped\n'}
+[1.390324] (lotti_flipper_controller) StdoutLine: {'line': b'-- Detecting C compile features\n'}
+[1.391988] (lotti_flipper_controller) StdoutLine: {'line': b'-- Detecting C compile features - done\n'}
+[1.402405] (lotti_flipper_controller) StdoutLine: {'line': b'-- Detecting CXX compiler ABI info\n'}
+[1.405099] (-) TimerEvent: {}
+[1.505451] (-) TimerEvent: {}
+[1.564949] (lotti_flipper_controller) StdoutLine: {'line': b'-- Detecting CXX compiler ABI info - done\n'}
+[1.582706] (lotti_flipper_controller) StdoutLine: {'line': b'-- Check for working CXX compiler: /usr/bin/c++ - skipped\n'}
+[1.583530] (lotti_flipper_controller) StdoutLine: {'line': b'-- Detecting CXX compile features\n'}
+[1.584652] (lotti_flipper_controller) StdoutLine: {'line': b'-- Detecting CXX compile features - done\n'}
+[1.605530] (-) TimerEvent: {}
+[1.608039] (lotti_flipper_controller) StdoutLine: {'line': b'-- Found ament_cmake: 1.3.11 (/opt/ros/humble/share/ament_cmake/cmake)\n'}
+[1.705649] (-) TimerEvent: {}
+[1.797943] (lotti_flipper_controller) StdoutLine: {'line': b'-- Found Python3: /usr/bin/python3 (found version "3.10.12") found components: Interpreter \n'}
+[1.805765] (-) TimerEvent: {}
+[1.883204] (lotti_flipper_controller) StdoutLine: {'line': b'-- Override CMake install command with custom implementation using symlinks instead of copying resources\n'}
+[1.905880] (-) TimerEvent: {}
+[1.995602] (lotti_flipper_controller) StdoutLine: {'line': b'-- Found pluginlib: 5.1.0 (/opt/ros/humble/share/pluginlib/cmake)\n'}
+[2.006016] (-) TimerEvent: {}
+[2.093350] (lotti_flipper_controller) StdoutLine: {'line': b'-- Found controller_interface: 2.50.0 (/opt/ros/humble/share/controller_interface/cmake)\n'}
+[2.106142] (-) TimerEvent: {}
+[2.172698] (lotti_flipper_controller) StdoutLine: {'line': b'-- Found rosidl_generator_c: 3.1.6 (/opt/ros/humble/share/rosidl_generator_c/cmake)\n'}
+[2.185750] (lotti_flipper_controller) StdoutLine: {'line': b'-- Found rosidl_adapter: 3.1.6 (/opt/ros/humble/share/rosidl_adapter/cmake)\n'}
+[2.203754] (lotti_flipper_controller) StdoutLine: {'line': b'-- Found rosidl_generator_cpp: 3.1.6 (/opt/ros/humble/share/rosidl_generator_cpp/cmake)\n'}
+[2.206221] (-) TimerEvent: {}
+[2.230626] (lotti_flipper_controller) StdoutLine: {'line': b'-- Using all available rosidl_typesupport_c: rosidl_typesupport_fastrtps_c;rosidl_typesupport_introspection_c\n'}
+[2.255916] (lotti_flipper_controller) StdoutLine: {'line': b'-- Using all available rosidl_typesupport_cpp: rosidl_typesupport_fastrtps_cpp;rosidl_typesupport_introspection_cpp\n'}
+[2.306382] (-) TimerEvent: {}
+[2.407237] (-) TimerEvent: {}
+[2.507650] (-) TimerEvent: {}
+[2.560348] (lotti_flipper_controller) StdoutLine: {'line': b'-- Found rmw_implementation_cmake: 6.1.2 (/opt/ros/humble/share/rmw_implementation_cmake/cmake)\n'}
+[2.567875] (lotti_flipper_controller) StdoutLine: {'line': b'-- Found rmw_fastrtps_cpp: 6.2.7 (/opt/ros/humble/share/rmw_fastrtps_cpp/cmake)\n'}
+[2.608045] (-) TimerEvent: {}
+[2.617774] (lotti_flipper_controller) StdoutLine: {'line': b'-- Found TinyXML2 via Config file: TinyXML2_DIR-NOTFOUND\n'}
+[2.708160] (-) TimerEvent: {}
+[2.751269] (lotti_flipper_controller) StdoutLine: {'line': b'-- Found OpenSSL: /usr/lib/x86_64-linux-gnu/libcrypto.so (found version "3.0.2")  \n'}
+[2.755438] (lotti_flipper_controller) StdoutLine: {'line': b'-- Found TinyXML2 via Config file: TinyXML2_DIR-NOTFOUND\n'}
+[2.776699] (lotti_flipper_controller) StdoutLine: {'line': b'-- Found FastRTPS: /opt/ros/humble/include  \n'}
+[2.780264] (lotti_flipper_controller) StdoutLine: {'line': b'-- Found TinyXML2 via Config file: TinyXML2_DIR-NOTFOUND\n'}
+[2.794270] (lotti_flipper_controller) StdoutLine: {'line': b'-- Found TinyXML2 via Config file: TinyXML2_DIR-NOTFOUND\n'}
+[2.808265] (-) TimerEvent: {}
+[2.812194] (lotti_flipper_controller) StdoutLine: {'line': b"-- Using RMW implementation 'rmw_fastrtps_cpp' as default\n"}
+[2.833532] (lotti_flipper_controller) StdoutLine: {'line': b'-- Looking for pthread.h\n'}
+[2.908403] (-) TimerEvent: {}
+[3.008812] (-) TimerEvent: {}
+[3.013127] (lotti_flipper_controller) StdoutLine: {'line': b'-- Looking for pthread.h - found\n'}
+[3.013453] (lotti_flipper_controller) StdoutLine: {'line': b'-- Performing Test CMAKE_HAVE_LIBC_PTHREAD\n'}
+[3.108936] (-) TimerEvent: {}
+[3.208360] (lotti_flipper_controller) StdoutLine: {'line': b'-- Performing Test CMAKE_HAVE_LIBC_PTHREAD - Success\n'}
+[3.209004] (-) TimerEvent: {}
+[3.211544] (lotti_flipper_controller) StdoutLine: {'line': b'-- Found Threads: TRUE  \n'}
+[3.309125] (-) TimerEvent: {}
+[3.324667] (lotti_flipper_controller) StdoutLine: {'line': b'-- Found realtime_tools: 2.13.0 (/opt/ros/humble/share/realtime_tools/cmake)\n'}
+[3.374130] (lotti_flipper_controller) StderrLine: {'line': b'\x1b[31mCMake Error at /opt/ros/humble/share/ament_cmake_core/cmake/symlink_install/ament_cmake_symlink_install_targets.cmake:67 (message):\n'}
+[3.374474] (lotti_flipper_controller) StderrLine: {'line': b"  ament_cmake_symlink_install_targets() 'listener' is not a target\n"}
+[3.374651] (lotti_flipper_controller) StderrLine: {'line': b'Call Stack (most recent call first):\n'}
+[3.374785] (lotti_flipper_controller) StderrLine: {'line': b'  /opt/ros/humble/share/ament_cmake_core/cmake/symlink_install/install.cmake:37 (ament_cmake_symlink_install_targets)\n'}
+[3.374911] (lotti_flipper_controller) StderrLine: {'line': b'  CMakeLists.txt:51 (install)\n'}
+[3.375033] (lotti_flipper_controller) StderrLine: {'line': b'\n'}
+[3.375155] (lotti_flipper_controller) StderrLine: {'line': b'\x1b[0m\n'}
+[3.375274] (lotti_flipper_controller) StdoutLine: {'line': b'-- Configuring incomplete, errors occurred!\n'}
+[3.375410] (lotti_flipper_controller) StdoutLine: {'line': b'See also "/home/paul/resqbot_dev/control_ws/src/build/lotti_flipper_controller/CMakeFiles/CMakeOutput.log".\n'}
+[3.386255] (lotti_flipper_controller) CommandEnded: {'returncode': 1}
+[3.409256] (-) TimerEvent: {}
+[3.435395] (lotti_flipper_controller) JobEnded: {'identifier': 'lotti_flipper_controller', 'rc': 1}
+[3.445960] (-) EventReactorShutdown: {}
