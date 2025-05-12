@@ -1,6 +1,3 @@
 control_ws/build/
 control_ws/install/
 control_ws/log/
-control_ws/src/build/
-control_ws/src/install/
-control_ws/src/log/
