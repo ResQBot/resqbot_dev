@@ -51,45 +51,76 @@ namespace flipper_interface{
       RCLCPP_INFO(rclcpp::get_logger("FlipperInterface"), "exporting flipper");
     }
 
-
-/*      int ind = 0;
-      for (const auto &joint_name : joint_interfaces["velocity"]){
-      command_interfaces.emplace_back(joint_name, "velocity", &joint_velocities_command_[ind++]);
-    } */
-
     return command_interfaces;
   }
 
+    hardware_interface::CallbackReturn FlipperInterface::on_configure(const rclcpp_lifecycle::State &previous_state){
+    RCLCPP_INFO(rclcpp::get_logger("FlipperInterface"), "Configuring ...please wait...");
+
+    if (flipper_comms_.connected()){
+      flipper_comms_.disconnect();
+    }
+    flipper_comms_.connect("/dev/tty/ACM0");
+
+    RCLCPP_INFO(rclcpp::get_logger("FlipperInterface"), "Successfully configured");
+    return hardware_interface::CallbackReturn::SUCCESS;
+  }
+
+  hardware_interface::CallbackReturn FlipperInterface::on_cleanup(const rclcpp_lifecycle::State &previous_state){
+    RCLCPP_INFO(rclcpp::get_logger("FlipperInterface"), "Cleaning up ...please wait...");
+
+    if (flipper_comms_.connected()){
+      flipper_comms_.disconnect();
+    }
+
+    RCLCPP_INFO(rclcpp::get_logger("FlipperInterface"), "Successfully cleaned up!");
+    return hardware_interface::CallbackReturn::SUCCESS;
+  }
+
   hardware_interface::CallbackReturn FlipperInterface::on_activate(const rclcpp_lifecycle::State &previous_state){
-    RCLCPP_INFO(rclcpp::get_logger("FlipperInterface"), "Activating ...please wait...");
+    RCLCPP_INFO(rclcpp::get_logger("FlipperInterface"), "Configuring ...please wait...");
 
-    //rs485_.conncet(cfg_.baud_rate);
+    if (!flipper_comms_.connected()){
+      RCLCPP_ERROR(rclcpp::get_logger("FlipperInterface"), "Arduino not connected");
+      return hardware_interface::CallbackReturn::ERROR;
+    }
 
-    RCLCPP_INFO(rclcpp::get_logger("FlipperInterface"), "Successfully activated!");
+    RCLCPP_INFO(rclcpp::get_logger("FlipperInterface"), "Successfully activated");
     return hardware_interface::CallbackReturn::SUCCESS;
   }
 
   hardware_interface::CallbackReturn FlipperInterface::on_deactivate(const rclcpp_lifecycle::State &previous_state){
     RCLCPP_INFO(rclcpp::get_logger("FlipperInterface"), "Deactivating ...please wait...");
 
-    //rs485_.disconncet();
-
     RCLCPP_INFO(rclcpp::get_logger("FlipperInterface"), "Successfully deactivated!");
     return hardware_interface::CallbackReturn::SUCCESS;
   }
 
   return_type FlipperInterface::read(const rclcpp::Time & /*time*/, const rclcpp::Duration & period){
-    //rs485_.read_encs()
-
-    for (auto i = 0ul; i < joint_velocities_command_.size(); i++){
-      joint_positions_[i] += joint_velocities_command_[i] * 2*3.1415/12 * period.seconds();
+    
+    if (!flipper_comms_.connected()){
+      return hardware_interface::return_type::ERROR;
     }
-  
+
+    std::string flipper_answer_ = flipper_comms_.read_msg();
+    sscanf(flipper_answer_.c_str(), "FL%iFR%iRL%iRR%i", fl_state_, fr_state_, rl_state_, rr_state_);
+    
+    joint_positions_[0] = fr_state_ / 360*2*3,14159;
+    joint_positions_[1] = fl_state_ / 360*2*3,14159;
+    joint_positions_[2] = rr_state_ / 360*2*3,14159;
+    joint_positions_[3] = rl_state_ / 360*2*3,14159;
+    
     return return_type::OK;
   }
 
   return_type FlipperInterface::write(const rclcpp::Time & /*time*/, const rclcpp::Duration &){
 
+    flipper_comms_.set_flipper_values(
+      joint_velocities_command_[0],
+      joint_velocities_command_[1],
+      joint_velocities_command_[2],
+      joint_velocities_command_[3]
+    );
 
     return return_type::OK;
   }

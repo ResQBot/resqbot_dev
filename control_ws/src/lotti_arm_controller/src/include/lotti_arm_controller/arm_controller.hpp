@@ -37,73 +37,58 @@
 #include "trajectory_msgs/msg/joint_trajectory.hpp"
 #include "trajectory_msgs/msg/joint_trajectory_point.hpp"
 
-namespace arm_controller
-{
-class ArmController : public controller_interface::ControllerInterface
-{
-public:
-  ArmController();
+namespace arm_controller{
+  class ArmController : public controller_interface::ControllerInterface{
+    public:
+      ArmController();
 
-  controller_interface::InterfaceConfiguration command_interface_configuration() const override;
+      controller_interface::InterfaceConfiguration command_interface_configuration() const override;
 
-  controller_interface::InterfaceConfiguration state_interface_configuration() const override;
+      controller_interface::InterfaceConfiguration state_interface_configuration() const override;
 
-  controller_interface::return_type update(
-    const rclcpp::Time & time, const rclcpp::Duration & period) override;
+      controller_interface::return_type update(const rclcpp::Time & time, const rclcpp::Duration & period) override;
 
-  controller_interface::CallbackReturn on_init() override;
+      controller_interface::CallbackReturn on_init() override;
 
-  controller_interface::CallbackReturn on_configure(
-    const rclcpp_lifecycle::State & previous_state) override;
+      controller_interface::CallbackReturn on_configure(const rclcpp_lifecycle::State & previous_state) override;
 
-  controller_interface::CallbackReturn on_activate(
-    const rclcpp_lifecycle::State & previous_state) override;
+      controller_interface::CallbackReturn on_activate(const rclcpp_lifecycle::State & previous_state) override;
 
-  controller_interface::CallbackReturn on_deactivate(
-    const rclcpp_lifecycle::State & previous_state) override;
+      controller_interface::CallbackReturn on_deactivate(const rclcpp_lifecycle::State & previous_state) override;
 
-protected:
-  std::vector<std::string> joint_names_;
-  std::vector<std::string> command_interface_types_;
-  std::vector<std::string> state_interface_types_;
+    protected:
+      std::vector<std::string> joint_names_;
+      std::vector<std::string> command_interface_types_;
+      std::vector<std::string> state_interface_types_;
 
-  rclcpp::Subscription<trajectory_msgs::msg::JointTrajectory>::SharedPtr joint_command_subscriber_;
-  realtime_tools::RealtimeBuffer<std::shared_ptr<trajectory_msgs::msg::JointTrajectory>>
-    traj_msg_external_point_ptr_;
-  bool new_msg_ = false;
-  rclcpp::Time start_time_;
-  std::shared_ptr<trajectory_msgs::msg::JointTrajectory> trajectory_msg_;
-  trajectory_msgs::msg::JointTrajectoryPoint point_interp_;
+      rclcpp::Subscription<trajectory_msgs::msg::JointTrajectory>::SharedPtr joint_command_subscriber_;
+      realtime_tools::RealtimeBuffer<std::shared_ptr<trajectory_msgs::msg::JointTrajectory>> traj_msg_external_point_ptr_;
+      bool new_msg_ = false;
+      rclcpp::Time start_time_;
+      std::shared_ptr<trajectory_msgs::msg::JointTrajectory> trajectory_msg_;
+      trajectory_msgs::msg::JointTrajectoryPoint point_interp_;
 
-  std::vector<std::reference_wrapper<hardware_interface::LoanedCommandInterface>>
-    joint_position_command_interface_;
-  std::vector<std::reference_wrapper<hardware_interface::LoanedCommandInterface>>
-    joint_velocity_command_interface_;
-  std::vector<std::reference_wrapper<hardware_interface::LoanedStateInterface>>
-    joint_position_state_interface_;
-  std::vector<std::reference_wrapper<hardware_interface::LoanedStateInterface>>
-    joint_velocity_state_interface_;
-  std::vector<std::reference_wrapper<hardware_interface::LoanedStateInterface>>
-    joint_torque_state_interface_;
-  std::vector<std::reference_wrapper<hardware_interface::LoanedStateInterface>>
-    joint_volt_state_interface_;
+      std::vector<std::reference_wrapper<hardware_interface::LoanedCommandInterface>> joint_position_command_interface_;
+      std::vector<std::reference_wrapper<hardware_interface::LoanedCommandInterface>> joint_velocity_command_interface_;
+      std::vector<std::reference_wrapper<hardware_interface::LoanedStateInterface>> joint_position_state_interface_;
+      std::vector<std::reference_wrapper<hardware_interface::LoanedStateInterface>> joint_velocity_state_interface_;
+      std::vector<std::reference_wrapper<hardware_interface::LoanedStateInterface>> joint_torque_state_interface_;
+      std::vector<std::reference_wrapper<hardware_interface::LoanedStateInterface>> joint_volt_state_interface_;
 
-  std::unordered_map<
-    std::string, std::vector<std::reference_wrapper<hardware_interface::LoanedCommandInterface>> *>
-    command_interface_map_ = {
-      {"position", &joint_position_command_interface_},
-      {"velocity", &joint_velocity_command_interface_},
-    };
+      std::unordered_map<std::string, std::vector<std::reference_wrapper<hardware_interface::LoanedCommandInterface>> *>
+        command_interface_map_ = {
+          {"position", &joint_position_command_interface_},
+          {"velocity", &joint_velocity_command_interface_},
+        };
 
-  std::unordered_map<
-    std::string, std::vector<std::reference_wrapper<hardware_interface::LoanedStateInterface>> *>
-    state_interface_map_ = {
-      {"position", &joint_position_state_interface_},
-      {"velocity", &joint_velocity_state_interface_}
-      {"torque", &joint_torque_state_interface_}
-      {"volt", &joint_volt_state_interface_}
-    };
-};
+      std::unordered_map< std::string, std::vector<std::reference_wrapper<hardware_interface::LoanedStateInterface>> *>
+        state_interface_map_ = {
+          {"position", &joint_position_state_interface_},
+          {"velocity", &joint_velocity_state_interface_}
+          {"torque", &joint_torque_state_interface_}
+          {"volt", &joint_volt_state_interface_}
+        };
+  };
 
 }  // namespace arm_controller
 

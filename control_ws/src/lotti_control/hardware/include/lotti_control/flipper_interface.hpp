@@ -20,6 +20,8 @@
 #include "rclcpp_lifecycle/node_interfaces/lifecycle_node_interface.hpp"
 #include "rclcpp_lifecycle/state.hpp"
 
+#include "lotti_control/flipper_comms.hpp"
+
 using hardware_interface::return_type;
 
 namespace flipper_interface{
@@ -32,25 +34,35 @@ namespace flipper_interface{
       CallbackReturn on_init(const hardware_interface::HardwareInfo & info) override;
 
       std::vector<hardware_interface::StateInterface> export_state_interfaces() override;
-
       std::vector<hardware_interface::CommandInterface> export_command_interfaces() override;
 
-      hardware_interface::CallbackReturn on_activate(const rclcpp_lifecycle::State & previous_state) override;
-    
+      hardware_interface::CallbackReturn on_configure(const rclcpp_lifecycle::State & previous_state) override;
+      hardware_interface::CallbackReturn on_cleanup(const rclcpp_lifecycle::State & previous_state) override;
+
+      hardware_interface::CallbackReturn on_activate(const rclcpp_lifecycle::State & previous_state) override;    
       hardware_interface::CallbackReturn on_deactivate(const rclcpp_lifecycle::State & previous_state) override;
 
       return_type read(const rclcpp::Time & time, const rclcpp::Duration & period) override;
-
       return_type write(const rclcpp::Time & /*time*/, const rclcpp::Duration & /*period*/) override;
     
     protected:
       /// The size of this vector is (standard_interfaces_.size() x nr_joints)
       std::vector<double> joint_velocities_command_;
       std::vector<double> joint_positions_;
+      int fr_cmd_ = 0;
+      int fl_cmd_ = 0;
+      int rr_cmd_ = 0;
+      int rl_cmd_ = 0;
+
+      int fr_state_ = 0;
+      int fl_state_ = 0;
+      int rr_state_ = 0;
+      int rl_state_ = 0;
 
       std::unordered_map<std::string, std::vector<std::string>> joint_interfaces = {
         {"position", {}}, {"velocity", {}}};
 
+    SerialComms flipper_comms_;
   };
 
 }  // namespace flipper_interface
