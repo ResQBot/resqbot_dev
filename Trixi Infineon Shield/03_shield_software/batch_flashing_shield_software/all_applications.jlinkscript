@@ -1,0 +1,19 @@
+si SWD
+Device TLE9879
+r
+erase
+h
+loadfile foc.hex
+r
+h
+loadfile bemf.hex
+r
+h
+loadfile hall.hex
+r
+h
+loadfile bootloader.hex
+r
+g
+exit
+

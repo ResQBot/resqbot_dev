@@ -1,0 +1,84 @@
+#ifndef _COMMANDS_H
+#define _COMMANDS_H
+
+#include "types.h"
+
+
+// Allgemein
+#define CONFIRM_OFFSET 0x1000
+
+// 0x01: modeControl
+#define MODECONTROL 0x01
+#define GETMYMODE 0x10
+
+// 0x02: loadDataset
+#define LOADDATASET 0x02
+#define DATASET0 0x00
+#define DATASET1 0x01
+#define DATASET2 0x02
+#define DATASET3 0x03
+#define CUSTOMDATASET0 0x10
+#define CUSTOMDATASET1 0x11
+#define CUSTOMDATASET2 0x12
+#define CUSTOMDATASET3 0x13
+
+// 0x03: sendDataset
+#define SENDDATASET 0x03
+
+// 0x04: receiveDataset
+#define RECEIVEDATASET 0x04
+#define NROFMESSAGES 30
+#define NROFBYTES NROFMESSAGES*2
+
+// 0x05: changeParameter
+#define CHANGEPARAMETER 0x05
+
+// 0x06: saveDataset
+#define SAVEDATASET 0x06
+#define POSITION0 0
+#define POSITION1 1
+#define POSITION2 2
+#define POSITION3 3
+#define STARTOFCUSTOMDATASETS 0x1101C000
+#define OFFSET_DATASET0  0x00000000
+#define OFFSET_DATASET1  0x00000080
+#define OFFSET_DATASET2  0x00000100
+#define OFFSET_DATASET3  0x00000180
+
+// 0x07: setMotorspeed
+#define SETMOTORSPEED 0x07
+
+// 0x08: motorControl
+#define MOTORCONTROL 0x08
+#define START_MOTOR 0x00
+#define STOP_MOTOR 0x01
+
+// 0x09: boardControl
+#define BOARDCONTROL 0x09
+#define AUTOADDRESSING 0x00
+#define BOARD_AVAILABLE 0x01
+#define RESET 0x02
+
+// 0x0A: LEDOn
+#define LED_ON 0x0A
+
+// 0x0B: LEDOff
+#define LED_OFF 0x0B
+
+
+void sendAnswer(uint16 message);void sendPosAnswer(uint16 message);
+void sendNegAnswer(uint16 message);
+void changeMode(uint8 requestedMode);
+void loadDataset(uint8 word1byte2);
+void changeSingleParameter(uint8 index, uint16 data_part1, uint16 data_part2);
+uint8 saveCurrentDataset(uint8 position);
+void do_autoaddressing(void);
+void set_boardnr(uint8 boardnr);
+
+void updateDatasetDependencies(void);
+uint8 isvalueinarray(uint8 val, const uint8 *indices_16bit, const uint8 size);
+uint8 CRC8(uint8 *data, uint8 len);
+
+#endif
+
+

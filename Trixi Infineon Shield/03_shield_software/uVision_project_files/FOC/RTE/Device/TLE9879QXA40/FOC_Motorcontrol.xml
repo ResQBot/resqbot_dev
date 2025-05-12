@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" ?><!--sha256=42F1521BC4F04FA1CA5A33AA024717B12887C313EA88F3E44005323D3EFE7CA0-->
+<!--file ePower.xml                                                                -->
+<!--brief ePower Modules configuration                                             -->
+<!--                                                                                -->
+<!--You can use this file under the terms of the IFX License.                       -->
+<!--                                                                                -->
+<!--This file is distributed in the hope that it will be useful,                    -->
+<!--but WITHOUT ANY WARRANTY; without even the implied warranty of                  -->
+<!--MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the                   -->
+<!--IFX License for more details (IFX_License.txt).                                 -->
+<!--                                                                                -->
+<!--This file may be used, copied, and distributed, with or without                 -->
+<!--modification, provided that all copyright notices are retained;                 -->
+<!--that all modifications to this file are prominently noted in the                -->
+<!--modified file; and that this paragraph is not modified.                         -->
+<!--                                                                                -->
+<!--copyright Copyright (C) 2012 Infineon Technologies AG                           -->
+<!--                                                                                -->
+<!--********************************************************************************-->
+<!--**        Infineon ePower Family TLE986x/7x Module Configuration Files        **-->
+<!--********************************************************************************-->
+<!--                                                                                -->
+<!--********************************************************************************-->
+<!--**                      Author(s) Identity                                    **-->
+<!--********************************************************************************-->
+<!--** Initials     Name                                                          **-->
+<!--** DM           Daniel Mysliwitz                                              **-->
+<!--** TA           Thomas Albersinger                                            **-->
+<!--**                                                                            **-->
+<!--********************************************************************************-->
+<!--                                                                                -->
+<!--********************************************************************************-->
+<!--**                      Revision Control History                              **-->
+<!--********************************************************************************-->
+<!--*                                                                              *-->
+<!--* V1.0.0: 2014-05-04, DM:   Initial version                                    *-->
+<!--* V1.0.1: 2014-11-20, DM:   reorganize the FOC current settings                *-->
+<!--* V1.0.2: 2015-02-15, DM:   XML version reised to V0.3                         *-->
+<!--* V1.0.3: 2015-07-14, DM:   Rotor alignment pulled out of FOC-Start-up         *-->
+<!--* V1.0.4: 2016-06-22, DM:   FOC-Start-up removed, for FOC SW V3.86             *-->
+<!--* V1.0.5: 2016-07-08, DM:   FluxEstimator time constant added                  *-->
+<!--*                                                                              *-->
+<!--********************************************************************************-->
+<ifxmlcfg version="0.3">
+	<version label="V1.0.5"/>
+	<module label="FOC Motor Parameter" desc="Motor Algorithm Parameter">
+		<header define="foc_defines.h">
+			<button label="FOC Config" define="FOC_En">
+				<branch label="General Parameters">
+					<edit label="Shunt Resistance [Ohm]" define="FOC_R_SHUNT" default="0.005"/>
+					<edit label="Nominal Current [A]" define="FOC_NOM_CUR" default="15"/>
+					<combo label="PWM Frequency [Hz]" define="FOC_PWM_FREQ" default="20kHz">
+						<item label="10kHz" value="10000" lockon="CCU6_T12_FREQ=10000;CCU6_T12_PERIOD_SEL=2"/>
+						<item label="15kHz" value="15000" lockon="CCU6_T12_FREQ=15000;CCU6_T12_PERIOD_SEL=2"/>
+						<item label="20kHz" value="20000" lockon="CCU6_T12_FREQ=20000;CCU6_T12_PERIOD_SEL=2"/>
+						<item label="25kHz" value="25000" lockon="CCU6_T12_FREQ=25000;CCU6_T12_PERIOD_SEL=2"/>
+					</combo>
+					<math label="PWM Period [us]" define="FOC_PWM_PERIOD" formula="1e6/FOC_PWM_FREQ"/>
+				</branch>
+				<branch label="Motor Parameters">
+					<edit label="Phase Resistance [Ohm]" define="FOC_R_PHASE" default="0.02"/>
+					<edit label="Phase Inductance [H]" define="FOC_L_PHASE" default="15"/>
+					<edit label="Pole Pairs" define="FOC_POLE_PAIRS[7:0]" default="1"/>
+					<edit label="Max. Speed [rpm,mech.]" define="FOC_MAX_SPEED" default="1"/>
+				</branch>
+				<branch label="Speed/Current Controller Settings">
+					<branch label="Current Controller Parameters">
+						<edit label="Current Controller Amplification" define="FOC_CUR_ADJUST" range="0.01;1.0" default="0.01"/>
+						<edit label="Timer constant for Flux Estimator" define="FOC_FLUX_ADJUST" range="0.01;1.0" default="0.02"/>
+					</branch>
+					<branch label="Speed Controller Parameters">
+						<edit label="Kp" define="FOC_SPEED_KP" range="1;32767" default="1000"/>
+						<edit label="Ki" define="FOC_SPEED_KI" range="1;32767" default="15"/>
+						<edit label="Speed Filter Time [s]" define="FOC_SPEED_FILT_TIME" range="0.01;1.0" default="0.01"/>
+					</branch>
+				</branch>
+				<branch label="Start and Runtime Settings">
+					<branch label="Open-Loop">
+						<branch label="Acceleration ramp">
+							<edit label="Switch-on Speed [rpm,mech.]" define="FOC_SWITCH_ON_SPEED" default="1"/>
+							<edit label="End Start-up Speed [rpm,mech.]" define="FOC_END_START_SPEED" default="1"/>
+							<edit label="Start-up Acceleration [rpm/s,mech.]" define="FOC_START_ACCEL" default="1"/>
+						</branch>
+						<edit label="I/F initial Start Current [A]" define="FOC_START_CUR_IF" default="1"/>
+						<button label="Rotor alignment" define="FOC_START_FREQ_ZERO" default="1">
+							<edit label="Time [s]" define="FOC_ZERO_VEC_TIME" default="0.01"/>
+						</button>
+						<math label="" define="FOC_START_CUR" formula="FOC_START_CUR_IF"/>
+					</branch>
+					<branch label="Closed-Loop">
+						<branch label="FOC Current Setting - positive rotation direction">
+							<edit label="FOC current for lower speeds [A]" define="FOC_MIN_POS_REF_CUR" default="1"/>
+							<edit label="Switch-over Speed [rpm,mech.]" define="FOC_MAX_CUR_SPEED" default="1"/>
+							<edit label="FOC current for higher speeds [A]" define="FOC_MAX_POS_REF_CUR" default="1"/>
+						</branch>
+						<branch label="FOC Current Setting - negative rotation direction">
+							<edit label="FOC current for lower speeds [A]" define="FOC_MIN_NEG_REF_CUR" default="1"/>
+							<edit label="Switch-over Speed [rpm,mech.]" define="FOC_MIN_CUR_SPEED" default="1"/>
+							<edit label="FOC current for higher speeds [A]" define="FOC_MAX_NEG_REF_CUR" default="1"/>
+						</branch>
+					</branch>
+				</branch>
+			</button>
+		</header>
+	</module>
+	<include>./ICW_TLE987x.xml</include>
+</ifxmlcfg>

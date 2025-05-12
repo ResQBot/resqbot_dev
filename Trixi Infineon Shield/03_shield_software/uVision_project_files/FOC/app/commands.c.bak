@@ -1,0 +1,265 @@
+
+#include "commands.h"
+#include "tle_device.h"
+#include "..\..\..\auto_address.h" 
+#include "Emo_RAM.h"
+#include "globvars_FOC.h"
+
+
+
+void sendPosAnswer(uint16 message)
+{
+	SSC2->CON.PRG_bit.EN = 1;
+	SSC2_SendWord(message +CONFIRM_OFFSET);
+	SSC2->CON.PRG_bit.EN = 0;
+}
+
+void sendNegAnswer(uint16 message)
+{
+	SSC2->CON.PRG_bit.EN = 1;
+	SSC2_SendWord(message);
+	SSC2->CON.PRG_bit.EN = 0;
+}
+
+//--------------------0x01: changeMode--------------------
+void changeMode(uint8 requestedMode)
+{
+	WDT1_Service();
+	PMU->GPUDATA00.bit.DATA0 = requestedMode;
+	__NVIC_SystemReset();
+}
+
+
+//--------------------0x02: loadDataset--------------------
+void loadDataset(uint8 datasetnr)
+{
+	switch (datasetnr) 
+	{
+		case DATASET0:
+			Emo_Focpar_Cfg = dataset0; 
+			break;
+		case DATASET1:
+			Emo_Focpar_Cfg = dataset1;
+			break;
+		case DATASET2:
+			Emo_Focpar_Cfg = dataset2;
+			break;
+		case DATASET3:
+			Emo_Focpar_Cfg = dataset3;
+			break;
+		case CUSTOMDATASET0:
+			Emo_Focpar_Cfg = customdataset0;
+			break;
+		case CUSTOMDATASET1:
+			Emo_Focpar_Cfg = customdataset1;
+			break;
+		case CUSTOMDATASET2:
+			Emo_Focpar_Cfg = customdataset2;
+			break;
+		case CUSTOMDATASET3:
+			Emo_Focpar_Cfg = customdataset3;
+			break;
+		default:
+			break;
+	}
+	updateDatasetDependencies();	
+	Emo_Init();
+}
+
+
+//--------------------0x05: changeParameter--------------------
+void changeSingleParameter(uint8 index, uint16 data1, uint16 data2)
+{
+	rxtxbuffer.datastruct_FOC = Emo_Focpar_Cfg;
+	if (isvalueinarray(index, indices_16bit, indices_16bit_size) == 1) // 16bit variable
+	{	
+		rxtxbuffer.dataarray_FOC[index] = data1;
+	}
+	else // 32bit var 
+	{
+		rxtxbuffer.dataarray_FOC[index] = data2;
+		rxtxbuffer.dataarray_FOC[index+1] = data1;
+	}
+	Emo_Focpar_Cfg = rxtxbuffer.datastruct_FOC;
+	updateDatasetDependencies();
+	Emo_Init();
+}
+
+
+//--------------------0x06: saveCurrentDataset--------------------
+uint8 saveCurrentDataset(uint8 position)
+{
+		uint8 erase_error = 0, writeprotection_off = 0, checksumRAM = 0, checksumROM = 0;
+		uint32 flashpageStart = 0;
+		uint8 *ptrToROMData;
+		uint8 *ptrToRAMData = (uint8*)&rxtxbuffer;
+		rxtxbuffer.datastruct_FOC = Emo_Focpar_Cfg;
+		
+		switch (position)
+		{
+			case POSITION0:
+				flashpageStart = STARTOFCUSTOMDATASETS + OFFSET_DATASET0;
+				break;
+			case POSITION1:
+				flashpageStart = STARTOFCUSTOMDATASETS + OFFSET_DATASET1;
+				break;
+			case POSITION2:
+				flashpageStart = STARTOFCUSTOMDATASETS + OFFSET_DATASET2;
+				break;
+			case POSITION3:
+				flashpageStart = STARTOFCUSTOMDATASETS + OFFSET_DATASET3;
+				break;
+		}
+
+		// erase page
+		writeprotection_off = USER_CFLASH_WR_PROT_DIS((uint16) 0);
+		if(writeprotection_off == 0)
+		{
+			erase_error = USER_ERASEPG((uint32*)flashpageStart, 0);
+		
+			if (erase_error == 0u)
+			{
+				// write data
+				uint8 i;
+				checksumRAM = CRC8(ptrToRAMData, NROFBYTES);
+				ptrToROMData = (uint8*)flashpageStart;
+				
+				WDT1_SOW_Service((uint8)1);
+				USER_OPENAB((uint32*)flashpageStart);
+				WDT1_Service();
+				
+				for (i = 0; i < NROFBYTES; i++)
+				{
+					ptrToROMData[i] = ptrToRAMData[i];
+				}
+				
+				WDT1_SOW_Service((uint8)1);
+				USER_PROG(0);
+				WDT1_Service();
+				
+				checksumROM = CRC8(ptrToROMData, NROFBYTES);
+				if(checksumRAM == checksumROM)
+				{
+					return 1;
+				}
+				else
+				{
+					return 0;
+				}
+			}
+		}
+		return 0;
+}
+
+
+//--------------------0x09: board Control--------------------
+void do_autoaddressing()
+{
+	uint8 my_address = init_Auto_Addressing();
+	set_boardnr(my_address);		
+}
+
+
+void set_boardnr(uint8 boardnr)
+{
+	switch(boardnr)
+	{
+		case 1: 
+			// Board1 --> Pin 2.3, EXTINT0
+			PMU->GPUDATA01.bit.DATA1 = 0x01;
+			// Set bits for chip_Selected and chip_Deselected-Interrupt
+			SCU->MODPISEL.bit.EXINT0IS = 3;
+			// Enable Interrupt at pin 2.3 (User Manual page 143)
+			SCU->EXICON0.bit.EXINT0 = 3;
+			break;
+		case 2: 
+			// Board2 --> Pin 0.0, EXTINT2
+			PMU->GPUDATA01.bit.DATA1 = 0x02;
+			// Set bits for chip_Selected and chip_Deselected-Interrupt
+			SCU->MODPISEL.bit.EXINT2IS = 3;
+			// Enable Interrupt at pin 0.0 (User Manual page 143)
+			SCU->EXICON0.bit.EXINT2 = 3;
+			break;
+		case 3: 
+			// Board1 --> Pin 0.1, EXTINT0
+			PMU->GPUDATA01.bit.DATA1 = 0x03;
+			// Set bits for chip_Selected and chip_Deselected-Interrupt
+			SCU->MODPISEL.bit.EXINT0IS = 3;
+			// Enable Interrupt at pin 0.1 (User Manual page 143)
+			SCU->EXICON0.bit.EXINT0 = 2;
+			break;
+		case 4: 
+			// Board1 --> Pin 2.4, EXTINT1
+			PMU->GPUDATA01.bit.DATA1 = 0x04;
+			// Set bits for chip_Selected and chip_Deselected-Interrupt
+			SCU->MODPISEL.bit.EXINT1IS = 3;
+			// Enable Interrupt at pin 2.4 (User Manual page 143)
+			SCU->EXICON0.bit.EXINT0 = 3;
+			break;
+		default:								
+			break;
+	}
+}
+
+
+//--------------------other functions--------------------
+// updateDatasetDependencies
+void updateDatasetDependencies()
+{
+		/* FOC_PWM_FREQ  */
+		ccu6_t12_freq = Emo_Focpar_Cfg.PWM_Frequency;
+		ccu6_t12_period_sel = 2; /* constant */
+		pwm_period = 1e6/ccu6_t12_freq;
+		ccu6_tctr0_bit7 = (CCU6_TCTR0 & 0x0080) >> 7; /* constant */
+		ccu6_t12period = ccu6_t12_period_sel<1?CCU6_T12_TICK:ccu6_t12_period_sel<2?CCU6_T12_CLK*CCU6_T12_TIME/(1+1*ccu6_tctr0_bit7):((CCU6_T12_CLK*1e6)/ccu6_t12_freq)/(1+1*ccu6_tctr0_bit7);
+		ccu6_t12pr = ccu6_t12_period_sel<1?CCU6_T12_TICK-1:ccu6_t12_period_sel<2?CCU6_T12_CLK*CCU6_T12_TIME/(1+1*ccu6_tctr0_bit7)-1:((CCU6_T12_CLK*1e6)/ccu6_t12_freq)/(1+1*ccu6_tctr0_bit7)-1;
+		ccu6_cc60sr = CCU6_CH0_CMP_TICK+(CCU6_T12_CLK*CCU6_CH0_CMP_TIME)+(ccu6_t12pr*CCU6_CH0_CMP_DC/100);
+		ccu6_cc61sr = CCU6_CH1_CMP_TICK+(CCU6_T12_CLK*CCU6_CH1_CMP_TIME)+(ccu6_t12pr*CCU6_CH1_CMP_DC/100);
+		ccu6_cc62sr = CCU6_CH2_CMP_TICK+(CCU6_T12_CLK*CCU6_CH2_CMP_TIME)+(ccu6_t12pr*CCU6_CH2_CMP_DC/100);
+			
+		CCU6_Init();
+}
+
+
+//CRC-8 - based on the CRC8 formulas by Dallas/Maxim
+//code released under the therms of the GNU GPL 3.0 license
+//code from http://www.leonardomiliani.com/en/2013/un-semplice-crc8-per-arduino/
+uint8 CRC8(uint8 *data, uint8 len) 
+{
+	uint8_t crc = 0x55;
+  while (len--) 
+	{
+    uint8_t i;
+		uint8_t extract = *data++;
+    for (i = 8; i; i--) 
+		{
+      uint8_t sum = (crc ^ extract) & 0x01;
+      crc >>= 1;
+      if (sum) 
+			{
+        crc ^= 0x8C;
+      }
+      extract >>= 1;
+    }
+  }
+  return crc;
+}
+
+
+// isvalueinarray
+// checks if an value exists in an array; here: differ between 16- and 32-bit-values
+uint8 isvalueinarray(uint8 val, const uint8 *indices_16bit, const uint8 size)
+{
+    int i;
+    for (i=0; i < size; i++) 
+		{
+        if (indices_16bit[i] == val)
+				{
+					return 1;
+				} 
+    }
+    return 0;
+}
+
+
+

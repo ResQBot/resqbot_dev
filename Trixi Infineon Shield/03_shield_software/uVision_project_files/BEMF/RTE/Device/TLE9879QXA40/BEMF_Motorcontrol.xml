@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" ?><!--sha256=DC26B18354F613C411226CDA927FFB87AC1502512A96F5DA664C50000FB4159C-->
+<!--file ePower.xml                                                                -->
+<!--brief ePower Modules configuration                                             -->
+<!--                                                                                -->
+<!--You can use this file under the terms of the IFX License.                       -->
+<!--                                                                                -->
+<!--This file is distributed in the hope that it will be useful,                    -->
+<!--but WITHOUT ANY WARRANTY; without even the implied warranty of                  -->
+<!--MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the                   -->
+<!--IFX License for more details (IFX_License.txt).                                 -->
+<!--                                                                                -->
+<!--This file may be used, copied, and distributed, with or without                 -->
+<!--modification, provided that all copyright notices are retained;                 -->
+<!--that all modifications to this file are prominently noted in the                -->
+<!--modified file; and that this paragraph is not modified.                         -->
+<!--                                                                                -->
+<!--copyright Copyright (C) 2012 Infineon Technologies AG                           -->
+<!--                                                                                -->
+<!--********************************************************************************-->
+<!--**        Infineon ePower Family TLE986x/7x Module Configuration Files        **-->
+<!--********************************************************************************-->
+<!--                                                                                -->
+<!--********************************************************************************-->
+<!--**                      Author(s) Identity                                    **-->
+<!--********************************************************************************-->
+<!--** Initials     Name                                                          **-->
+<!--** DM           Daniel Mysliwitz                                              **-->
+<!--** TA           Thomas Albersinger                                            **-->
+<!--**                                                                            **-->
+<!--********************************************************************************-->
+<!--                                                                                -->
+<!--********************************************************************************-->
+<!--**                      Revision Control History                              **-->
+<!--********************************************************************************-->
+<!--*                                                                              *-->
+<!--* V1.0.0: 2014-05-04, DM:   Initial version                                    *-->
+<!--* V1.0.1: 2014-11-20, DM:   reorganize the FOC current settings                *-->
+<!--* V1.0.2: 2015-02-15, DM:   XML version reised to V0.3                         *-->
+<!--* V1.0.3: 2016-05-10, DM:   Duty Cycle description corrected                   *-->
+<!--*                           Comparator spike/bank filt added                   *-->
+<!--********************************************************************************-->
+<ifxmlcfg version="0.3">
+	<version label="V1.0.3"/>
+	<module label="Block Commutation (BEMF) Motor Parameter" desc="Motor Algorithm Parameter">
+		<header define="bemf_defines.h">
+			<button label="Block Commutation with BEMF" define="BEMF_EN" lockon="MF_BEMFC_CTRL_STS[2:0]=7;MF_BEMFC_CTRL_STS[10:8]=7;MF_BEMFC_CTRL_STS[12]=1">
+				<branch label="General Parameters">
+					<combo label="PWM Frequency [Hz]" define="BEMF_PWM_FREQ" default="20kHz">
+						<item label="10kHz" value="10000" lockon="CCU6_T12_FREQ=10000;CCU6_T12_PERIOD_SEL=2"/>
+						<item label="15kHz" value="15000" lockon="CCU6_T12_FREQ=15000;CCU6_T12_PERIOD_SEL=2"/>
+						<item label="20kHz" value="20000" lockon="CCU6_T12_FREQ=20000;CCU6_T12_PERIOD_SEL=2"/>
+						<item label="25kHz" value="25000" lockon="CCU6_T12_FREQ=25000;CCU6_T12_PERIOD_SEL=2"/>
+					</combo>
+					<math label="PWM Period [us]" define="BEMF_PWM_PERIOD" formula="1e6/BEMF_PWM_FREQ"/>
+					<branch label="BEMF Comparator Settings (further settings see BDRV)">
+						<combo label="Spike Filter Time" define="BEMF_SPIKE_FILT" default="1us">
+							<item label="1us" lockon="MF_TRIM_BEMFx[9:8]=1us"/>
+							<item label="2us" lockon="MF_TRIM_BEMFx[9:8]=2us"/>
+							<item label="4us" lockon="MF_TRIM_BEMFx[9:8]=4us"/>
+							<item label="8us" lockon="MF_TRIM_BEMFx[9:8]=8us"/>
+						</combo>
+						<combo label="Blank Filter Time" define="BEMF_BLANK_FILT" default="3us">
+							<item label="3us" value="4" lockon="MF_TRIM_BEMFx[2:0]=3us"/>
+							<item label="6us" value="0" lockon="MF_TRIM_BEMFx[2:0]=6us"/>
+							<item label="8us" value="1" lockon="MF_TRIM_BEMFx[2:0]=8us"/>
+							<item label="12us" value="2" lockon="MF_TRIM_BEMFx[2:0]=12us"/>
+							<item label="16us" value="3" lockon="MF_TRIM_BEMFx[2:0]=16us"/>
+						</combo>
+					</branch>
+				</branch>
+				<branch label="Motor Parameters">
+					<edit label="Pole Pairs" define="BEMF_POLE_PAIRS" range="1;32" default="1"/>
+				</branch>
+				<branch label="Speed Controller Settings">
+					<edit label="Kp" define="BEMF_SPEED_KP" range="0;32767" default="40"/>
+					<edit label="Ki" define="BEMF_SPEED_KI" range="0;32767" default="20"/>
+					<edit label="Speed Filter Time" define="BEMF_SPEED_FILT_TIME" range="0.01;1.0" default="0.01"/>
+				</branch>
+				<branch label="Acceleration ramp (Open-Loop)">
+					<button label="Synchonization to already rotating rotor" define="BEMF_SPEED_TEST_ENABLE" default="1">
+						<edit label="min. Duty Cycle [0..0.95]" define="BEMF_RUNBEGIN_SPEED_PWM_MIN" range="0.0;0.95" default="0.01"/>
+					</button>
+					<button label="Enable Start with Frequency Zero" define="BEMF_START_FREQ_ZERO" default="1"/>
+					<edit label="Rotor alignment [s]" define="BEMF_ZERO_VEC_TIME" default="0.1"/>
+					<edit label="Duty Cycle at beginning of start-up ramp (DC offset) [0..0.95]" define="BEMF_START_SPEED_PWM_MIN_OFFSET" range="0.0;0.95" default="0.01"/>
+					<edit label="Duty Cycle at end of start-up ramp [0..0.95]" define="BEMF_END_SPEED_PWM_MIN" range="0.0;0.95" default="0.01"/>
+					<edit label="Switch-on Speed [rpm,mech.]" define="BEMF_SWITCH_ON_SPEED" default="1"/>
+					<edit label="Speed at end of start-up ramp [rpm,mech.]" define="BEMF_END_START_SPEED" default="1"/>
+					<edit label="Start-up Acceleration [rpm/s,mech.]" define="BEMF_START_ACCEL" default="1"/>
+					<math define="BEMF_START_SPEED_PWM_MIN" formula="BEMF_END_SPEED_PWM_MIN-BEMF_START_SPEED_PWM_MIN_OFFSET"/>
+				</branch>
+				<branch label="Closed-Loop">
+					<edit label="min. Duty Cycle [0..0.95]" define="BEMF_RUN_SPEED_PWM_MIN" range="0.0;0.95" default="0.01"/>
+					<edit label="Acceleration [rpm/s,mech.]" define="BEMF_RUN_ACCEL" default="1"/>
+				</branch>
+			</button>
+		</header>
+	</module>
+	<include>./ICW_TLE987x.xml</include>
+</ifxmlcfg>

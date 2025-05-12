@@ -1,0 +1,36 @@
+/*
+ * Global variables needed for changing HALL parameters with arduino
+ * initialized with standard values from defines
+ */
+#ifndef _GLOBVARS_HALL_H
+#define _GLOBVARS_HALL_H
+
+#include "types.h"
+#include "EmoCcu.h"
+#include "commands.h"
+
+/* for changing BEMF_PWM_FREQ  */
+extern float ccu6_t12_freq;
+extern uint16 ccu6_t12_period_sel;
+extern float pwm_period;
+
+extern uint16 ccu6_tctr0_bit7;
+extern uint16 ccu6_t12period;
+extern uint16 ccu6_t12pr;
+
+extern float ccu6_cc60sr;
+extern float ccu6_cc61sr;
+extern float ccu6_cc62sr;
+
+extern const uint8 indices_16bit[];
+extern const uint8 indices_16bit_size;
+
+typedef union
+{
+	uint16 dataarray_HALL[NROFMESSAGES];
+	TEmo_Hallpar_Cfg datastruct_HALL;
+}data_HALL_union;
+extern data_HALL_union rxtxbuffer;
+
+#endif
+

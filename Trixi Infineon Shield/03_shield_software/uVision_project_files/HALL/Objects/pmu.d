@@ -1,0 +1,11 @@
+.\objects\pmu.o: RTE/Device/TLE9879QXA40/pmu.c
+.\objects\pmu.o: RTE/Device/TLE9879QXA40/pmu.h
+.\objects\pmu.o: RTE/Device/TLE9879QXA40/tle987x.h
+.\objects\pmu.o: C:\Users\dietl\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\core_cm3.h
+.\objects\pmu.o: C:\Users\dietl\AppData\Local\Keil_v5\ARM\ARMCLANGv5\Bin\..\include\stdint.h
+.\objects\pmu.o: C:\Users\dietl\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\cmsis_version.h
+.\objects\pmu.o: C:\Users\dietl\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\cmsis_compiler.h
+.\objects\pmu.o: C:\Users\dietl\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\cmsis_armcc.h
+.\objects\pmu.o: RTE/Device/TLE9879QXA40/system_TLE987x.h
+.\objects\pmu.o: RTE/Device/TLE9879QXA40/types.h
+.\objects\pmu.o: RTE/Device/TLE9879QXA40/sfr_access.h
