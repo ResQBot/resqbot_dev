@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef ROS2_CONTROL_DEMO_EXAMPLE_7__R6BOT_CONTROLLER_HPP_
-#define ROS2_CONTROL_DEMO_EXAMPLE_7__R6BOT_CONTROLLER_HPP_
+#ifndef LOTTI_ARM_CONTROLLER__ARM_CONTROLLER_HPP_
+#define LOTTI_ARM_CONTROLLER__ARM_CONTROLLER_HPP_
 
 #include <chrono>
 #include <memory>
@@ -37,12 +37,12 @@
 #include "trajectory_msgs/msg/joint_trajectory.hpp"
 #include "trajectory_msgs/msg/joint_trajectory_point.hpp"
 
-namespace ros2_control_demo_example_7
+namespace arm_controller
 {
-class RobotController : public controller_interface::ControllerInterface
+class ArmController : public controller_interface::ControllerInterface
 {
 public:
-  RobotController();
+  ArmController();
 
   controller_interface::InterfaceConfiguration command_interface_configuration() const override;
 
@@ -83,20 +83,28 @@ protected:
     joint_position_state_interface_;
   std::vector<std::reference_wrapper<hardware_interface::LoanedStateInterface>>
     joint_velocity_state_interface_;
+  std::vector<std::reference_wrapper<hardware_interface::LoanedStateInterface>>
+    joint_torque_state_interface_;
+  std::vector<std::reference_wrapper<hardware_interface::LoanedStateInterface>>
+    joint_volt_state_interface_;
 
   std::unordered_map<
     std::string, std::vector<std::reference_wrapper<hardware_interface::LoanedCommandInterface>> *>
     command_interface_map_ = {
       {"position", &joint_position_command_interface_},
-      {"velocity", &joint_velocity_command_interface_}};
+      {"velocity", &joint_velocity_command_interface_},
+    };
 
   std::unordered_map<
     std::string, std::vector<std::reference_wrapper<hardware_interface::LoanedStateInterface>> *>
     state_interface_map_ = {
       {"position", &joint_position_state_interface_},
-      {"velocity", &joint_velocity_state_interface_}};
+      {"velocity", &joint_velocity_state_interface_}
+      {"torque", &joint_torque_state_interface_}
+      {"volt", &joint_volt_state_interface_}
+    };
 };
 
-}  // namespace ros2_control_demo_example_7
+}  // namespace arm_controller
 
-#endif  // ROS2_CONTROL_DEMO_EXAMPLE_7__R6BOT_CONTROLLER_HPP_
+#endif  // LOTTI_ARM_CONTROLLER__ARM_CONTROLLER_HPP_

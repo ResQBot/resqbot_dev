@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include "ros2_control_demo_example_7/r6bot_controller.hpp"
+#include "lotti_arm_controller/arm_controller.hpp"
 
 #include <stddef.h>
 #include <algorithm>
@@ -27,11 +27,11 @@
 
 using config_type = controller_interface::interface_configuration_type;
 
-namespace ros2_control_demo_example_7
+namespace arm_controller
 {
-RobotController::RobotController() : controller_interface::ControllerInterface() {}
+ArmController::ArmController() : controller_interface::ControllerInterface() {}
 
-controller_interface::CallbackReturn RobotController::on_init()
+controller_interface::CallbackReturn ArmController::on_init()
 {
   // should have error handling
   joint_names_ = auto_declare<std::vector<std::string>>("joints", joint_names_);
@@ -46,7 +46,7 @@ controller_interface::CallbackReturn RobotController::on_init()
   return CallbackReturn::SUCCESS;
 }
 
-controller_interface::InterfaceConfiguration RobotController::command_interface_configuration()
+controller_interface::InterfaceConfiguration ArmController::command_interface_configuration()
   const
 {
   controller_interface::InterfaceConfiguration conf = {config_type::INDIVIDUAL, {}};
@@ -63,7 +63,7 @@ controller_interface::InterfaceConfiguration RobotController::command_interface_
   return conf;
 }
 
-controller_interface::InterfaceConfiguration RobotController::state_interface_configuration() const
+controller_interface::InterfaceConfiguration ArmController::state_interface_configuration() const
 {
   controller_interface::InterfaceConfiguration conf = {config_type::INDIVIDUAL, {}};
 
@@ -79,7 +79,7 @@ controller_interface::InterfaceConfiguration RobotController::state_interface_co
   return conf;
 }
 
-controller_interface::CallbackReturn RobotController::on_configure(const rclcpp_lifecycle::State &)
+controller_interface::CallbackReturn ArmController::on_configure(const rclcpp_lifecycle::State &)
 {
   auto callback =
     [this](const std::shared_ptr<trajectory_msgs::msg::JointTrajectory> traj_msg) -> void
@@ -95,13 +95,15 @@ controller_interface::CallbackReturn RobotController::on_configure(const rclcpp_
   return CallbackReturn::SUCCESS;
 }
 
-controller_interface::CallbackReturn RobotController::on_activate(const rclcpp_lifecycle::State &)
+controller_interface::CallbackReturn ArmController::on_activate(const rclcpp_lifecycle::State &)
 {
   // clear out vectors in case of restart
   joint_position_command_interface_.clear();
   joint_velocity_command_interface_.clear();
   joint_position_state_interface_.clear();
   joint_velocity_state_interface_.clear();
+  joint_torque_state_interface_.clear();
+  joint_volt_state_interface_.clear();  
 
   // assign command interfaces
   for (auto & interface : command_interfaces_)
@@ -148,7 +150,7 @@ void interpolate_trajectory_point(
   interpolate_point(traj_msg.points[ind], traj_msg.points[ind + 1], point_interp, delta);
 }
 
-controller_interface::return_type RobotController::update(
+controller_interface::return_type ArmController::update(
   const rclcpp::Time & time, const rclcpp::Duration & /*period*/)
 {
   if (new_msg_)
@@ -174,16 +176,16 @@ controller_interface::return_type RobotController::update(
   return controller_interface::return_type::OK;
 }
 
-controller_interface::CallbackReturn RobotController::on_deactivate(const rclcpp_lifecycle::State &)
+controller_interface::CallbackReturn ArmController::on_deactivate(const rclcpp_lifecycle::State &)
 {
   release_interfaces();
 
   return CallbackReturn::SUCCESS;
 }
 
-}  // namespace ros2_control_demo_example_7
+}  // namespace arm_controller
 
 #include "pluginlib/class_list_macros.hpp"
 
 PLUGINLIB_EXPORT_CLASS(
-  ros2_control_demo_example_7::RobotController, controller_interface::ControllerInterface)
+  arm_controller::ArmController, controller_interface::ControllerInterface)

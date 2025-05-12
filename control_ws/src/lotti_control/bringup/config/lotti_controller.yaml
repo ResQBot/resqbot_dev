@@ -6,7 +6,7 @@ controller_manager:
       type: joint_state_broadcaster/JointStateBroadcaster 
 
     arm_controller:
-      type: arm_teleop/ArmController
+      type: arm_controller/ArmController
 
 #    chain_controller:
 #      type: chain_controller/ChainController
