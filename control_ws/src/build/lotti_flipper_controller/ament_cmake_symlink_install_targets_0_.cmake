@@ -1,1 +1,0 @@
-ament_cmake_symlink_install_targets("TARGET_FILES" "/home/paul/resqbot_dev/control_ws/src/build/lotti_flipper_controller/liblotti_flipper_controller.so" "TARGETS" "lotti_flipper_controller" "DESTINATION" "lib/lotti_flipper_controller")

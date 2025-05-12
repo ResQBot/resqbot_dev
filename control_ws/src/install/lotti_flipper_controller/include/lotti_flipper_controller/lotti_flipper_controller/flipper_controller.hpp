@@ -1,1 +1,0 @@
-/home/paul/resqbot_dev/control_ws/src/lotti_flipper_controller/src/include/lotti_flipper_controller/flipper_controller.hpp

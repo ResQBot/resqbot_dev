@@ -30,12 +30,12 @@ endforeach()
 add_library(
   lotti_flipper_controller
   SHARED
-  src/flipper_controller.cpp
+  lotti_flipper_controller/flipper_controller.cpp
 )
 
 target_compile_features(lotti_flipper_controller PUBLIC cxx_std_17)
 target_include_directories(lotti_flipper_controller PUBLIC
-$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/src/include/>
+$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/lotti_flipper_controller/include/>
 $<INSTALL_INTERFACE:include/lotti_flipper_controller>
 )
 ament_target_dependencies(
@@ -48,7 +48,7 @@ pluginlib_export_plugin_description_file(controller_interface lotti_flipper_cont
 
 # INSTALL
 install(
-  DIRECTORY src/include/
+  DIRECTORY lotti_flipper_controller/include/
   DESTINATION include/lotti_flipper_controller
 )
 install(TARGETS lotti_flipper_controller
