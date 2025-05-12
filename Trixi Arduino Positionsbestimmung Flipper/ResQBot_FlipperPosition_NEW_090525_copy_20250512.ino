@@ -15,7 +15,7 @@ static const int16_t DELAY_MS = (1000 / REFRESH_RATE) - (STOP_DELAY * MOTOR_COUN
 
 static const int16_t DEFAULT_SPEED = 2900;  // motor‐speed scale
 
-static const unsigned long PRINT_INTERVAL  = 500;  // ms
+static const unsigned long PRINT_INTERVAL  = 50;  // ms
 static const unsigned long POLL_INTERVAL   = 1;   // ms
 static const unsigned long ERROR_THRESHOLD = 1000; // ms
 
@@ -253,9 +253,17 @@ void loop() {
         checkMotorError(i, now);
       }
     }
+  }
     // b) print every PRINT_INTERVAL
-    if (now - lastPrintTime[i] >= PRINT_INTERVAL) {
-      lastPrintTime[i] = now;
+    static unsigned long lastPrintTimeGlobal = 0;               // NEW
+
+  if (now - lastPrintTimeGlobal >= PRINT_INTERVAL) {
+    lastPrintTimeGlobal = now;
+
+    String line = "";
+
+
+    for (int i = 0; i < MOTOR_COUNT; ++i) {
       float elec = computeTotalElec(i, now);
       float mech = electricalToMechanical(elec);
       float out  = motorToOutputAngle(mech);
@@ -263,11 +271,12 @@ void loop() {
                        : i == 1 ? "FR"
                        : i == 2 ? "RL"
                                 : "RR");
-      Serial.print(pfx);
-      Serial.print(" Output: ");
-      Serial.print(normalizeAngle(out), 3);
-      Serial.println("°");
+
+        line += pfx;
+        line += String((int)round(normalizeAngle(out)));    
     }
+
+    Serial.println(line); // print the whole line once
   }
 
   // 6) enforce overall loop rate
