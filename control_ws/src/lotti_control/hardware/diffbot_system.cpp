@@ -33,20 +33,7 @@ namespace diffdrive_lotti{
 
       cfg_.left_wheel_name = info_.hardware_parameters["left_wheel_name"];
       cfg_.right_wheel_name = info_.hardware_parameters["right_wheel_name"];
-      cfg_.loop_rate = std::stof(info_.hardware_parameters["loop_rate"]);
-      cfg_.device = info_.hardware_parameters["device"];
-      cfg_.baud_rate = std::stoi(info_.hardware_parameters["baud_rate"]);
-      cfg_.timeout_ms = std::stoi(info_.hardware_parameters["timeout_ms"]);
       cfg_.enc_counts_per_rev = std::stoi(info_.hardware_parameters["enc_counts_per_rev"]);
-      if (info_.hardware_parameters.count("pid_p") > 0){
-        cfg_.pid_p = std::stoi(info_.hardware_parameters["pid_p"]);
-        cfg_.pid_d = std::stoi(info_.hardware_parameters["pid_d"]);
-        cfg_.pid_i = std::stoi(info_.hardware_parameters["pid_i"]);
-        cfg_.pid_o = std::stoi(info_.hardware_parameters["pid_o"]);
-      }
-      else{
-        RCLCPP_INFO(rclcpp::get_logger("DiffDriveLotti"), "PID values not supplied, using defaults.");
-      }
       
       wheel_l_.setup(cfg_.left_wheel_name, cfg_.enc_counts_per_rev);
       wheel_r_.setup(cfg_.right_wheel_name, cfg_.enc_counts_per_rev);
@@ -126,41 +113,41 @@ namespace diffdrive_lotti{
   }
 
   hardware_interface::CallbackReturn DiffDriveLotti::on_configure(
-    const rclcpp_lifecycle::State & /*previous_state*/){
+  const rclcpp_lifecycle::State & /*previous_state*/){
     RCLCPP_INFO(rclcpp::get_logger("DiffDriveLotti"), "Configuring ...please wait...");
-
+    
+    RCLCPP_INFO(rclcpp::get_logger("DiffDriveLotti"), "Successfully configured!");
     return hardware_interface::CallbackReturn::SUCCESS;
   }
 
   hardware_interface::CallbackReturn DiffDriveLotti::on_cleanup(
-    const rclcpp_lifecycle::State & /*previous_state*/){
+  const rclcpp_lifecycle::State & /*previous_state*/){
     RCLCPP_INFO(rclcpp::get_logger("DiffDriveLotti"), "Cleaning up ...please wait...");
 
     RCLCPP_INFO(rclcpp::get_logger("DiffDriveLotti"), "Successfully cleaned up!");
-
     return hardware_interface::CallbackReturn::SUCCESS;
   }
 
 
   hardware_interface::CallbackReturn DiffDriveLotti::on_activate(
-    const rclcpp_lifecycle::State & /*previous_state*/){
+  const rclcpp_lifecycle::State & /*previous_state*/){
     RCLCPP_INFO(rclcpp::get_logger("DiffDriveLotti"), "Activating ...please wait...");
 
     RCLCPP_INFO(rclcpp::get_logger("DiffDriveLotti"), "Successfully activated!");
-
     return hardware_interface::CallbackReturn::SUCCESS;
   }
 
   hardware_interface::CallbackReturn DiffDriveLotti::on_deactivate(
-    const rclcpp_lifecycle::State & /*previous_state*/){
+  const rclcpp_lifecycle::State & /*previous_state*/){
     RCLCPP_INFO(rclcpp::get_logger("DiffDriveLotti"), "Deactivating ...please wait...");
+    
     RCLCPP_INFO(rclcpp::get_logger("DiffDriveLotti"), "Successfully deactivated!");
-
     return hardware_interface::CallbackReturn::SUCCESS;
   }
 
   hardware_interface::return_type DiffDriveLotti::read(
-    const rclcpp::Time & /*time*/, const rclcpp::Duration & period){
+  const rclcpp::Time & /*time*/, const rclcpp::Duration & period){
+    
     double delta_seconds = period.seconds();
 
     double pos_prev = wheel_l_.pos;

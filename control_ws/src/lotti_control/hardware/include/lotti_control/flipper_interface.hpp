@@ -49,6 +49,7 @@ namespace flipper_interface{
       /// The size of this vector is (standard_interfaces_.size() x nr_joints)
       std::vector<double> joint_velocities_command_;
       std::vector<double> joint_positions_;
+      
       int fr_cmd_ = 0;
       int fl_cmd_ = 0;
       int rr_cmd_ = 0;
@@ -62,9 +63,8 @@ namespace flipper_interface{
       std::unordered_map<std::string, std::vector<std::string>> joint_interfaces = {
         {"position", {}}, {"velocity", {}}};
 
-    SerialComms flipper_comms_;
+      SerialComms flipper_comms_;
   };
-
 }  // namespace flipper_interface
 
 #endif  // FLIPPER_INTERFACE__FLIPPER_INTERFACE_HPP_

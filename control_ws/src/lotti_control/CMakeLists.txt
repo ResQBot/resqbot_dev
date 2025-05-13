@@ -68,6 +68,7 @@ ament_target_dependencies(
   ${HW_IF_INCLUDE_DEPENDS}
   ${CONTROLLER_INCLUDE_DEPENDS}
 )
+target_link_libraries(lotti_control PUBLIC serial)
 
 # Export hardware plugins
 pluginlib_export_plugin_description_file(hardware_interface lotti_control.xml)

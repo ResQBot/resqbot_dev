@@ -32,70 +32,59 @@
 #include "lotti_control/wheel.hpp"
 #include "lotti_control/visibility_control.h"
 
-namespace diffdrive_lotti
-{
-class DiffDriveLotti : public hardware_interface::SystemInterface
-{
+namespace diffdrive_lotti{
+  class DiffDriveLotti : public hardware_interface::SystemInterface{
 
-struct Config
-{
-  std::string left_wheel_name = "";
-  std::string right_wheel_name = "";
-  float loop_rate = 0.0;
-  std::string device = "";
-  int baud_rate = 0;
-  int timeout_ms = 0;
-  int enc_counts_per_rev = 0;
-  int pid_p = 0;
-  int pid_d = 0;
-  int pid_i = 0;
-  int pid_o = 0;
-};
+    struct Config{
+      std::string left_wheel_name = "";
+      std::string right_wheel_name = "";
+      int enc_counts_per_rev = 0;
+    };
 
 
-public:
-  RCLCPP_SHARED_PTR_DEFINITIONS(DiffDriveLotti);
+    public:
+      RCLCPP_SHARED_PTR_DEFINITIONS(DiffDriveLotti);
 
-  DIFFDRIVE_LOTTI_PUBLIC
-  hardware_interface::CallbackReturn on_init(
-    const hardware_interface::HardwareInfo & info) override;
+      DIFFDRIVE_LOTTI_PUBLIC
+      hardware_interface::CallbackReturn on_init(
+        const hardware_interface::HardwareInfo & info) override;
 
-  DIFFDRIVE_LOTTI_PUBLIC
-  std::vector<hardware_interface::StateInterface> export_state_interfaces() override;
+      DIFFDRIVE_LOTTI_PUBLIC
+      std::vector<hardware_interface::StateInterface> export_state_interfaces() override;
 
-  DIFFDRIVE_LOTTI_PUBLIC
-  std::vector<hardware_interface::CommandInterface> export_command_interfaces() override;
+      DIFFDRIVE_LOTTI_PUBLIC
+      std::vector<hardware_interface::CommandInterface> export_command_interfaces() override;
 
-  DIFFDRIVE_LOTTI_PUBLIC
-  hardware_interface::CallbackReturn on_configure(
-    const rclcpp_lifecycle::State & previous_state) override;
+      DIFFDRIVE_LOTTI_PUBLIC
+      hardware_interface::CallbackReturn on_configure(
+        const rclcpp_lifecycle::State & previous_state) override;
 
-  DIFFDRIVE_LOTTI_PUBLIC
-  hardware_interface::CallbackReturn on_cleanup(
-    const rclcpp_lifecycle::State & previous_state) override;
+      DIFFDRIVE_LOTTI_PUBLIC
+      hardware_interface::CallbackReturn on_cleanup(
+        const rclcpp_lifecycle::State & previous_state) override;
 
-  DIFFDRIVE_LOTTI_PUBLIC
-  hardware_interface::CallbackReturn on_activate(
-    const rclcpp_lifecycle::State & previous_state) override;
+      DIFFDRIVE_LOTTI_PUBLIC
+      hardware_interface::CallbackReturn on_activate(
+        const rclcpp_lifecycle::State & previous_state) override;
 
-  DIFFDRIVE_LOTTI_PUBLIC
-  hardware_interface::CallbackReturn on_deactivate(
-    const rclcpp_lifecycle::State & previous_state) override;
+      DIFFDRIVE_LOTTI_PUBLIC
+      hardware_interface::CallbackReturn on_deactivate(
+        const rclcpp_lifecycle::State & previous_state) override;
 
-  DIFFDRIVE_LOTTI_PUBLIC
-  hardware_interface::return_type read(
-    const rclcpp::Time & time, const rclcpp::Duration & period) override;
+      DIFFDRIVE_LOTTI_PUBLIC
+      hardware_interface::return_type read(
+        const rclcpp::Time & time, const rclcpp::Duration & period) override;
 
-  DIFFDRIVE_LOTTI_PUBLIC
-  hardware_interface::return_type write(
-    const rclcpp::Time & time, const rclcpp::Duration & period) override;
+      DIFFDRIVE_LOTTI_PUBLIC
+      hardware_interface::return_type write(
+        const rclcpp::Time & time, const rclcpp::Duration & period) override;
 
-private:
+    private:
 
-  Config cfg_;
-  Wheel wheel_l_;
-  Wheel wheel_r_;
-};
+      Config cfg_;
+      Wheel wheel_l_;
+      Wheel wheel_r_;
+  };
 
 }  // namespace diffdrive_arduino
 

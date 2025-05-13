@@ -1,3 +1,5 @@
+.vscode
+
 control_ws/build/
 control_ws/install/
 control_ws/log/

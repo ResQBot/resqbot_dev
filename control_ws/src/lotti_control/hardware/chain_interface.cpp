@@ -77,10 +77,22 @@ namespace chain_interface{
     return command_interfaces;
   }
 
+  hardware_interface::CallbackReturn ChainInterface::on_configure(const rclcpp_lifecycle::State &previous_state){
+    RCLCPP_INFO(rclcpp::get_logger("ChainInterface"), "Configuring ...please wait...");
+
+    RCLCPP_INFO(rclcpp::get_logger("ChainInterface"), "Successfully configured!");
+    return hardware_interface::CallbackReturn::SUCCESS;
+  }
+
+  hardware_interface::CallbackReturn ChainInterface::on_cleanup(const rclcpp_lifecycle::State &previous_state){
+    RCLCPP_INFO(rclcpp::get_logger("ChainInterface"), "Cleaning up ...please wait...");
+
+    RCLCPP_INFO(rclcpp::get_logger("ChainInterface"), "Successfully cleaned up!");
+    return hardware_interface::CallbackReturn::SUCCESS;
+  }
+
   hardware_interface::CallbackReturn ChainInterface::on_activate(const rclcpp_lifecycle::State &previous_state){
     RCLCPP_INFO(rclcpp::get_logger("ChainInterface"), "Activating ...please wait...");
-
-    //rs485_.conncet(cfg_.baud_rate);
 
     RCLCPP_INFO(rclcpp::get_logger("ChainInterface"), "Successfully activated!");
     return hardware_interface::CallbackReturn::SUCCESS;
@@ -89,14 +101,11 @@ namespace chain_interface{
   hardware_interface::CallbackReturn ChainInterface::on_deactivate(const rclcpp_lifecycle::State &previous_state){
     RCLCPP_INFO(rclcpp::get_logger("ChainInterface"), "Deactivating ...please wait...");
 
-    //rs485_.disconncet();
-
     RCLCPP_INFO(rclcpp::get_logger("ChainInterface"), "Successfully deactivated!");
     return hardware_interface::CallbackReturn::SUCCESS;
   }
 
   return_type ChainInterface::read(const rclcpp::Time & /*time*/, const rclcpp::Duration &period){
-    //rs485_.read_encs()
 
     for (auto i = 0ul; i < joint_velocities_command_.size(); i++){
       joint_velocities_[i] = joint_velocities_command_[i];

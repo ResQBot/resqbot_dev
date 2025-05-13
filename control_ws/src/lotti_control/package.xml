@@ -23,6 +23,8 @@
   <depend>realtime_tools</depend>
   <depend>std_msgs</depend>
   <depend>libserial-dev</depend>
+<!-- <depend>libserialport-dev</depend> -->
+
 
   <exec_depend>controller_manager</exec_depend>
   <exec_depend>joint_state_broadcaster</exec_depend>

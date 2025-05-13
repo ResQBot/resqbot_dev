@@ -147,8 +147,9 @@ def generate_launch_description():
     nodes = [
         control_node,
         robot_state_pub_node,
-        arm_controller_spawner,
-        delay_chain_controller_spawner,
+        #arm_controller_spawner,
+        chain_controller_spawner,
+        #delay_chain_controller_spawner,
         delay_flipper_controller_spawner,
         delay_rviz_after_joint_state_broadcaster_spawner,
         delay_joint_state_broadcaster_after_robot_controller_spawner,

@@ -5,10 +5,9 @@
 #include <cmath>
 
 
-class Wheel
-{
-    public:
-
+class Wheel{
+    
+  public:
     std::string name = "";
     int enc = 0;
     double cmd = 0;
@@ -18,19 +17,15 @@ class Wheel
 
     Wheel() = default;
 
-    Wheel(const std::string &wheel_name, int counts_per_rev)
-    {
+    Wheel(const std::string &wheel_name, int counts_per_rev){
       setup(wheel_name, counts_per_rev);
     }
 
-    
-    void setup(const std::string &wheel_name, int counts_per_rev)
-    {
+    void setup(const std::string &wheel_name, int counts_per_rev){
       name = wheel_name;
       rads_per_count = (2*M_PI)/counts_per_rev;
     }
 
 };
-
 
 #endif // DIFFDRIVE_LOTTI_WHEEL_HPP

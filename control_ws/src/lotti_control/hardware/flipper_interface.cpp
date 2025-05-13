@@ -1,4 +1,5 @@
 #include "lotti_control/flipper_interface.hpp"
+//#include "lotti_control/flipper_comms.hpp"
 //#include "lotti_control/RS485_comms.hpp"
 
 #include <string>
@@ -14,6 +15,7 @@
 #include "hardware_interface/lexical_casts.hpp"
 #include "hardware_interface/types/hardware_interface_type_values.hpp"
 #include "rclcpp/rclcpp.hpp"
+
 
 namespace flipper_interface{
   CallbackReturn FlipperInterface::on_init(const hardware_interface::HardwareInfo &info){
@@ -48,19 +50,17 @@ namespace flipper_interface{
 
     for (int ind = 0; ind < 4; ind++){
       command_interfaces.emplace_back(info_.joints[ind].name, "velocity", &joint_velocities_command_[ind]);
-      RCLCPP_INFO(rclcpp::get_logger("FlipperInterface"), "exporting flipper");
     }
-
     return command_interfaces;
   }
 
-    hardware_interface::CallbackReturn FlipperInterface::on_configure(const rclcpp_lifecycle::State &previous_state){
+  hardware_interface::CallbackReturn FlipperInterface::on_configure(const rclcpp_lifecycle::State &previous_state){
     RCLCPP_INFO(rclcpp::get_logger("FlipperInterface"), "Configuring ...please wait...");
 
     if (flipper_comms_.connected()){
       flipper_comms_.disconnect();
     }
-    flipper_comms_.connect("/dev/tty/ACM0");
+    flipper_comms_.connect();
 
     RCLCPP_INFO(rclcpp::get_logger("FlipperInterface"), "Successfully configured");
     return hardware_interface::CallbackReturn::SUCCESS;
@@ -97,7 +97,6 @@ namespace flipper_interface{
   }
 
   return_type FlipperInterface::read(const rclcpp::Time & /*time*/, const rclcpp::Duration & period){
-    
     if (!flipper_comms_.connected()){
       return hardware_interface::return_type::ERROR;
     }
@@ -105,11 +104,11 @@ namespace flipper_interface{
     std::string flipper_answer_ = flipper_comms_.read_msg();
     sscanf(flipper_answer_.c_str(), "FL%iFR%iRL%iRR%i", fl_state_, fr_state_, rl_state_, rr_state_);
     
-    joint_positions_[0] = fr_state_ / 360*2*3,14159;
-    joint_positions_[1] = fl_state_ / 360*2*3,14159;
-    joint_positions_[2] = rr_state_ / 360*2*3,14159;
-    joint_positions_[3] = rl_state_ / 360*2*3,14159;
-    
+    joint_positions_[0] = fr_state_ / 360*2*3.14159;
+    joint_positions_[1] = fl_state_ / 360*2*3.14159;
+    joint_positions_[2] = rr_state_ / 360*2*3.14159;
+    joint_positions_[3] = rl_state_ / 360*2*3.14159;
+     
     return return_type::OK;
   }
 
