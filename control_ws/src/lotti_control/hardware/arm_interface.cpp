@@ -115,7 +115,17 @@ namespace arm_interface
 
   return_type ArmInterface::read(const rclcpp::Time & /*time*/, const rclcpp::Duration & period)
   {
-    //rs485_.read_encs()
+    
+    for (auto i = 0ul; i < joint_velocities_command_.size(); i++)
+    {
+      joint_velocities_[i] = joint_velocities_command_[i];
+      joint_position_[i] += joint_velocities_command_[i] * period.seconds();
+    }
+
+    for (auto i = 0ul; i < joint_position_command_.size(); i++)
+    {
+      joint_position_[i] = joint_position_command_[i];
+    }
 
 
     return return_type::OK;
