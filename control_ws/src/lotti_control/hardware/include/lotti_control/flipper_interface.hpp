@@ -49,11 +49,6 @@ namespace flipper_interface{
       /// The size of this vector is (standard_interfaces_.size() x nr_joints)
       std::vector<double> joint_velocities_command_;
       std::vector<double> joint_positions_;
-      
-      int fr_cmd_ = 0;
-      int fl_cmd_ = 0;
-      int rr_cmd_ = 0;
-      int rl_cmd_ = 0;
 
       int fr_state_ = 0;
       int fl_state_ = 0;

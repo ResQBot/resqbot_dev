@@ -84,7 +84,7 @@
 
 
 
-    <ros2_control name="LottiFlipper" type="system">
+    <ros2_control name="LottiFlipper" type="system" rw_rate="20">
         <hardware>
             <plugin>flipper_interface/FlipperInterface</plugin>
         </hardware>

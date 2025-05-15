@@ -60,7 +60,7 @@ namespace flipper_interface{
     if (flipper_comms_.connected()){
       flipper_comms_.disconnect();
     }
-    flipper_comms_.connect();
+    flipper_comms_.connect(); 
 
     RCLCPP_INFO(rclcpp::get_logger("FlipperInterface"), "Successfully configured");
     return hardware_interface::CallbackReturn::SUCCESS;
@@ -96,23 +96,26 @@ namespace flipper_interface{
     return hardware_interface::CallbackReturn::SUCCESS;
   }
 
-  return_type FlipperInterface::read(const rclcpp::Time & /*time*/, const rclcpp::Duration & period){
+  return_type FlipperInterface::read(const rclcpp::Time & /*time*/, const rclcpp::Duration & period){    
     if (!flipper_comms_.connected()){
       return hardware_interface::return_type::ERROR;
     }
 
     std::string flipper_answer_ = flipper_comms_.read_msg();
-    sscanf(flipper_answer_.c_str(), "FL%iFR%iRL%iRR%i", fl_state_, fr_state_, rl_state_, rr_state_);
+    sscanf(flipper_answer_.c_str(), "FL%iFR%iRL%iRR%i", &fl_state_, &fr_state_, &rl_state_, &rr_state_);
+
     
-    joint_positions_[0] = fr_state_ / 360*2*3.14159;
-    joint_positions_[1] = fl_state_ / 360*2*3.14159;
-    joint_positions_[2] = rr_state_ / 360*2*3.14159;
-    joint_positions_[3] = rl_state_ / 360*2*3.14159;
+    joint_positions_[0] = ((fr_state_ / 360)*2*3.14159);
+    joint_positions_[1] = ((fl_state_ / 360)*2*3.14159);
+    joint_positions_[2] = ((rr_state_ / 360)*2*3.14159);
+    joint_positions_[3] = ((rl_state_ / 360)*2*3.14159);
+
      
     return return_type::OK;
   }
 
   return_type FlipperInterface::write(const rclcpp::Time & /*time*/, const rclcpp::Duration &){
+
 
     flipper_comms_.set_flipper_values(
       joint_velocities_command_[0],

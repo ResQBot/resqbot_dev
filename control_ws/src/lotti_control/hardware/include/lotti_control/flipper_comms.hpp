@@ -6,6 +6,8 @@
 #include <cstdlib>
 #include "libserial/SerialPort.h"
 #include <iostream>
+#include "sstream"
+
 
 class SerialComms{
 
@@ -44,21 +46,21 @@ class SerialComms{
         std::string read_msg(){
             
             std::string response = "";
+
             try{
                 serial_conn_.ReadLine(response, '\n', timeout_ms_);
             }
             catch (const LibSerial::ReadTimeout&){
                 std::cerr << "The ReadByte() call has timed out." << std::endl ;
             }
-            
             return response;
         }
 
 
         void set_flipper_values(int FR, int FL, int RR, int RL)
         {
-            std::stringstream ss;
-            ss << "FL" << FL << "FR" << FR <<  "LR" << RL << "RR" << RR << "\n";
+            std::ostringstream ss;
+            ss << "FL" << FL << "FR" << FR <<  "RL" << RL << "RR" << RR << "\n";
             send_msg(ss.str());
         }
 
