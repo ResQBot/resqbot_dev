@@ -72,9 +72,9 @@ diffbot_base_controller:
     left_wheel_names: ["left_chain_joint"]
     right_wheel_names: ["right_chain_joint"]
 
-    wheel_separation: 0.20
+    wheel_separation: ${0.305 - 0.113}
     #wheels_per_side: 1  # actually 2, but both are controlled by 1 signal
-    wheel_radius: 0.20
+    wheel_radius: 0.10
 
     wheel_separation_multiplier: 1.0
     left_wheel_radius_multiplier: 1.0
@@ -87,7 +87,7 @@ diffbot_base_controller:
     twist_covariance_diagonal: [0.001, 0.001, 0.001, 0.001, 0.001, 0.01]
 
     open_loop: true
-    enable_odom_tf: true
+    enable_odom_tf: false
 
     cmd_vel_timeout: 0.5
     #publish_limited_velocity: true
@@ -99,9 +99,9 @@ diffbot_base_controller:
     linear.x.has_velocity_limits: true
     linear.x.has_acceleration_limits: true
     linear.x.has_jerk_limits: false
-    linear.x.max_velocity: 1.0
-    linear.x.min_velocity: -1.0
-    linear.x.max_acceleration: 1.0
+    linear.x.max_velocity: 23.0
+    linear.x.min_velocity: -23.0
+    linear.x.max_acceleration: 5.0
     linear.x.max_jerk: 0.0
     linear.x.min_jerk: 0.0
 

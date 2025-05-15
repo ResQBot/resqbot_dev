@@ -16,13 +16,13 @@ set(HW_IF_INCLUDE_DEPENDS
   rclcpp
 )
 
-set(CONTROLLER_INCLUDE_DEPENDS
-  pluginlib
-  rcpputils
-  controller_interface
-  realtime_tools
-  sensor_msgs
-)
+#set(CONTROLLER_INCLUDE_DEPENDS
+#  pluginlib
+#  rcpputils
+#  controller_interface
+#  realtime_tools
+#  sensor_msgs
+#)
 
 # find dependencies
 find_package(backward_ros REQUIRED)
@@ -30,9 +30,9 @@ find_package(ament_cmake REQUIRED)
 foreach(Dependency IN ITEMS ${HW_IF_INCLUDE_DEPENDS})
   find_package(${Dependency} REQUIRED)
 endforeach()
-foreach(Dependency IN ITEMS ${CONTROLLER_INCLUDE_DEPENDS})
-  find_package(${Dependency} REQUIRED)
-endforeach()
+#foreach(Dependency IN ITEMS ${CONTROLLER_INCLUDE_DEPENDS})
+#  find_package(${Dependency} REQUIRED)
+#endforeach()
 
 ## COMPILE
 #add_executable(arm_teleop lotti_control/arm_teleop.cpp)
@@ -52,38 +52,38 @@ add_library(
   hardware/chain_interface.cpp
   hardware/flipper_interface.cpp
   hardware/diffbot_system.cpp
-  controller/arm_teleop.cpp
-  controller/chain_controller.cpp
+  #controller/arm_teleop.cpp
+  #controller/chain_controller.cpp
   #controller/flipper_controller.cpp
 )
 
 target_compile_features(lotti_control PUBLIC cxx_std_17)
 target_include_directories(lotti_control PUBLIC
 $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/hardware/include>
-$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/controller/include>
+#$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/controller/include>
 $<INSTALL_INTERFACE:include/lotti_control>
 )
 ament_target_dependencies(
   lotti_control PUBLIC
   ${HW_IF_INCLUDE_DEPENDS}
-  ${CONTROLLER_INCLUDE_DEPENDS}
+#  ${CONTROLLER_INCLUDE_DEPENDS}
 )
 target_link_libraries(lotti_control PUBLIC serial)
 
 # Export hardware plugins
 pluginlib_export_plugin_description_file(hardware_interface lotti_control.xml)
 # Export controller plugins
-pluginlib_export_plugin_description_file(controller_interface lotti_control.xml)
+#pluginlib_export_plugin_description_file(controller_interface lotti_control.xml)
 
 # INSTALL
 install(
   DIRECTORY hardware/include/
   DESTINATION include/lotti_control
 )
-install(
-  DIRECTORY controller/include/
-  DESTINATION include/lotti_control
-)
+#install(
+#  DIRECTORY controller/include/
+#  DESTINATION include/lotti_control
+#)
 install(
   DIRECTORY description/launch description/ros2_control description/urdf
   DESTINATION share/lotti_control
@@ -110,5 +110,6 @@ endif()
 
 ## EXPORTS
 ament_export_targets(export_lotti_control HAS_LIBRARY_TARGET)
-ament_export_dependencies(${HW_IF_INCLUDE_DEPENDS} ${REF_GEN_INCLUDE_DEPENDS} ${CONTROLLER_INCLUDE_DEPENDS})
+ament_export_dependencies(${HW_IF_INCLUDE_DEPENDS})
+#${REF_GEN_INCLUDE_DEPENDS} ${CONTROLLER_INCLUDE_DEPENDS})
 ament_package()
