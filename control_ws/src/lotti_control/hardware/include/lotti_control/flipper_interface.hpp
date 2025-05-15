@@ -50,10 +50,15 @@ namespace flipper_interface{
       std::vector<double> joint_velocities_command_;
       std::vector<double> joint_positions_;
 
-      int fr_state_ = 0;
-      int fl_state_ = 0;
-      int rr_state_ = 0;
-      int rl_state_ = 0;
+      int fr_cmd_ = 0;
+      int fl_cmd_ = 0;
+      int rr_cmd_ = 0;
+      int rl_cmd_ = 0;
+
+      float fr_state_ = 0;
+      float fl_state_ = 0;
+      float rr_state_ = 0;
+      float rl_state_ = 0;
 
       std::unordered_map<std::string, std::vector<std::string>> joint_interfaces = {
         {"position", {}}, {"velocity", {}}};
