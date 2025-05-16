@@ -8,13 +8,10 @@ controller_manager:
     arm_controller:
       type: arm_controller/ArmController
 
-#    chain_controller:
-#      type: chain_controller/ChainController
-
     flipper_controller:
       type: flipper_controller/FlipperController
 
-    diffbot_base_controller:
+    chain_controller:
       type: diff_drive_controller/DiffDriveController
 
 arm_controller:
@@ -36,24 +33,6 @@ arm_controller:
       - volt
 
 
-#chain_controller:
-#  ros__parameters:
-#    joints:
-#      - left_chain_joint
-#      - right_chain_joint
-#    command_interfaces:
-#      - velocity
-#      - torque
-##      - position
-##      - stiffness
-##      - damping
-#    state_interfaces:
-#      - velocity
-#      - position
-#      - torque
-#      - temp
-
-
 flipper_controller:
   ros__parameters:
     joints:
@@ -67,12 +46,12 @@ flipper_controller:
     - position
 
 
-diffbot_base_controller:
+chain_controller:
   ros__parameters:
     left_wheel_names: ["left_chain_joint"]
     right_wheel_names: ["right_chain_joint"]
 
-    wheel_separation: ${0.305 - 0.113}
+    wheel_separation: 0.192
     #wheels_per_side: 1  # actually 2, but both are controlled by 1 signal
     wheel_radius: 0.10
 

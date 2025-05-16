@@ -84,8 +84,8 @@ namespace arm_controller{
       std::unordered_map< std::string, std::vector<std::reference_wrapper<hardware_interface::LoanedStateInterface>> *>
         state_interface_map_ = {
           {"position", &joint_position_state_interface_},
-          {"velocity", &joint_velocity_state_interface_}
-          {"torque", &joint_torque_state_interface_}
+          {"velocity", &joint_velocity_state_interface_},
+          {"torque", &joint_torque_state_interface_},
           {"volt", &joint_volt_state_interface_}
         };
   };

@@ -104,7 +104,7 @@ def generate_launch_description():
     chain_controller_spawner = Node(
         package="controller_manager",
         executable="spawner",
-        arguments=["diffbot_base_controller", "--controller-manager", "/controller_manager"],
+        arguments=["chain_controller", "-c", "/controller_manager"],
     )
 
     flipper_controller_spawner = Node(

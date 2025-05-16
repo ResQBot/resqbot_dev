@@ -1,12 +1,10 @@
 import rclpy
 from rclpy.node import Node
-import math
 import time
 
 from sensor_msgs.msg import Joy
 from geometry_msgs.msg import Twist
 from std_msgs.msg import Int8
-from std_msgs.msg import String
 from threading import Lock
 
 # Global Defines --------------------------------------------------------------
@@ -47,21 +45,21 @@ class TeleOp(Node):
         #define variables
 
         #axes
-        self.__axes_left_stick_x = float(0)
-        self.__axes_left_stick_x_lock = Lock()
-        self.__axes_left_stick_y = float(0)
-        self.__axes_left_stick_y_lock = Lock()
+        self.__left_stick_x = float(0)
+        self.__left_stick_x_lock = Lock()
+        self.__left_stick_y = float(0)
+        self.__left_stick_y_lock = Lock()
         
-        self.__axes_left_trigger = float(0)
-        self.__axes_left_trigger_lock = Lock()
+        self.__left_trigger = float(0)
+        self.__left_trigger_lock = Lock()
 
-        self.__axes_right_stick_x = float(0)
-        self.__axes_right_stick_x_lock = Lock()
-        self.__axes_right_stick_y = float(0)
-        self.__axes_right_stick_y_lock = Lock()
+        self.__right_stick_x = float(0)
+        self.__right_stick_x_lock = Lock()
+        self.__right_stick_y = float(0)
+        self.__right_stick_y_lock = Lock()
         
-        self.__axes_right_trigger = float(0)
-        self.__axes_right_trigger_lock = Lock()
+        self.__right_trigger = float(0)
+        self.__right_trigger_lock = Lock()
 
         self.__d_pad_x = int(0)
         self.__d_pad_x_lock = Lock()
@@ -102,6 +100,12 @@ class TeleOp(Node):
         self.__button_opt_right_pressed = bool(False)
         self.__button_opt_right_last_pressed = 0.0
 
+        #switch to arm
+        self.__arm_enabled = bool(False)
+        self.__arm_enabled_old = bool(True)
+        self.__button_opt_left_pressed = bool(False)
+        self.__button_opt_left_last_pressed = 0.0
+
         #flipper controlls
         self.__flipper_direction = int
         self.__flipper_cmd_fr = Int8()
@@ -111,12 +115,16 @@ class TeleOp(Node):
 
         #chain controlls
         self.__chain_msg = Twist()
-        self.__speed = float(0)
-        self.__angle = float(0)
         self.__chain_msg.linear.y = float(0)
         self.__chain_msg.linear.z = float(0)
         self.__chain_msg.angular.y = float(0)
         self.__chain_msg.angular.x = float(0)
+
+        #arm controlls
+        self.__arm_msg = Twist()
+
+        #gripper controlls
+        self.__gripper_msg = Twist()
 
         #Init class ->create subscriber, create timer
         self.__readParams()
@@ -125,6 +133,8 @@ class TeleOp(Node):
         self.__createTimer()
 
         print("tele_op initiated")
+
+
 
     def __readParams(self):
         #declare parameters
@@ -136,6 +146,7 @@ class TeleOp(Node):
             rclpy.Parameter.Type.DOUBLE,
             20.0
         )
+
 
 
     def __checkCMDOutputEnable(self):
@@ -187,6 +198,43 @@ class TeleOp(Node):
             self.__joy_enabled_old = self.__joy_enabled
 
 
+
+    def __checkArmMode(self):
+
+        # ----- Enable button check -----
+        # If there was no joy msg received before and the arm mode is ENABLED, DISABLE it.
+        if (self.__first_joy_msg_received == False and self.__arm_enabled != False):
+            self.__arm_enabled = False
+        
+        elif (self.__first_joy_msg_received == True):
+            #if current mode equals old mode and button is newly pressed, start timer
+            if (self.__arm_enabled != self.__arm_enabled_old and self.__button_opt_left == 1 and self.__button_opt_left_pressed == False):
+                self.__button_opt_left_pressed = True
+                self.__button_opt_left_last_pressed = time.time()
+
+            #if timer has been started before
+            elif (self.__arm_enabled != self.__arm_enabled_old and self.__button_opt_left == 1 and self.__button_opt_left_pressed == True):
+                # messure how long the start button has been pressed
+                time_difference = time.time() - self.__button_opt_left_last_pressed
+                # If the start button has been pressed long enough, switch mode
+                if (time_difference > 1):
+                    self.__arm_enabled != self.__arm_enabled
+                    if (self.__arm_enabled):
+                        print("Control Mode: AMR")
+                    else:
+                        print("Control Mode: BODY")
+            
+            #if mode has been switched, wait until start button is released, then change old mode status to enable new switch cycle
+            elif (self.__arm_enabled == self.__arm_enabled_old and self.__button_opt_left_pressed == True and self.__button_opt_left == 0):
+                self.__button_opt_left_pressed = False
+                self.__arm_enabled_old != self.__arm_enabled_old 
+            
+            # if button is not pressed long enough, reset
+            elif (self.__arm_enabled != self.__arm_enabled_old and self.__button_opt_left_pressed == True and self.__button_opt_left == 0):
+                self.__button_opt_left_pressed = False
+
+
+
     def __calcAndSendFlippers(self):
 
         if (self.__button_rb == 1 and self.__button_lb == 0):
@@ -202,86 +250,61 @@ class TeleOp(Node):
         self.__flipper_cmd_rl.data = self.__button_a * self.__flipper_direction
 
         #send the commands
-        if (self.__joy_enabled == True):
-            self.__flipperPub_fr.publish(self.__flipper_cmd_fr)
-            self.__flipperPub_fl.publish(self.__flipper_cmd_fl)
-            self.__flipperPub_rr.publish(self.__flipper_cmd_rr)
-            self.__flipperPub_rl.publish(self.__flipper_cmd_rl)
+        if (self.__joy_enabled == True and self.__arm_enabled == False):
+            self.__flipper_publisher_fr.publish(self.__flipper_cmd_fr)
+            self.__flipper_publisher_fl.publish(self.__flipper_cmd_fl)
+            self.__flipper_publisher_rr.publish(self.__flipper_cmd_rr)
+            self.__flipper_publisher_rl.publish(self.__flipper_cmd_rl)
+
 
 
     def __calcAndSendChains(self):
 
-        """
-        y_value = self.__axes_left_stick_x
-        x_value = self.__axes_left_stick_y
-        
-        #calculating desired velocity
-        self.__speed =  math.sqrt((x_value * x_value) + (y_value * y_value))
-
-        #calculate the angle
-        if(x_value == 0):
-            self.__angle = PI/2
-        else:
-            self.__angle = math.atan(y_value/x_value)
-        
-        #convert the angle from rad to deg and make it positive only
-        self.__angle = math.degrees(self.__angle)
-        self.__angle_abs = float(abs(self.__angle))
-
-        #convert angle to left or right semi circle
-        if(x_value < 0):
-            self.__angle_abs = 180 - self.__angle_abs    
-        
-        if(y_value < 0):
-            self.__angle_abs = self.__angle_abs * (-1)
-        """
-
         #construct messages to be sent
-        self.__chain_msg.linear.x = self.__axes_left_stick_y
-        self.__chain_msg.angular.z = self.__axes_left_stick_x
+        self.__chain_msg.linear.x = self.__left_stick_y
+        self.__chain_msg.angular.z = self.__left_stick_x
 
         #send movement commands
-        if (self.__joy_enabled == True):
-            self.__chainPub.publish(self.__chain_msg)
+        if (self.__joy_enabled == True and self.__arm_enabled == False ):
+            self.__chain_publisher.publish(self.__chain_msg)
         
+
 
     def __calc_and_send_arm(self):
-        turn_value = self.__axes_right_stick_x
-        up_value = self.__d_pad_x
-        look_up_value = self.__axes_right_stick_y
 
-        messages = []
-
-        if up_value < -0.5:
-            messages.append("DOWN")
-        elif up_value > 0.5:
-            messages.append("UP")
-        else:
-            messages.append("STOP")
+        #calc arm tilt        
+        tilt = abs((self.__right_trigger -1)/2) + (self.__left_trigger -1)/2
         
-        if turn_value < -0.5:
-            messages.append("RIGHT")
-        elif turn_value > 0.5:
-            messages.append("LEFT")
-        else:
-            messages.append("STOP")
+        #construct arm message
+        self.__arm_msg.linear.x = self.__left_stick_y
+        self.__arm_msg.linear.y = self.__d_pad_x
+        self.__arm_msg.linear.z = self.__d_pad_y
+        self.__arm_msg.angular.z = self.__left_stick_x        
+        self.__arm_msg.angular.y = tilt
+        self.__arm_msg.angular.x = 0
 
-        if look_up_value < -0.5:
-            messages.append("LDOWN")
-        elif look_up_value > 0.5:
-            messages.append("LUP")
-        else:
-            messages.append("STOP")
+        #calc gripper movement
+        gripper_mode = self.__button_a - self.__button_b
+        gripper_spin = self.__button_rb - self.__button_lb
+
+        #construct gripper message
+        self.__gripper_msg.linear.x = gripper_mode
+        self.__gripper_msg.linear.y = 0
+        self.__gripper_msg.linear.z = 0
+        self.__gripper_msg.angular.x = gripper_spin
+        self.__gripper_msg.angular.y = self.__right_stick_y
+        self.__gripper_msg.angular.z = self.__right_stick_x
+
+        #send arm commands
+        if (self.__joy_enabled == True and self.__arm_enabled == True):
+            self.__arm_publisher.publish(self.__arm_msg)
+            self.__gripper_publisher.publish(self.__gripper_msg)
         
-        message = ",".join(messages)
-        if message:
-            msg = String()
-            msg.data = message
-            self.__arm_publisher.publish(msg)
-    
+
 
     def __timerCallback(self):
         self.__checkCMDOutputEnable()
+        self.__checkArmMode()
         self.__calcAndSendFlippers()
         self.__calcAndSendChains()
         self.__calc_and_send_arm()
@@ -292,29 +315,29 @@ class TeleOp(Node):
         #save controller input to local variables
 
         #axes
-        self.__axes_left_stick_x_lock.acquire()
-        self.__axes_left_stick_x = msg.axes[left_stick_x]
-        self.__axes_left_stick_x_lock.release()
+        self.__left_stick_x_lock.acquire()
+        self.__left_stick_x = msg.axes[left_stick_x]
+        self.__left_stick_x_lock.release()
 
-        self.__axes_left_stick_y_lock.acquire()
-        self.__axes_left_stick_y = msg.axes[left_stick_y]
-        self.__axes_left_stick_y_lock.release()
+        self.__left_stick_y_lock.acquire()
+        self.__left_stick_y = msg.axes[left_stick_y]
+        self.__left_stick_y_lock.release()
 
-        self.__axes_left_trigger_lock.acquire()
-        self.__axes_left_trigger = msg.axes[left_trigger]
-        self.__axes_left_trigger_lock.release()
+        self.__left_trigger_lock.acquire()
+        self.__left_trigger = msg.axes[left_trigger]
+        self.__left_trigger_lock.release()
 
-        self.__axes_right_stick_x_lock.acquire()
-        self.__axes_right_stick_x = msg.axes[right_stick_x]
-        self.__axes_right_stick_x_lock.release()
+        self.__right_stick_x_lock.acquire()
+        self.__right_stick_x = msg.axes[right_stick_x]
+        self.__right_stick_x_lock.release()
         
-        self.__axes_right_stick_y_lock.acquire()
-        self.__axes_right_stick_y = msg.axes[right_stick_y]
-        self.__axes_right_stick_y_lock.release()
+        self.__right_stick_y_lock.acquire()
+        self.__right_stick_y = msg.axes[right_stick_y]
+        self.__right_stick_y_lock.release()
 
-        self.__axes_right_trigger_lock.acquire()
-        self.__axes_right_trigger = msg.axes[right_trigger]
-        self.__axes_right_trigger_lock.release()
+        self.__right_trigger_lock.acquire()
+        self.__right_trigger = msg.axes[right_trigger]
+        self.__right_trigger_lock.release()
 
         self.__d_pad_y_lock.acquire()
         self.__d_pad_y = msg.axes[d_pad_y]
@@ -380,41 +403,47 @@ class TeleOp(Node):
     def __createPublishers(self):
         # Create publishers
 
-        self.__chainPub = self.create_publisher(
+        self.__chain_publisher = self.create_publisher(
             Twist,
             'diffbot_base_controller/cmd_vel_unstamped',
             1
         )
 
-        self.__flipperPub_fr = self.create_publisher(
+        self.__flipper_publisher_fr = self.create_publisher(
             Int8,
             'cmd/flipper_fr',
             1
         )
 
-        self.__flipperPub_fl = self.create_publisher(
+        self.__flipper_publisher_fl = self.create_publisher(
             Int8,
             'cmd/flipper_fl',
             1
         )
 
-        self.__flipperPub_rr = self.create_publisher(
+        self.__flipper_publisher_rr = self.create_publisher(
             Int8,
             'cmd/flipper_rr',
             1
         )   
 
-        self.__flipperPub_rl = self.create_publisher(
+        self.__flipper_publisher_rl = self.create_publisher(
             Int8,
             'cmd/flipper_rl',
             1
         )
 
         self.__arm_publisher = self.create_publisher(
-            String,
-            "movement/arm",
+            Twist,
+            "cmd/arm/twist_arm",
             1
-        )   
+        )
+
+        self.__gripper_publisher = self.create_publisher(
+            Twist,
+            "cmd/arm/twist_gripper",
+            1
+        )
 
     def __createTimer(self):
         # Create timer

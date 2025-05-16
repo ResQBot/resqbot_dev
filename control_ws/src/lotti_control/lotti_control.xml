@@ -1,5 +1,4 @@
 <library path="lotti_control">
-
   <!-- hardware interfaces-->
   <class name="arm_interface/ArmInterface"
          type="arm_interface::ArmInterface"

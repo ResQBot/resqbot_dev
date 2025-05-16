@@ -134,17 +134,15 @@ namespace arm_controller{
   }
 
   controller_interface::return_type ArmController::update(
-    const rclcpp::Time & time, const rclcpp::Duration & /*period*/)
-  {
-    if (new_msg_)
-    {
+    const rclcpp::Time & time, const rclcpp::Duration & /*period*/){
+    
+    if (new_msg_){
       trajectory_msg_ = *traj_msg_external_point_ptr_.readFromRT();
       start_time_ = time;
       new_msg_ = false;
     }
 
-    if (trajectory_msg_ != nullptr)
-    {
+    if (trajectory_msg_ != nullptr){
       interpolate_trajectory_point(*trajectory_msg_, time - start_time_, point_interp_);
       for (size_t i = 0; i < joint_position_command_interface_.size(); i++)
       {
@@ -159,8 +157,7 @@ namespace arm_controller{
     return controller_interface::return_type::OK;
   }
 
-  controller_interface::CallbackReturn ArmController::on_deactivate(const rclcpp_lifecycle::State &)
-  {
+  controller_interface::CallbackReturn ArmController::on_deactivate(const rclcpp_lifecycle::State &){
     release_interfaces();
 
     return CallbackReturn::SUCCESS;

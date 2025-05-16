@@ -49,12 +49,8 @@ add_library(
   lotti_control
   SHARED
   hardware/arm_interface.cpp
-  hardware/chain_interface.cpp
   hardware/flipper_interface.cpp
   hardware/diffbot_system.cpp
-  #controller/arm_teleop.cpp
-  #controller/chain_controller.cpp
-  #controller/flipper_controller.cpp
 )
 
 target_compile_features(lotti_control PUBLIC cxx_std_17)
