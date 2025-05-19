@@ -125,7 +125,7 @@ def generate_launch_description():
     # TODO(anyone): This is a workaround for flaky tests. Remove when fixed.
     delay_joint_state_broadcaster_after_robot_controller_spawner = RegisterEventHandler(
         event_handler=OnProcessExit(
-            target_action=flipper_controller_spawner,
+            target_action=arm_controller_spawner,
             on_exit=[joint_state_broadcaster_spawner],
         )
     )
@@ -148,8 +148,8 @@ def generate_launch_description():
         control_node,
         robot_state_pub_node,
         arm_controller_spawner,
-        delay_chain_controller_spawner,
-        delay_flipper_controller_spawner,
+        #delay_chain_controller_spawner,
+        #delay_flipper_controller_spawner,
         delay_rviz_after_joint_state_broadcaster_spawner,
         delay_joint_state_broadcaster_after_robot_controller_spawner,
     ]

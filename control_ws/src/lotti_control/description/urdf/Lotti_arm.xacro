@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro" >
-
+    
 <!-- Rotating Base -->
     <!-- Body params for reference -->
     <xacro:property name="body_length" value="0.7"/>

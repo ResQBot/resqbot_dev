@@ -28,7 +28,7 @@ namespace arm_interface
     joint_velocities_.assign(6, 0);
     joint_torques_.assign(6, 0);
     joint_volts_.assign(6, 0);
-    joint_positions_command_.assign(6, 0);
+    //joint_positions_command_.assign(6, 0);
     joint_velocities_command_.assign(6, 0);
 
     for (const auto & joint : info_.joints)
@@ -42,59 +42,67 @@ namespace arm_interface
     return CallbackReturn::SUCCESS;
   }
 
-  std::vector<hardware_interface::StateInterface> ArmInterface::export_state_interfaces()
-  {
+  std::vector<hardware_interface::StateInterface> ArmInterface::export_state_interfaces(){
     std::vector<hardware_interface::StateInterface> state_interfaces;
 
     int ind = 0;
-    for (const auto &joint_name : joint_interfaces["position"])
-    {
+    for (const auto &joint_name : joint_interfaces["position"]){
       state_interfaces.emplace_back(joint_name, "position", &joint_positions_[ind++]);
     }
 
     ind = 0;
-    for (const auto &joint_name : joint_interfaces["velocity"])
-    {
+    for (const auto &joint_name : joint_interfaces["velocity"]){
       state_interfaces.emplace_back(joint_name, "velocity", &joint_velocities_[ind++]);
     }
 
     ind = 0;
-    for (const auto &joint_name : joint_interfaces["torque"])
-    {
+    for (const auto &joint_name : joint_interfaces["torque"]){
       state_interfaces.emplace_back(joint_name, "torque", &joint_torques_[ind++]);
     }
 
     ind = 0;
-    for (const auto &joint_name : joint_interfaces["volt"])
-    {
+    for (const auto &joint_name : joint_interfaces["volt"]){
       state_interfaces.emplace_back(joint_name, "volt", &joint_volts_[ind++]);
     }
-
 
     return state_interfaces;
   }
 
-  std::vector<hardware_interface::CommandInterface> ArmInterface::export_command_interfaces()
-  {
+  std::vector<hardware_interface::CommandInterface> ArmInterface::export_command_interfaces(){
     std::vector<hardware_interface::CommandInterface> command_interfaces;
 
-    int ind = 0;
-    for (const auto &joint_name : joint_interfaces["position"])
-    {
+/*     int ind = 0;
+    for (const auto &joint_name : joint_interfaces["position"]){
       command_interfaces.emplace_back(joint_name, "position", &joint_positions_command_[ind++]);
-    }
+    } */
 
-    ind = 0;
-    for (const auto &joint_name : joint_interfaces["velocity"])
-    {
+    int ind = 0;
+    for (const auto &joint_name : joint_interfaces["velocity"]){
       command_interfaces.emplace_back(joint_name, "velocity", &joint_velocities_command_[ind++]);
     }
 
     return command_interfaces;
   }
 
-  hardware_interface::CallbackReturn ArmInterface::on_activate(const rclcpp_lifecycle::State & previous_state)
-  {
+  hardware_interface::CallbackReturn ArmInterface::on_configure(const rclcpp_lifecycle::State & previous_state){
+    RCLCPP_INFO(rclcpp::get_logger("ArmInterface"), "Configuring ...please wait...");
+
+    //rs485_.conncet(cfg_.baud_rate);
+
+    RCLCPP_INFO(rclcpp::get_logger("ArmInterface"), "Successfully configured!");
+    return hardware_interface::CallbackReturn::SUCCESS;
+  }
+
+   hardware_interface::CallbackReturn ArmInterface::on_cleanup(const rclcpp_lifecycle::State & previous_state){
+    RCLCPP_INFO(rclcpp::get_logger("ArmInterface"), "Cleaning up ...please wait...");
+
+    //rs485_.conncet(cfg_.baud_rate);
+
+    RCLCPP_INFO(rclcpp::get_logger("ArmInterface"), "Successfully cleaned up!");
+    return hardware_interface::CallbackReturn::SUCCESS;
+  }
+
+  hardware_interface::CallbackReturn ArmInterface::on_activate(const rclcpp_lifecycle::State & previous_state){
     RCLCPP_INFO(rclcpp::get_logger("ArmInterface"), "Activating ...please wait...");
 
     //rs485_.conncet(cfg_.baud_rate);
@@ -103,8 +111,7 @@ namespace arm_interface
     return hardware_interface::CallbackReturn::SUCCESS;
   }
 
-  hardware_interface::CallbackReturn ArmInterface::on_deactivate(const rclcpp_lifecycle::State & previous_state)
-  {
+  hardware_interface::CallbackReturn ArmInterface::on_deactivate(const rclcpp_lifecycle::State & previous_state){
     RCLCPP_INFO(rclcpp::get_logger("ArmInterface"), "Deactivating ...please wait...");
 
     //rs485_.disconncet();
@@ -113,26 +120,15 @@ namespace arm_interface
     return hardware_interface::CallbackReturn::SUCCESS;
   }
 
-  return_type ArmInterface::read(const rclcpp::Time & /*time*/, const rclcpp::Duration & period)
-  {
-    
-    for (auto i = 0ul; i < joint_velocities_command_.size(); i++)
-    {
+  return_type ArmInterface::read(const rclcpp::Time & /*time*/, const rclcpp::Duration & period){
+      for (auto i = 0ul; i < joint_velocities_command_.size(); i++){
       joint_velocities_[i] = joint_velocities_command_[i];
       joint_positions_[i] += joint_velocities_command_[i] * period.seconds();
     }
-
-    for (auto i = 0ul; i < joint_positions_command_.size(); i++)
-    {
-      joint_positions_[i] = joint_positions_command_[i];
-    }
-
-
     return return_type::OK;
   }
 
-  return_type ArmInterface::write(const rclcpp::Time &, const rclcpp::Duration &)
-  {
+  return_type ArmInterface::write(const rclcpp::Time &, const rclcpp::Duration &){
 
 
     return return_type::OK;

@@ -4,8 +4,11 @@ import time
 
 from sensor_msgs.msg import Joy
 from geometry_msgs.msg import Twist
+from geometry_msgs.msg import TwistStamped
+from control_msgs.msg import JointJog
 from std_msgs.msg import Int8
 from threading import Lock
+
 
 # Global Defines --------------------------------------------------------------
 # mapping controller buttons and sticks to joy topc axes and buttons
@@ -61,10 +64,10 @@ class TeleOp(Node):
         self.__right_trigger = float(0)
         self.__right_trigger_lock = Lock()
 
-        self.__d_pad_x = int(0)
+        self.__d_pad_x = float(0)
         self.__d_pad_x_lock = Lock()
         
-        self.__d_pad_y = int(0)
+        self.__d_pad_y = float(0)
         self.__d_pad_y_lock = Lock()
 
         #buttons
@@ -121,10 +124,13 @@ class TeleOp(Node):
         self.__chain_msg.angular.x = float(0)
 
         #arm controlls
-        self.__arm_msg = Twist()
+        self.__arm_msg = TwistStamped()
+        self.__arm_msg.header.frame_id = ""
 
         #gripper controlls
-        self.__gripper_msg = Twist()
+        self.__gripper_msg = JointJog()
+        self.__gripper_msg.joint_names = ["arm_link4_joint", "arm_link5_joint", "arm_link6_joint"]
+        self.__gripper_scale = 0.5
 
         #Init class ->create subscriber, create timer
         self.__readParams()
@@ -132,7 +138,7 @@ class TeleOp(Node):
         self.__createPublishers()
         self.__createTimer()
 
-        print("tele_op initiated")
+        print("Tele_OP initiated")
 
 
 
@@ -218,16 +224,16 @@ class TeleOp(Node):
                 time_difference = time.time() - self.__button_opt_left_last_pressed
                 # If the start button has been pressed long enough, switch mode
                 if (time_difference > 1):
-                    self.__arm_enabled != self.__arm_enabled
-                    if (self.__arm_enabled):
-                        print("Control Mode: AMR")
+                    self.__arm_enabled = not self.__arm_enabled
+                    if (self.__arm_enabled == True):
+                        print("Control Mode: ARM")
                     else:
                         print("Control Mode: BODY")
             
             #if mode has been switched, wait until start button is released, then change old mode status to enable new switch cycle
             elif (self.__arm_enabled == self.__arm_enabled_old and self.__button_opt_left_pressed == True and self.__button_opt_left == 0):
                 self.__button_opt_left_pressed = False
-                self.__arm_enabled_old != self.__arm_enabled_old 
+                self.__arm_enabled_old = not self.__arm_enabled_old 
             
             # if button is not pressed long enough, reset
             elif (self.__arm_enabled != self.__arm_enabled_old and self.__button_opt_left_pressed == True and self.__button_opt_left == 0):
@@ -244,13 +250,20 @@ class TeleOp(Node):
         else:
             self.__flipper_direction = 0
             
-        self.__flipper_cmd_fr.data = self.__button_y * self.__flipper_direction
-        self.__flipper_cmd_fl.data = self.__button_x * self.__flipper_direction
-        self.__flipper_cmd_rr.data = self.__button_b * self.__flipper_direction         
-        self.__flipper_cmd_rl.data = self.__button_a * self.__flipper_direction
+        if(self.__arm_enabled == False):
+            self.__flipper_cmd_fr.data = self.__button_y * self.__flipper_direction
+            self.__flipper_cmd_fl.data = self.__button_x * self.__flipper_direction
+            self.__flipper_cmd_rr.data = self.__button_b * self.__flipper_direction         
+            self.__flipper_cmd_rl.data = self.__button_a * self.__flipper_direction
+        else:
+            self.__flipper_cmd_fr.data = 0
+            self.__flipper_cmd_fl.data = 0
+            self.__flipper_cmd_rr.data = 0         
+            self.__flipper_cmd_rl.data = 0
 
+            
         #send the commands
-        if (self.__joy_enabled == True and self.__arm_enabled == False):
+        if (self.__joy_enabled == True):
             self.__flipper_publisher_fr.publish(self.__flipper_cmd_fr)
             self.__flipper_publisher_fl.publish(self.__flipper_cmd_fl)
             self.__flipper_publisher_rr.publish(self.__flipper_cmd_rr)
@@ -260,12 +273,16 @@ class TeleOp(Node):
 
     def __calcAndSendChains(self):
 
-        #construct messages to be sent
-        self.__chain_msg.linear.x = self.__left_stick_y
-        self.__chain_msg.angular.z = self.__left_stick_x
+        #check for arm mode and construct messages to be sent
+        if(self.__arm_enabled == False):
+            self.__chain_msg.linear.x = self.__left_stick_y
+            self.__chain_msg.angular.z = self.__left_stick_x
+        else:       
+            self.__chain_msg.linear.x = 0.0
+            self.__chain_msg.angular.z = 0.0
 
         #send movement commands
-        if (self.__joy_enabled == True and self.__arm_enabled == False ):
+        if (self.__joy_enabled == True):
             self.__chain_publisher.publish(self.__chain_msg)
         
 
@@ -275,28 +292,40 @@ class TeleOp(Node):
         #calc arm tilt        
         tilt = abs((self.__right_trigger -1)/2) + (self.__left_trigger -1)/2
         
-        #construct arm message
-        self.__arm_msg.linear.x = self.__left_stick_y
-        self.__arm_msg.linear.y = self.__d_pad_x
-        self.__arm_msg.linear.z = self.__d_pad_y
-        self.__arm_msg.angular.z = self.__left_stick_x        
-        self.__arm_msg.angular.y = tilt
-        self.__arm_msg.angular.x = 0
-
         #calc gripper movement
-        gripper_mode = self.__button_a - self.__button_b
-        gripper_spin = self.__button_rb - self.__button_lb
+        #gripper_mode = float(self.__button_a - self.__button_b)
+        gripper_spin = float(self.__button_rb - self.__button_lb) * self.__gripper_scale
+        
+        #check for arm mode 
+        if(self.__arm_enabled == True):
+            #construct arm message
+            self.__arm_msg.twist.linear.x = self.__left_stick_y
+            self.__arm_msg.twist.linear.y = self.__d_pad_x
+            self.__arm_msg.twist.linear.z = self.__d_pad_y
+            self.__arm_msg.twist.angular.z = self.__left_stick_x        
+            self.__arm_msg.twist.angular.y = tilt
+            self.__arm_msg.twist.angular.x = 0.0
 
-        #construct gripper message
-        self.__gripper_msg.linear.x = gripper_mode
-        self.__gripper_msg.linear.y = 0
-        self.__gripper_msg.linear.z = 0
-        self.__gripper_msg.angular.x = gripper_spin
-        self.__gripper_msg.angular.y = self.__right_stick_y
-        self.__gripper_msg.angular.z = self.__right_stick_x
+            #construct gripper message
+            #self.__gripper_msg.linear.x = gripper_mode
+            self.__gripper_msg.velocities = [self.__right_stick_y, self.__right_stick_x, gripper_spin]
+
+        else:
+            self.__arm_msg.twist.linear.x = 0.0
+            self.__arm_msg.twist.linear.y = 0.0
+            self.__arm_msg.twist.linear.z = 0.0
+            self.__arm_msg.twist.angular.z = 0.0        
+            self.__arm_msg.twist.angular.y = 0.0
+            self.__arm_msg.twist.angular.x = 0.0
+
+            self.__gripper_msg.velocities = [0.0, 0.0, 0.0]
+
+        #add time stamps and seq number
+        self.__gripper_msg.header.stamp = self.get_clock().now().to_msg()
+        self.__arm_msg.header.stamp = self.get_clock().now().to_msg()
 
         #send arm commands
-        if (self.__joy_enabled == True and self.__arm_enabled == True):
+        if (self.__joy_enabled == True):
             self.__arm_publisher.publish(self.__arm_msg)
             self.__gripper_publisher.publish(self.__gripper_msg)
         
@@ -434,14 +463,14 @@ class TeleOp(Node):
         )
 
         self.__arm_publisher = self.create_publisher(
-            Twist,
-            "cmd/arm/twist_arm",
+            TwistStamped,
+            "cdm/arm/joy_twiststamped",
             1
         )
 
         self.__gripper_publisher = self.create_publisher(
-            Twist,
-            "cmd/arm/twist_gripper",
+            JointJog,
+            "cmd/arm/joy_joint",
             1
         )
 

@@ -17,10 +17,11 @@
             <material name="black"/>
         </visual>
         <collision>
-            <!-- <origin rpy="0 0 0" xyz="0 0 ${(body_height/2)}"/>
+            <origin rpy="0 0 0" xyz="0 0 ${(body_height/2)}"/>
             <geometry>
-                <box size="${body_length} ${body_width} ${body_height}"/>
-            </geometry> -->
+                <box size="0.1 0.1 0.1"/>
+                <!-- <box size="${body_length} ${body_width} ${body_height}"/> -->
+            </geometry>
         </collision>
         <innertial></innertial>
         <!-- <xacro:inertial_box mass="${body_mass}" x="${body_length}" y="${body_width}" z="${body_height}">

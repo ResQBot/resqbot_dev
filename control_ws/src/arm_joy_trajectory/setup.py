@@ -20,6 +20,7 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
+            'arm_joy = arm_joy_trajectory.arm_joy_trajectory:main'
         ],
     },
 )

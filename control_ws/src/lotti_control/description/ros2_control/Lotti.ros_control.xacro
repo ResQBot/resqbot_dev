@@ -10,10 +10,6 @@
         </hardware>
 
         <joint name="arm_link1_joint">
-            <command_interface name="position">
-                <!-- <param name="min">${-pi/2}</param> -->
-                <!-- <param name="max">${pi/2}</param> -->
-            </command_interface>
             <command_interface name="velocity"/>
             <state_interface name="position"/>
             <state_interface name="velocity"/>
@@ -22,10 +18,6 @@
         </joint>
 
         <joint name="arm_link2_joint">
-            <command_interface name="position">
-                <!-- <param name="min">${-pi/2}</param> -->
-                <!-- <param name="max">${pi/2}</param> -->
-            </command_interface>
             <command_interface name="velocity"/>
             <state_interface name="position"/>
             <state_interface name="velocity"/>
@@ -34,10 +26,6 @@
         </joint>
 
         <joint name="arm_link3_joint">
-            <command_interface name="position">
-                <!-- <param name="min">${-pi/2}</param> -->
-                <!-- <param name="max">${pi/2}</param> -->
-            </command_interface>
             <command_interface name="velocity"/>
             <state_interface name="position"/>
             <state_interface name="velocity"/>
@@ -46,10 +34,6 @@
         </joint>
 
         <joint name="arm_link4_joint">
-            <command_interface name="position">
-                <!-- <param name="min">${-pi/2}</param> -->
-                <!-- <param name="max">${pi/2}</param> -->
-            </command_interface>
             <command_interface name="velocity"/>
             <state_interface name="position"/>
             <state_interface name="velocity"/>
@@ -58,10 +42,6 @@
         </joint>
 
         <joint name="arm_link5_joint">
-            <command_interface name="position">
-                <!-- <param name="min">${-pi/3}</param> -->
-                <!-- <param name="max">${pi/3}</param> -->
-            </command_interface>
             <command_interface name="velocity"/>
             <state_interface name="position"/>
             <state_interface name="velocity"/>
@@ -70,10 +50,6 @@
         </joint>
 
         <joint name="arm_link6_joint">
-            <command_interface name="position">
-                <!-- <param name="min">${-pi}</param> -->
-                <!-- <param name="max">${pi}</param> -->
-            </command_interface>
             <command_interface name="velocity"/>
             <state_interface name="position"/>
             <state_interface name="velocity"/>

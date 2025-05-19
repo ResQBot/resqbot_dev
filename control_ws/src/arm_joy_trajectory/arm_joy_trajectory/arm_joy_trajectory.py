@@ -5,6 +5,8 @@ import time
 
 from trajectory_msgs.msg import JointTrajectory
 from geometry_msgs.msg import Twist
+from urdf_parser_py.urdf import URDF
+from pykdl_utils.kdl_parser import kdl_tree_from_urdf_model
 
 
 
@@ -24,7 +26,13 @@ class ArmJoyTrajectory(Node):
         self.__cmd_linear_y = float(0)
         self.__cmd_linear_z = float(0)
 
-        #build kdtree
+        #get robot description
+        
+        robot = URDF.load_from_parameter_server(verbose=False)
+        tree = kdl_tree_from_urdf_model(robot)
+        print tree.getNrOfSegments()
+        chain = tree.getChain(base_link, end_link)
+        print chain.getNrOfJoints()
 
 
         #Init class ->create subscriber, create timer

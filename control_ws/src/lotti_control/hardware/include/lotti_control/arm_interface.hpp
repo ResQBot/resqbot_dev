@@ -31,21 +31,21 @@ namespace arm_interface
       CallbackReturn on_init(const hardware_interface::HardwareInfo & info) override;
 
       std::vector<hardware_interface::StateInterface> export_state_interfaces() override;
-
       std::vector<hardware_interface::CommandInterface> export_command_interfaces() override;
 
+      hardware_interface::CallbackReturn on_configure(const rclcpp_lifecycle::State & previous_state) override;
+      hardware_interface::CallbackReturn on_cleanup(const rclcpp_lifecycle::State & previous_state) override;
+
       hardware_interface::CallbackReturn on_activate(const rclcpp_lifecycle::State & previous_state) override;
-    
       hardware_interface::CallbackReturn on_deactivate(const rclcpp_lifecycle::State & previous_state) override;
 
       return_type read(const rclcpp::Time & time, const rclcpp::Duration & period) override;
-
       return_type write(const rclcpp::Time & /*time*/, const rclcpp::Duration & /*period*/) override;
 
     
     protected:
       /// The size of this vector is (standard_interfaces_.size() x nr_joints)
-      std::vector<double> joint_positions_command_;
+      //std::vector<double> joint_positions_command_;
       std::vector<double> joint_velocities_command_;
       std::vector<double> joint_positions_;
       std::vector<double> joint_velocities_;
@@ -55,7 +55,7 @@ namespace arm_interface
       //RS485Comms rs485_;
 
       std::unordered_map<std::string, std::vector<std::string>> joint_interfaces = {
-        {"position", {}}, {"velocity", {}},{"torque", {}}, {"volt", {}}};
+        {"position", {}}, {"velocity", {}}, {"torque", {}}, {"volt", {}}};
   };
 
 }  // namespace arm_interface
