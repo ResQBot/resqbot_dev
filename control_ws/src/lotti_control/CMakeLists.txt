@@ -81,7 +81,11 @@ install(
 #  DESTINATION include/lotti_control
 #)
 install(
-  DIRECTORY description/launch description/ros2_control description/urdf
+  DIRECTORY description/launch description/urdf description/srdf
+  DESTINATION share/lotti_control/description
+)
+install(
+  DIRECTORY description/ros2_control
   DESTINATION share/lotti_control
 )
 install(

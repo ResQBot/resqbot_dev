@@ -130,7 +130,7 @@ class TeleOp(Node):
         #gripper controlls
         self.__gripper_msg = JointJog()
         self.__gripper_msg.joint_names = ["arm_link4_joint", "arm_link5_joint", "arm_link6_joint"]
-        self.__gripper_scale = 0.5
+        self.__gripper_msg.duration = 0.05
 
         #Init class ->create subscriber, create timer
         self.__readParams()
@@ -294,7 +294,7 @@ class TeleOp(Node):
         
         #calc gripper movement
         #gripper_mode = float(self.__button_a - self.__button_b)
-        gripper_spin = float(self.__button_rb - self.__button_lb) * self.__gripper_scale
+        gripper_spin = float(self.__button_rb - self.__button_lb)
         
         #check for arm mode 
         if(self.__arm_enabled == True):
@@ -464,7 +464,7 @@ class TeleOp(Node):
 
         self.__arm_publisher = self.create_publisher(
             TwistStamped,
-            "cdm/arm/joy_twiststamped",
+            "cmd/arm/joy_twiststamped",
             1
         )
 

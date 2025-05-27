@@ -12,14 +12,28 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import os
+import yaml
 from launch import LaunchDescription
-from launch.actions import RegisterEventHandler, DeclareLaunchArgument
+from launch.actions import RegisterEventHandler, DeclareLaunchArgument, IncludeLaunchDescription
 from launch.conditions import IfCondition
 from launch.event_handlers import OnProcessExit
 from launch.substitutions import Command, FindExecutable, PathJoinSubstitution, LaunchConfiguration
 
 from launch_ros.actions import Node
 from launch_ros.substitutions import FindPackageShare
+from ament_index_python import get_package_share_directory
+from moveit_configs_utils import MoveItConfigsBuilder
+
+def load_yaml(package_name, file_path):
+    package_path = get_package_share_directory(package_name)
+    absolute_file_path = os.path.join(package_path, file_path)
+
+    try:
+        with open(absolute_file_path, "r") as file:
+            return yaml.safe_load(file)
+    except EnvironmentError:  # parent of IOError, OSError *and* WindowsError where available
+        return None
 
 
 def generate_launch_description():
@@ -41,8 +55,8 @@ def generate_launch_description():
             PathJoinSubstitution(
                 [
                     FindPackageShare("lotti_control"),
-                    "urdf",
-                    "Lotti_main.urdf.xacro",
+                    "description/urdf",
+                    "Lotti.urdf.xacro",
                 ]
             ),
         ]
@@ -54,7 +68,7 @@ def generate_launch_description():
         [
             FindPackageShare("lotti_control"),
             "config",
-            "lotti_controller.yaml",
+            "Lotti_controllers.yaml",
         ]
     ) 
 
@@ -144,6 +158,46 @@ def generate_launch_description():
         )
     )
 
+    # Get parameters for the Servo node
+    servo_yaml = load_yaml("lotti_control", "config/lotti_servo_config.yaml")
+    servo_params = {"moveit_servo": servo_yaml}
+
+    moveit_config = (
+        MoveItConfigsBuilder("lotti")
+        .robot_description(file_path="config/Lotti.urdf.xacro")
+        .to_moveit_configs()
+    )
+
+    servo_node = Node(
+        package="moveit_servo",
+        executable="servo_node_main",
+        parameters=[
+            servo_params,
+            moveit_config.robot_description,
+            moveit_config.robot_description_semantic,
+            moveit_config.robot_description_kinematics,
+        ],
+        output="screen",
+    )
+
+    delay_servo_node = RegisterEventHandler(
+        event_handler=OnProcessExit(
+            target_action=joint_state_broadcaster_spawner,
+            on_exit=[servo_node],
+        )
+    )
+
+    teleop_package = get_package_share_directory('lotti_teleop')
+
+    teleop_node = IncludeLaunchDescription(
+        os.path.join(teleop_package, 'launch', 'default.launch.py'),
+    )
+
+    joy_node = Node(
+        package='joy',
+        executable='joy_node',
+    )
+
     nodes = [
         control_node,
         robot_state_pub_node,
@@ -152,6 +206,9 @@ def generate_launch_description():
         #delay_flipper_controller_spawner,
         delay_rviz_after_joint_state_broadcaster_spawner,
         delay_joint_state_broadcaster_after_robot_controller_spawner,
+        delay_servo_node,
+        joy_node,
+        #teleop_node,
     ]
 
     return LaunchDescription(declared_arguments + nodes)

@@ -33,7 +33,7 @@
         <collision>
             <origin  xyz="0 0 ${link1_height/2}" rpy="0 0 0"/>
             <geometry>
-                <box size="${link_length -0.021} ${link_width -0.021} ${link1_height -0.021}"/>
+                <box size="${link_length} ${link_width} ${link1_height}"/>
             </geometry>
         </collision>
         <xacro:inertial_box mass="${link_mass}" x="${link_length}" y="${link_width}" z="${link1_height}">
@@ -46,11 +46,11 @@
     <xacro:property name="link2_height" value="0.286"/>
 
     <joint name="arm_link2_joint" type="revolute">
-        <origin xyz="0 ${-link_width} ${link1_height}" rpy="0 -1.1 0"/>
+        <origin xyz="0 ${-link_width} ${link1_height}" rpy="0 0 0"/>
         <parent link="arm_link1_link"/>
         <child link="arm_link2_link"/>
         <axis xyz="0 1 0"/>
-        <limit lower="-0.2" upper="2.8" velocity="10" effort="100"/> 
+        <limit lower="-1.2" upper="1.2" velocity="10" effort="100"/> 
     </joint>
 
     <link name="arm_link2_link">
@@ -64,7 +64,7 @@
         <collision>
             <origin  xyz="0 0 ${link2_height/2}" rpy="0 0 0"/>
             <geometry>
-                <box size="${link_length -0.021} ${link_width -0.021} ${link2_height -0.021}"/>
+                <box size="${link_length} ${link_width} ${link2_height}"/>
             </geometry>
         </collision>
         <xacro:inertial_box mass="${link_mass}" x="${link_length}" y="${link_width}" z="${link2_height}">
@@ -77,11 +77,11 @@
     <xacro:property name="link3_height" value="0.25"/>
 
     <joint name="arm_link3_joint" type="revolute">
-        <origin xyz="0 ${link_width} ${link2_height}" rpy="0 2.4 0"/>
+        <origin xyz="0 ${link_width} ${link2_height}" rpy="0 0 0"/>
         <parent link="arm_link2_link"/>
         <child link="arm_link3_link"/>
         <axis xyz="0 1 0"/>
-        <limit lower="-2.2" upper="0.4" velocity="10" effort="100"/> 
+        <limit lower="${-pi}" upper="${pi}" velocity="10" effort="100"/> 
     </joint>
 
     <link name="arm_link3_link">
@@ -95,7 +95,7 @@
         <collision>
             <origin  xyz="0 0 ${link3_height/2}" rpy="0 0 0"/>
             <geometry>
-                <box size="${link_length -0.021} ${link_width -0.021} ${link3_height -0.021}"/>
+                <box size="${link_length} ${link_width} ${link3_height}"/>
             </geometry>
         </collision>
         <xacro:inertial_box mass="${link_mass}" x="${link_length}" y="${link_width}" z="${link3_height}">
@@ -108,7 +108,7 @@
     <xacro:property name="link4_height" value="0.10"/>
 
     <joint name="arm_link4_joint" type="revolute">
-        <origin xyz="0 ${link_width} ${link3_height}" rpy="0 ${(pi/2) -1.3} 0"/>
+        <origin xyz="0 ${link_width} ${link3_height}" rpy="0 0 0"/>
         <parent link="arm_link3_link"/>
         <child link="arm_link4_link"/>
         <axis xyz="0 1 0"/>
@@ -126,7 +126,7 @@
         <collision>
             <origin  xyz="0 0 ${link4_height/2}" rpy="0 0 0"/>
             <geometry>
-                <box size="${link_length -0.021} ${link_width -0.021} ${link4_height -0.021}"/>
+                <box size="${link_length} ${link_width} ${link4_height}"/>
             </geometry>
         </collision>
         <xacro:inertial_box mass="${link_mass}" x="${link_length}" y="${link_width}" z="${link4_height}">
@@ -156,7 +156,7 @@
         <collision>
             <origin  xyz="${-link_width/2} 0 ${link5_height/2}" rpy="0 0 0"/>
             <geometry>
-                <box size="${link_width -0.021} ${link_length -0.021} ${link5_height -0.021}"/>
+                <box size="${link_width} ${link_length} ${link5_height}"/>
             </geometry>
         </collision>
         <xacro:inertial_box mass="${link_mass}" x="${link_width}" y="${link_length}" z="${link5_height}">
@@ -187,7 +187,7 @@
         <collision>
             <origin  xyz="0 0 ${link6_height/2}" rpy="0 0 0"/>
             <geometry>
-                <box size="${link_width -0.021} ${link_width -0.021} ${link6_height -0.021}"/>
+                <box size="${link_width} ${link_width} ${link6_height}"/>
             </geometry>
         </collision>
         <xacro:inertial_box mass="${link_mass}" x="${link_width}" y="${link_width}" z="${link6_height}">

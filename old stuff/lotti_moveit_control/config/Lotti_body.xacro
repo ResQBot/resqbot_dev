@@ -8,13 +8,6 @@
     <xacro:property name="body_height" value="0.15"/>
     <xacro:property name="body_mass" value="25.0"/>
 
-    <joint name="world_joint" type="fixed">
-        <origin xyz="0 0 0" rpy="0 0 0"/>
-        <parent link="world"/>
-        <child link="body_link"/>
-        <axis xyz="0 0 0"/>
-    </joint>
-
     <link name="body_link">
         <visual>
             <origin rpy="0 0 0" xyz="0 0 ${(body_height/2)+0.02}"/>
