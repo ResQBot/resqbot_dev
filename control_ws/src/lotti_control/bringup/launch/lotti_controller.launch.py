@@ -190,7 +190,7 @@ def generate_launch_description():
     teleop_package = get_package_share_directory('lotti_teleop')
 
     teleop_node = IncludeLaunchDescription(
-        os.path.join(teleop_package, 'launch', 'default.launch.py'),
+        os.path.join(teleop_package, 'launch', 'default_launch.py'),
     )
 
     joy_node = Node(
