@@ -8,9 +8,10 @@ from launch_ros.descriptions import ComposableNode
 from launch.actions import ExecuteProcess
 import xacro
 from moveit_configs_utils import MoveItConfigsBuilder
+from launch.actions import IncludeLaunchDescription
 
 
-def load_file(package_name, file_path):
+""" def load_file(package_name, file_path):
     package_path = get_package_share_directory(package_name)
     absolute_file_path = os.path.join(package_path, file_path)
 
@@ -30,10 +31,10 @@ def load_yaml(package_name, file_path):
             return yaml.safe_load(file)
     except EnvironmentError:  # parent of IOError, OSError *and* WindowsError where available
         return None
-
+ """
 
 def generate_launch_description():
-    moveit_config = (
+    """     moveit_config = (
         MoveItConfigsBuilder("lotti")
         .robot_description(file_path="config/Lotti.urdf.xacro")
         .to_moveit_configs()
@@ -146,6 +147,10 @@ def generate_launch_description():
             moveit_config.robot_description_kinematics,
         ],
         output="screen",
+    ) """
+    teleop_package = get_package_share_directory('lotti_teleop')
+    teleop = IncludeLaunchDescription(
+        os.path.join(teleop_package, 'launch', 'teleop_launch.py'),
     )
 
     return LaunchDescription(
@@ -154,7 +159,8 @@ def generate_launch_description():
             #ros2_control_node,
             #joint_state_broadcaster_spawner,
             #panda_arm_controller_spawner,
-            servo_node,
+            #servo_node,
             #container,
+            teleop
         ]
     )

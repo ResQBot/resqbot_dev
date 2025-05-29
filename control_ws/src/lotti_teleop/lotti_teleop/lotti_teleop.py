@@ -8,6 +8,7 @@ from geometry_msgs.msg import TwistStamped
 from control_msgs.msg import JointJog
 from std_msgs.msg import Int8
 from threading import Lock
+from std_srvs.srv import Trigger
 
 
 # Global Defines --------------------------------------------------------------
@@ -40,7 +41,7 @@ PI=3.1415926535897
 
 # Class -----------------------------------------------------------------------
 class TeleOp(Node):
-
+    
     def __init__(self):
         #Entrypoint of the class
         super().__init__('tele_op')
@@ -133,16 +134,17 @@ class TeleOp(Node):
         self.__gripper_msg.duration = 0.05
 
         #Init class ->create subscriber, create timer
-        self.__readParams()
+        #self.__readParams()
+        self.__callServo()
         self.__createSubscribers()
         self.__createPublishers()
         self.__createTimer()
 
-        print("Tele_OP initiated")
+        self.get_logger().info("Tele_OP initiated")
 
 
 
-    def __readParams(self):
+    """     def __readParams(self):
         #declare parameters
         self.declare_parameter('Publish_rate', 20)              #[Hz]
 
@@ -151,7 +153,18 @@ class TeleOp(Node):
             'Publish_rate',
             rclpy.Parameter.Type.DOUBLE,
             20.0
-        )
+        ) """
+
+
+
+    #the servo_node service needs to be called to start
+    def __callServo(self):
+        self.__cli = self.create_client(Trigger, '/servo_node/start_servo')
+        while not self.__cli.wait_for_service(timeout_sec=1.0):
+            self.get_logger().info('service not available, waiting again...')
+        self.__future = self.__cli.call_async(Trigger.Request())
+        rclpy.spin_until_future_complete(self, self.__future)
+        return self.__future.result()
 
 
 
@@ -195,10 +208,10 @@ class TeleOp(Node):
         # Print a message to show the current output status.
         if self.__joy_enabled != self.__joy_enabled_old:
             if (self.__joy_enabled == True and self.__joy_enabled_old == False):
-                print("Tele Op: ENABLED")
+                self.get_logger().info("Tele Op: ENABLED")
             else:
                 if (self.__joy_enabled == False and self.__joy_enabled_old == True):
-                    print("Tele Op: DISABLED")
+                    self.get_logger().info("Tele Op: DISABLED")
 
             # Set the old state to the new state
             self.__joy_enabled_old = self.__joy_enabled
@@ -226,9 +239,10 @@ class TeleOp(Node):
                 if (time_difference > 1):
                     self.__arm_enabled = not self.__arm_enabled
                     if (self.__arm_enabled == True):
-                        print("Control Mode: ARM")
+                        
+                        self.get_logger().info("Control Mode: ARM")
                     else:
-                        print("Control Mode: BODY")
+                        self.get_logger().info("Control Mode: BODY")
             
             #if mode has been switched, wait until start button is released, then change old mode status to enable new switch cycle
             elif (self.__arm_enabled == self.__arm_enabled_old and self.__button_opt_left_pressed == True and self.__button_opt_left == 0):
@@ -477,7 +491,7 @@ class TeleOp(Node):
     def __createTimer(self):
         # Create timer
         self._timer = self.create_timer(
-            1.0 / self.__Publish_rate.value,
+            1.0 / 20, #self.__Publish_rate.value,
             self.__timerCallback
         )
 

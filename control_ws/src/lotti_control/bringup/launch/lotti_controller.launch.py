@@ -190,8 +190,15 @@ def generate_launch_description():
     teleop_package = get_package_share_directory('lotti_teleop')
 
     teleop_node = IncludeLaunchDescription(
-        os.path.join(teleop_package, 'launch', 'default_launch.py'),
+        os.path.join(teleop_package, 'launch', 'teleop_launch.py'),
     )
+
+    delay_teleop = RegisterEventHandler(
+        event_handler=OnProcessExit(
+            target_action=joint_state_broadcaster_spawner,
+            on_exit=[teleop_node],
+        )
+    ) 
 
     joy_node = Node(
         package='joy',
@@ -202,13 +209,13 @@ def generate_launch_description():
         control_node,
         robot_state_pub_node,
         arm_controller_spawner,
-        #delay_chain_controller_spawner,
-        #delay_flipper_controller_spawner,
+        delay_chain_controller_spawner,
+        delay_flipper_controller_spawner,
         delay_rviz_after_joint_state_broadcaster_spawner,
         delay_joint_state_broadcaster_after_robot_controller_spawner,
         delay_servo_node,
         joy_node,
-        #teleop_node,
+        delay_teleop,
     ]
 
     return LaunchDescription(declared_arguments + nodes)
