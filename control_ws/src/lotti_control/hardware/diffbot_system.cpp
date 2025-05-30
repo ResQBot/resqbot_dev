@@ -158,6 +158,8 @@ namespace diffdrive_lotti{
     wheel_r_.pos = pos_prev + (wheel_r_.cmd * delta_seconds);
     wheel_r_.vel = wheel_r_.cmd;
 
+    //std::cout << std::to_string(wheel_l_.vel) << std::to_string(wheel_l_.pos) << "\n";
+
     return hardware_interface::return_type::OK;
   }
 

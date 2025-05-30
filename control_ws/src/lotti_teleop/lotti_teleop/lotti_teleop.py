@@ -134,7 +134,7 @@ class TeleOp(Node):
         self.__gripper_msg.duration = 0.05
 
         #Init class ->create subscriber, create timer
-        #self.__readParams()
+        self.__readParams()
         self.__callServo()
         self.__createSubscribers()
         self.__createPublishers()
@@ -144,7 +144,7 @@ class TeleOp(Node):
 
 
 
-    """     def __readParams(self):
+    def __readParams(self):
         #declare parameters
         self.declare_parameter('Publish_rate', 20)              #[Hz]
 
@@ -153,7 +153,7 @@ class TeleOp(Node):
             'Publish_rate',
             rclpy.Parameter.Type.DOUBLE,
             20.0
-        ) """
+        ) 
 
 
 
@@ -448,7 +448,7 @@ class TeleOp(Node):
 
         self.__chain_publisher = self.create_publisher(
             Twist,
-            'diffbot_base_controller/cmd_vel_unstamped',
+            'chain_controller/cmd_vel_unstamped',
             1
         )
 
@@ -491,7 +491,7 @@ class TeleOp(Node):
     def __createTimer(self):
         # Create timer
         self._timer = self.create_timer(
-            1.0 / 20, #self.__Publish_rate.value,
+            1.0 / self.__Publish_rate.value,
             self.__timerCallback
         )
 
