@@ -20,7 +20,6 @@ arm_controller:
       - arm_link5_joint
       - arm_link6_joint
     command_interfaces:
-      - velocity
+      []
     state_interfaces:
-      - position
-      - velocity
+      []

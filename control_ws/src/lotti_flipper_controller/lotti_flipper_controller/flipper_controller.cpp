@@ -4,6 +4,9 @@
 #include <algorithm>
 #include <memory>
 #include <string>
+#include <cstddef>
+#include <sstream>
+#include <iomanip>
 #include <vector>
 #include "rclcpp/qos.hpp"
 #include "rclcpp/time.hpp"
@@ -122,6 +125,7 @@ namespace flipper_controller{
     joint_velocity_command_interface_[3].get().set_value(rr_flipper_cmd);
     joint_velocity_command_interface_[2].get().set_value(rl_flipper_cmd);
 
+    //std::cout << std::to_string(fr_flipper_cmd) << "\n";
     return controller_interface::return_type::OK;
   }
 

@@ -12,6 +12,6 @@
     <xacro:include filename="$(find lotti_control)/ros2_control/Lotti.ros_control.xacro"/>
     
 <!-- world origin -->
-    <link name="world"></link> 
+    <!-- <link name="world"></link> -->
 
 </robot>

@@ -103,10 +103,12 @@ namespace flipper_interface{
 
     std::string flipper_answer_ = flipper_comms_.read_msg();
  */
+
     fl_cmd_ = fl_cmd_ + joint_velocities_command_[1] * period.seconds() * 360/12;
     fr_cmd_ = fr_cmd_ + joint_velocities_command_[0] * period.seconds() * 360/12;
     rl_cmd_ = rl_cmd_ + joint_velocities_command_[3] * period.seconds() * 360/12;
     rr_cmd_ = rr_cmd_ + joint_velocities_command_[2] * period.seconds() * 360/12;
+    
     
     std::string flipper_answer_ =
       "FL" + std::to_string(fl_cmd_) +
@@ -128,6 +130,7 @@ namespace flipper_interface{
 
   return_type FlipperInterface::write(const rclcpp::Time & /*time*/, const rclcpp::Duration &){
 
+    //std::cout << std::to_string(joint_velocities_command_[0]) << "\n";
 
 /*      flipper_comms_.set_flipper_values(
       joint_velocities_command_[0],

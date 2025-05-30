@@ -21,20 +21,13 @@
         <joint name="arm_link5_joint" value="0"/>
         <joint name="arm_link6_joint" value="0"/>
     </group_state>
-    <!--PASSIVE JOINT: Purpose: this element is used to mark joints that are not actuated-->
-    <passive_joint name="right_chain_joint"/>
-    <passive_joint name="left_chain_joint"/>
-    <passive_joint name="flipper_rr_joint"/>
-    <passive_joint name="flipper_rl_joint"/>
-    <passive_joint name="flipper_fr_joint"/>
-    <passive_joint name="flipper_fl_joint"/>
-    <passive_joint name="world_joint"/>
+    <!--VIRTUAL JOINT: Purpose: this element defines a virtual joint between a robot link and an external frame of reference (considered fixed with respect to the robot)-->
+    <virtual_joint name="virtual_body_joint" type="floating" parent_frame="odom" child_link="body_link"/>
     <!--DISABLE COLLISIONS: By default it is assumed that any link of the robot could potentially come into collision with any other link in the robot. This tag disables collision checking between a specified pair of links. -->
     <disable_collisions link1="arm_gripper_link" link2="arm_link3_link" reason="Never"/>
     <disable_collisions link1="arm_gripper_link" link2="arm_link4_link" reason="Never"/>
     <disable_collisions link1="arm_gripper_link" link2="arm_link5_link" reason="Never"/>
     <disable_collisions link1="arm_gripper_link" link2="arm_link6_link" reason="Adjacent"/>
-   
     <disable_collisions link1="arm_link1_link" link2="arm_link2_link" reason="Adjacent"/>
     <disable_collisions link1="arm_link1_link" link2="body_link" reason="Adjacent"/>
     <disable_collisions link1="arm_link1_link" link2="flipper_fl_link" reason="Never"/>
@@ -43,7 +36,6 @@
     <disable_collisions link1="arm_link1_link" link2="flipper_rr_link" reason="Never"/>
     <disable_collisions link1="arm_link1_link" link2="left_main_wheel_link" reason="Never"/>
     <disable_collisions link1="arm_link1_link" link2="right_main_wheel_link" reason="Never"/>
-    
     <disable_collisions link1="arm_link2_link" link2="arm_link3_link" reason="Adjacent"/>
     <disable_collisions link1="arm_link2_link" link2="arm_link4_link" reason="Never"/>
     <disable_collisions link1="arm_link2_link" link2="body_link" reason="Never"/>
@@ -51,35 +43,27 @@
     <disable_collisions link1="arm_link2_link" link2="flipper_rr_link" reason="Never"/>
     <disable_collisions link1="arm_link2_link" link2="left_main_wheel_link" reason="Never"/>
     <disable_collisions link1="arm_link2_link" link2="right_main_wheel_link" reason="Never"/>
-    
     <disable_collisions link1="arm_link3_link" link2="arm_link4_link" reason="Adjacent"/>
     <disable_collisions link1="arm_link3_link" link2="arm_link5_link" reason="Never"/>
     <disable_collisions link1="arm_link3_link" link2="arm_link6_link" reason="Never"/>
-    
     <disable_collisions link1="arm_link4_link" link2="arm_link5_link" reason="Adjacent"/>
     <disable_collisions link1="arm_link4_link" link2="arm_link6_link" reason="Never"/>
-    #
     <disable_collisions link1="arm_link5_link" link2="arm_link6_link" reason="Adjacent"/>
-    
     <disable_collisions link1="body_link" link2="flipper_fl_link" reason="Adjacent"/>
     <disable_collisions link1="body_link" link2="flipper_fr_link" reason="Adjacent"/>
     <disable_collisions link1="body_link" link2="flipper_rl_link" reason="Adjacent"/>
     <disable_collisions link1="body_link" link2="flipper_rr_link" reason="Adjacent"/>
     <disable_collisions link1="body_link" link2="left_main_wheel_link" reason="Adjacent"/>
     <disable_collisions link1="body_link" link2="right_main_wheel_link" reason="Adjacent"/>
-    
     <disable_collisions link1="flipper_fl_link" link2="flipper_fr_link" reason="Never"/>
     <disable_collisions link1="flipper_fl_link" link2="flipper_rr_link" reason="Never"/>
     <disable_collisions link1="flipper_fl_link" link2="left_main_wheel_link" reason="Never"/>
     <disable_collisions link1="flipper_fl_link" link2="right_main_wheel_link" reason="Never"/>
-    
     <disable_collisions link1="flipper_fr_link" link2="flipper_rl_link" reason="Never"/>
-    <disable_collisions link1="flipper_fr_link" link2="right_main_wheel_link" reason="Never"/>
     <disable_collisions link1="flipper_fr_link" link2="left_main_wheel_link" reason="Never"/>
-    
+    <disable_collisions link1="flipper_fr_link" link2="right_main_wheel_link" reason="Never"/>
     <disable_collisions link1="flipper_rl_link" link2="flipper_rr_link" reason="Never"/>
     <disable_collisions link1="flipper_rl_link" link2="left_main_wheel_link" reason="Never"/>
     <disable_collisions link1="flipper_rr_link" link2="right_main_wheel_link" reason="Never"/>
-    
     <disable_collisions link1="left_main_wheel_link" link2="right_main_wheel_link" reason="Never"/>
 </robot>
