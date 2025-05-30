@@ -63,7 +63,7 @@ namespace flipper_interface{
       std::unordered_map<std::string, std::vector<std::string>> joint_interfaces = {
         {"position", {}}, {"velocity", {}}};
 
-      SerialComms flipper_comms_;
+      //SerialComms flipper_comms_;
   };
 }  // namespace flipper_interface
 

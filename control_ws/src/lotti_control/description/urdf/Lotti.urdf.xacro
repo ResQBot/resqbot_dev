@@ -7,6 +7,7 @@
 <!-- include files for parts -->    
     <xacro:include filename="Lotti_arm.xacro"/>
     <xacro:include filename="Lotti_body.xacro"/>
+<!--     <xacro:include filename="Lotti_lidar.xacro"/> -->
 <!-- include controllers -->
 <!-- <xacro:include filename="Lotti_gazebo_control.xacro"/> -->
     <xacro:include filename="$(find lotti_control)/ros2_control/Lotti.ros_control.xacro"/>

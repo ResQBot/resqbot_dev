@@ -19,6 +19,8 @@
 #include "rclcpp_lifecycle/node_interfaces/lifecycle_node_interface.hpp"
 #include "rclcpp_lifecycle/state.hpp"
 
+#include "lotti_control/arm_comms.hpp"
+
 using hardware_interface::return_type;
 
 namespace arm_interface
@@ -52,10 +54,11 @@ namespace arm_interface
       std::vector<double> joint_torques_;
       std::vector<double> joint_volts_;
 
-      //RS485Comms rs485_;
-
       std::unordered_map<std::string, std::vector<std::string>> joint_interfaces = {
         {"position", {}}, {"velocity", {}}, {"torque", {}}, {"volt", {}}};
+
+      //SerialComms arm_comms_;
+      
   };
 
 }  // namespace arm_interface

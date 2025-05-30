@@ -121,7 +121,7 @@ namespace arm_interface
   }
 
   return_type ArmInterface::read(const rclcpp::Time & /*time*/, const rclcpp::Duration & period){
-      for (auto i = 0ul; i < joint_velocities_command_.size(); i++){
+    for (auto i = 0ul; i < joint_velocities_command_.size(); i++){
       joint_velocities_[i] = joint_velocities_command_[i];
       joint_positions_[i] += joint_velocities_command_[i] * period.seconds();
     }
@@ -129,7 +129,14 @@ namespace arm_interface
   }
 
   return_type ArmInterface::write(const rclcpp::Time &, const rclcpp::Duration &){
-
+    /* arm_comms_.set_arm_values(
+      joint_velocities_command_[0],
+      joint_velocities_command_[1],
+      joint_velocities_command_[2],
+      joint_velocities_command_[3],
+      joint_velocities_command_[4],
+      joint_velocities_command_[5],
+    );  */
 
     return return_type::OK;
   }

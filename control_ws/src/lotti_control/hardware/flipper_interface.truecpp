@@ -118,17 +118,15 @@ namespace flipper_interface{
 
     sscanf(flipper_answer_.c_str(), "FL%fFR%fRL%fRR%f", &fl_state_, &fr_state_, &rl_state_, &rr_state_);
 
-    joint_positions_[0] = (fr_state_ /360) * (2*3.1415);
-    joint_positions_[1] = (fl_state_ /360) * (2*3.1415);
-    joint_positions_[2] = (rr_state_ /360) * (2*3.1415);
-    joint_positions_[3] = (rl_state_ /360) * (2*3.1415);
+    joint_positions_[0] = (fr_state_ /180) * 3.1415;
+    joint_positions_[1] = (fl_state_ /180) * 3.1415;
+    joint_positions_[2] = (rr_state_ /180) * 3.1415;
+    joint_positions_[3] = (rl_state_ /180) * 3.1415;
      
     return return_type::OK;
   }
 
   return_type FlipperInterface::write(const rclcpp::Time & /*time*/, const rclcpp::Duration &){
-
-
      flipper_comms_.set_flipper_values(
       joint_velocities_command_[0],
       joint_velocities_command_[1],
