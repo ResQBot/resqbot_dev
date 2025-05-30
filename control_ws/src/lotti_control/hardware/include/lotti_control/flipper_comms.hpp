@@ -17,7 +17,7 @@ class SerialComms{
 
         void connect(){  
             timeout_ms_ = 1000;
-            serial_conn_.Open("/dev/ttyACM0");
+            serial_conn_.Open("/dev/serial/by-id/usb-Arduino__www.arduino.cc__0043_8503331313735151A0F0-if00");
             serial_conn_.SetBaudRate(LibSerial::BaudRate::BAUD_115200);
         }
 
