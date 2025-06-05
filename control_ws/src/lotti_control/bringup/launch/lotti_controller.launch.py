@@ -48,13 +48,11 @@ def generate_launch_description():
     )
 
     # Get URDF via xacro
-    robot_description_content = Command(
-        [
-            PathJoinSubstitution([FindExecutable(name="xacro")]),
+    robot_description_content = Command([
+        PathJoinSubstitution([FindExecutable(name="xacro")]),
             " ",
-            PathJoinSubstitution(
-                [
-                    FindPackageShare("lotti_control"),
+            PathJoinSubstitution([
+                FindPackageShare("lotti_control"),
                     "description/urdf",
                     "Lotti.urdf.xacro",
                 ]
@@ -64,16 +62,15 @@ def generate_launch_description():
 
     robot_description = {"robot_description": robot_description_content}
 
-    robot_controllers = PathJoinSubstitution(
-        [
-            FindPackageShare("lotti_control"),
+    robot_controllers = PathJoinSubstitution([
+        FindPackageShare("lotti_control"),
             "config",
             "Lotti_controllers.yaml",
         ]
     ) 
 
-    rviz_config_file = PathJoinSubstitution(
-        [FindPackageShare("lotti_control"), "config", "view_lotti.rviz"]
+    rviz_config_file = PathJoinSubstitution([
+        FindPackageShare("lotti_control"), "config", "view_lotti.rviz"]
     )
 
     control_node = Node(

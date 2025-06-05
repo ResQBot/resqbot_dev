@@ -42,7 +42,7 @@ move_group_name:  lotti_arm_group  # Often 'manipulator' or 'arm'
 planning_frame: body_link  # The MoveIt planning frame. Often 'base_link' or 'world'
 
 ## Other frames
-ee_frame_name: arm_gripper_link  # The name of the end effector link, used to return the EE pose
+ee_frame_name: arm_link6_link  # The name of the end effector link, used to return the EE pose
 robot_link_command_frame:  body_link  # commands must be given in the frame of a robot link. Usually either the base or end effector
 
 ## Stopping behaviour
@@ -65,7 +65,7 @@ status_topic: ~/status # Publish status to this topic
 command_out_topic: /arm_controller/joint_trajectory # Publish outgoing commands here
 
 ## Collision checking for the entire robot body
-check_collisions: true # Check collisions?
+check_collisions: false # Check collisions?
 collision_check_rate: 10.0 # [Hz] Collision-checking can easily bog down a CPU if done too often.
 self_collision_proximity_threshold: 0.01 # Start decelerating when a self-collision is this far [m]
 scene_collision_proximity_threshold: 0.02 # Start decelerating when a scene collision is this far [m]
