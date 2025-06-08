@@ -1,5 +1,5 @@
-#ifndef LOTTI_CONTROL_ARM_COMMS_HPP
-#define LOTTI_CONTROL_ARM_COMMS_HPP
+#ifndef LOTTI_CONTROL_SERIAL_COMMS_HPP
+#define LOTTI_CONTROL_SERIAL_COMMS_HPP
 
 #include <cstring>
 #include <sstream>
@@ -15,9 +15,9 @@ class SerialComms{
 
         SerialComms() = default;
 
-        void connect(){  
+        void connect(const std::string &serial_device){  
             timeout_ms_ = 1000;
-            serial_conn_.Open("/dev/serial/by-id/");
+            serial_conn_.Open(serial_device);
             serial_conn_.SetBaudRate(LibSerial::BaudRate::BAUD_115200);
         }
 
@@ -44,7 +44,6 @@ class SerialComms{
 
 
         std::string read_msg(){
-            
             std::string response = "";
 
             try{
@@ -57,10 +56,18 @@ class SerialComms{
         }
 
 
-        void set_arm_values(float ARM1, float ARM2, float ARM3, float ARM4, float ARM5, float ARM6)
-        {
+        void set_arm_values(std::vector<double> pos, std::vector<double> vel){
             std::stringstream ss;
-            ss << "ARM1" << ARM1 << "ARM2" << ARM2 <<  "ARM3" << ARM3 << "ARM4" << ARM4 << "ARM5" << ARM5 << "ARM6" << ARM6 << "\n";
+            for (size_t i = 0; i < 5; i++){
+                ss << pos[i] << ":" << vel[i] << "/";
+            }
+            ss << "\n";
+            send_msg(ss.str());
+        }
+
+        void set_flipper_values(int FR, int FL, int RR, int RL){
+            std::stringstream ss;
+            ss << "FL" << FL << "FR" << FR <<  "RL" << RL << "RR" << RR << "\n";
             send_msg(ss.str());
         }
 
@@ -70,4 +77,4 @@ class SerialComms{
         int timeout_ms_;
 };
 
-#endif // LOTTI_CONTROL_ARM_COMMS_HPP
+#endif // LOTTI_CONTROL_SERIAL_COMMS_HPP

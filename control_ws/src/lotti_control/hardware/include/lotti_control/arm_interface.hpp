@@ -19,7 +19,7 @@
 #include "rclcpp_lifecycle/node_interfaces/lifecycle_node_interface.hpp"
 #include "rclcpp_lifecycle/state.hpp"
 
-#include "lotti_control/arm_comms.hpp"
+#include "lotti_control/serial_comms.hpp"
 
 using hardware_interface::return_type;
 
@@ -47,17 +47,19 @@ namespace arm_interface
     
     protected:
       /// The size of this vector is (standard_interfaces_.size() x nr_joints)
-      //std::vector<double> joint_positions_command_;
       std::vector<double> joint_velocities_command_;
+      std::vector<double> joint_positions_command_;
       std::vector<double> joint_positions_;
       std::vector<double> joint_velocities_;
       std::vector<double> joint_torques_;
       std::vector<double> joint_volts_;
 
+      double state_pos_[6] = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
+
       std::unordered_map<std::string, std::vector<std::string>> joint_interfaces = {
         {"position", {}}, {"velocity", {}}, {"torque", {}}, {"volt", {}}};
 
-      //SerialComms arm_comms_;
+      SerialComms arm_comms_;
       
   };
 

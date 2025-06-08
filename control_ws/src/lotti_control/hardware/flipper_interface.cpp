@@ -60,7 +60,7 @@ namespace flipper_interface{
 /*     if (flipper_comms_.connected()){
       flipper_comms_.disconnect();
     }
-    flipper_comms_.connect(); 
+    flipper_comms_.connect("/dev/serial/by-id/usb-Arduino__www.arduino.cc__0043_8503331313735151A0F0-if00"); 
  */
     RCLCPP_INFO(rclcpp::get_logger("FlipperInterface"), "Successfully configured");
     return hardware_interface::CallbackReturn::SUCCESS;

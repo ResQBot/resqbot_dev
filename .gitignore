@@ -4,14 +4,6 @@ control_ws/build/
 control_ws/install/
 control_ws/log/
 
-eigen_ws/build/
-eigen_ws/install/
-eigen_ws/log/
-
-fast_lio/build/
-fast_lio/install/
-fast_lio/log/
-
-livox_ws/build/
-livox_ws/install/
-livox_ws/log/
+eigen_ws/
+fast_lio_ws/
+livox_ws/

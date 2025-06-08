@@ -17,7 +17,6 @@
     <child link="arm_base_link" />
   </joint>
 
-
   <link name="arm_base_link">
     <inertial>
       <origin xyz="-0.00263222915365038 -0.000332098550481226 0.0476250352231148" rpy="0 0 0" />
@@ -105,8 +104,8 @@
     <child link="arm_link2_link" />
     <axis xyz="0 1 0" />
     <limit
-      lower="-1.5"
-      upper="1.5"
+      lower="-3"
+      upper="0.2"
       effort="3"
       velocity="2" />
   </joint>
@@ -142,7 +141,7 @@
     <child link="arm_link3_link" />
     <axis xyz="0 1 0" />
     <limit
-      lower="0"
+      lower="-0.15"
       upper="2.9"
       effort="3"
       velocity="2" />

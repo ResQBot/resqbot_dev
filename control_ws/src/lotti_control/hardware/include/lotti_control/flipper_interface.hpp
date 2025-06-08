@@ -20,7 +20,7 @@
 #include "rclcpp_lifecycle/node_interfaces/lifecycle_node_interface.hpp"
 #include "rclcpp_lifecycle/state.hpp"
 
-#include "lotti_control/flipper_comms.hpp"
+#include "lotti_control/serial_comms.hpp"
 
 using hardware_interface::return_type;
 

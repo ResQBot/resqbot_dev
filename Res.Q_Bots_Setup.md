@@ -2,158 +2,20 @@
 
 Dieses Tutorial ist eine Schritt für Schritt Anleitung, um die komplette Softwaresuite des Res.Q Bots Teams einzurichten und mit dem Coden zu starten.
 
-## 0. Ubuntu Terminals
-Ein sehr vereinfachtes und unvollständiges Intro in die **Linux Shell**, das den Umgang mit **Befehlsterminals** lehren und erklären soll.
+**Disclaimer:** This REEADME is meant for internal use by Res.Q Bots members. While we do not forbid anyone else from using it, we want to caution you, that this file is not complete and updated infrequently. It is by no means a reliable source to work with, if you are not in direct contact with one of the people who have been working on it. Most of the packages used are open source packages developrd by other people, who know what they are doing way better than us.
+We have done our best to link to the original GitHubs for any non standard ROS packages.
 
-In Ubuntu lässt sich fast alles mit Terminalbefehlen erledigen. Gerade fürs Programmieren und den Umgang mit ROS ist es von enormer Bedeutung das Terminal nutzen zu können. 
 
-&nbsp;
 
-### 0.1 Terminal UI
-Die Tastenkombination ```Strg```+```Alt```+```T``` öffnet ein neues Terminal. Links in der aktuellen Zeile wird angezeigt, welcher **User** den Befehl ausführt, auf welchem **Host** der Befehl ausgeführt wird und in welchem **Verzeichnis** man sich gerade befindet, z.B.:
+## Inhalt
 
-	resqbots@Q-T-Pi:~$ echo "hello world"
-
-**resqbots** ist der **User** 
-
-**Q-T-Pi** ist der **Host** ( = das Gerät auf dem der User angemeldet ist)
-
-**~** ist default Verzeichnis beim einloggen
-
-**$** ist ein Trennsymbol, danach fängt der Befehl an
-
-```echo "hello world"``` ist der Befehl, der ausgeführt werden soll
-
-&nbsp;
-
-### 0.2 Wichtige Befehle
-
-### Strg + C
-Die Tastenkombination ```Strg``` + ```C``` bricht den aktuell laufenden Prozess ab. Dies ist besonders wichtig, um ROS-Packages zu stoppen.
-
-### cd
-
-```cd <Verzeichnisname>``` wechselt vom aktuellen Verzeichnis in das gewälte Unterverzeichnis. Mit ```/``` können mehrere Ebenen an Unterverzeichnissen aneinander gereiht werden. z.B.:
-
-	cd ros_ws/src/resqbots_drive_interface/
-
-Der Verzeichnisname ```..``` wechselt ein Verzeichnis nach "oben". So kommt man mit
-
-	cd ..
-
-wieder in das Verzeichnis ```ros_ws/src/``` und mit 
-
-	cd ../..
-wäre man im Verzeichnis ```ros_ws```
-
-Der Befehl 
-
-	cd 
-
-ohne Verzeichnisnamen führt immer in das Standardverzeichnis zurück, egal wo man vorher war.
-
-### sudo
-```sudo``` steht kurz für **super user do** und entspricht dem "Als Administrator ausführen" bei Windows. Viele Befehle können nur mit dem Vorsatz ```sudo``` ausgeführt werden. Auch geschützte Dateien können nur mit ```sudo``` verändert werden.
-
-### apt install
-```apt install <Paketname>``` quasi ausschließlich mit ```sudo``` gemeinsam verwendet installiert das gewünschte Paket.
-
-	sudo apt install hollywood
-
-installiert das hollywood Paket. (Ein netter Scherz, wenn man unwissende beeindrucken will.)
-
-### mkdir
-```mkdir <Verzeichnisname>``` erstellt das gewünschte Verzeichnis. 
-
-	mkdir Test
-
-erstellt das Verzeichnis ```Test```
-
-Der zusatz ```-p``` sorgt dafür, dass alle Übergeordneten Verzeichnisse unverändert bleiben. Mit ```-p``` können auch Unterverzeichnisse in einem Befehl mit-genereirt werden.
-
-	mkdir -p ros_ws/src
-
-erstellt das Verzeichnis ```src``` im Verzeichnis ```ros_ws```. Falls das Verzeichnis ```ros_ws``` nicht existiert, wird es ebenfalls erstellt.
-
-### rm
-```rm <Dateiname>``` wird eigentlich nur mit ```sudo``` davor verwendet. ```sudo rm <Dateiname>``` löscht die benannte Datei.
-Mit dem zusatz ```-r``` können auch ganze Verzeichnisse gelöscht werden.
-
-	sudo rm -r ros_ws
-
-löscht den oben erstellten ```ros_ws``` und **alle Unterverzeichnisse**
-
-### nano
-```nano``` ist der Texteditor von Ubuntu. Damit können nahezu alle schreibbaren Dateiformate göffnet und bearbeitet werden. Für schreibgeschützte Dateien musst ```sudo``` vorgesetzt werden.
-Mit ```nano <Dateiname>``` wird die benannte Datei geöffnet, oder, falls sie nicht existiert, erstellt. Mit ```sudo nano``` erstellte Dateien sind für "normale" User schreibgeschützt und können nur mit ```sudo``` bearbeitet werden.
-
-	sudo nano README.txt
-
-erstellt z.B. eine schreibgeschützte ```README.txt```.
-
-### Tab
-Mit der ```Tab``` Taste können befehle automatisch vervollstöndigt werden.
-
-Mit einem doppelten ```Tab``` werden alle möglichen Optionen angezeigt.
-
-### ssh
-```ssh user@host``` stellt eine remote Verbindung zum gewählten Gerät her und loggt sich als der genannte User ein. Der **Host** kann dabei druch die **IP-Adresse** oder den **Gerätenamen** mit dem zusatz ```.local``` angegeben werden.
-
-	ssh resqbots@q-t-pi.local
-
-loggt sich z.B. als user **resqbots** auf unserem RaspberryPi namen **Q-T-Pi** ein.
-
-Will man von einem Gerät aus öfter auf das gleiche andere zugreifen, sollte man mit
-
-	ssh-keygen
-
-ein **ssh public key** erstellt werden und dann mit
-
-	ssh-copy-id user@host
-
-auf das Gerät kopiert werden, dass man per ssh ansteuern will.
-
-### ros2 run & ros2 launch
-```ros2``` ist ähnlich wie ```sudo``` eine Vorsilbe, die der Shell sagt, dass sie das Programm mit der ROS2 Umgebung ausführen soll.
-
-```run``` und ```launch``` sind zwei varianten programme in ROS zu starten. ```run``` startet das Programm in seiner einfachsten Form. ```launch``` startet das **launch file** des Packages und kann oft mit einer vielzahl von Optionen versehen werden.
-
-	ros2 run resqbots_drive_interface drive_interface
-
-startet z.B. unser drive_interface. Das zweite ```drive_interface``` ist die Startoption, die wir einfach nicht sehr kreativ benannt haben.
-
-	ros2 launch tele_op operator.launch.py
-
-startet unser ```tele_op``` programm und die ```joy_node```. Die option ```operator.launch.py``` sagt dem Package, welche Nodes gestartet werden sollen.
-
-Die meisten launch Befehlen enden auf ```.launch``` und ```.py``` für **Python** oder ```.cpp``` für **C++**.
-
-### andere ros2 Befehle
-
-```ros2 node list``` -> Liste aktiver ROS Nodes
-
-```ros2 topic list``` -> Liste aktiver ROS Topics
-
-```ros2 topic echo``` -> Zeigt angegebenes Topic an
-
-```ros2 service list``` -> Liste verfügbarer ROS Services
-
-### ./
-```./<Dateiname>``` führt die gewählte Datei als **Shell-Skript** aus, falls das möglich ist. In einem Skript können z.B. mehrere Befehle aneinander gereiht sein, oder Befehle mit vielen Optionen ausgeführt werden.
-
-&nbsp;
-
-### Nützliche Programme
-
-```network-manager``` -> Netzwerk-Management
-
-```net-tools``` -> Netzwerkadapter
-
-```iperf3``` -> Netzwerkgeschwindigkeit
-
-```nmap``` -> Geräte im Netzwerk finden
-
-&nbsp;
+1. [Ubuntu Grundlagen](#0-ubuntu-terminals)  
+2. [Betriebssystem](#1-betriebssystem)  
+3. [ROS Installation](#2-ros2-humble)  
+4. [ROS Packages](#3-ros-packages)  
+	- [Package Liste](#package-liste)  
+	- [Packages installieren und einrichten](#packages-installieren-und-einrichten)
+5. [Arduino Packages](#4-arduino-packages)
 
 ## 1. Betriebssystem
 
@@ -209,7 +71,161 @@ Dieser Abschnitt folg noch
 
 &nbsp;
 
-## 2. ROS2 JAZZY
+## 2. Ubuntu Terminals
+Ein sehr vereinfachtes und unvollständiges Intro in die **Linux Shell**, das den Umgang mit **Befehlsterminals** lehren und erklären soll.   
+In Ubuntu lässt sich fast alles mit Terminalbefehlen erledigen. Gerade fürs Programmieren und den Umgang mit ROS ist es von enormer Bedeutung das Terminal nutzen zu können. 
+
+&nbsp;
+
+### 2.1 Terminal UI
+Die Tastenkombination ```Strg```+```Alt```+```T``` öffnet ein neues Terminal. Links in der aktuellen Zeile wird angezeigt, welcher **User** den Befehl ausführt, auf welchem **Host** der Befehl ausgeführt wird und in welchem **Verzeichnis** man sich gerade befindet, z.B.:
+
+	resqbots@Q-T-Pi:~$ echo "hello world"
+
+**resqbots** ist der **User**   
+
+**Q-T-Pi** ist der **Host** ( = das Gerät auf dem der User angemeldet ist)
+
+**~** ist default Verzeichnis beim einloggen
+
+**$** ist ein Trennsymbol, danach fängt der Befehl an
+
+```echo "hello world"``` ist der Befehl, der ausgeführt werden soll
+
+&nbsp;
+
+### 2.2 Wichtige Befehle
+
+### Strg + C
+Die Tastenkombination ```Strg``` + ```C``` bricht den aktuell laufenden Prozess ab. Dies ist besonders wichtig, um ROS-Packages zu stoppen.
+
+### cd
+
+```cd <Verzeichnisname>``` wechselt vom aktuellen Verzeichnis in das gewälte Unterverzeichnis. Mit ```/``` können mehrere Ebenen an Unterverzeichnissen aneinander gereiht werden. z.B.:
+
+	cd ros_ws/src/resqbots_drive_interface/
+
+Der Verzeichnisname ```..``` wechselt ein Verzeichnis nach "oben". So kommt man mit
+
+	cd ..
+
+wieder in das Verzeichnis ```ros_ws/src/``` und mit 
+
+	cd ../..
+wäre man im Verzeichnis ```ros_ws```
+
+Der Befehl ```cd``` ohne Verzeichnisnamen führt immer in das Standardverzeichnis zurück, egal wo man vorher war.
+
+Das ```~``` Symbol ist ein Platzhalter für den "standard" Arbeitsbereich. Wenn man also beispielsweise im aus dem Verzeichnis ```lidar_ws/src``` in das Verzeichnis ```moveit2_ws/src``` echseln will, gelingt das mit:
+
+	cd ~/moveit2_ws/src
+
+### sudo
+```sudo``` steht kurz für **super user do** und entspricht dem "Als Administrator ausführen" bei Windows. Viele Befehle können nur mit dem Vorsatz ```sudo``` ausgeführt werden. Auch geschützte Dateien können nur mit ```sudo``` verändert werden.
+
+### apt install
+```apt install <Paketname>``` quasi ausschließlich mit ```sudo``` gemeinsam verwendet installiert das gewünschte Paket.
+
+	sudo apt install hollywood
+
+installiert das hollywood Paket. (Ein netter Scherz, wenn man unwissende beeindrucken will.)
+
+### mkdir
+```mkdir <Verzeichnisname>``` erstellt das gewünschte Verzeichnis. 
+
+	mkdir Test
+
+erstellt das Verzeichnis ```Test```
+
+Der zusatz ```-p``` sorgt dafür, dass alle Übergeordneten Verzeichnisse unverändert bleiben. Mit ```-p``` können auch Unterverzeichnisse in einem Befehl mit-genereirt werden.
+
+	mkdir -p ros_ws/src
+
+erstellt das Verzeichnis ```src``` im Verzeichnis ```ros_ws```. Falls das Verzeichnis ```ros_ws``` nicht existiert, wird es ebenfalls erstellt.
+
+### rm
+```rm <Dateiname>``` wird eigentlich nur mit ```sudo``` davor verwendet. ```sudo rm <Dateiname>``` löscht die benannte Datei.
+Mit dem zusatz ```-r``` können auch ganze Verzeichnisse gelöscht werden.
+
+	sudo rm -r ros_ws
+
+löscht den oben erstellten ```ros_ws``` und **alle Unterverzeichnisse**
+
+### nano
+```nano``` ist der Texteditor von Ubuntu. Damit können nahezu alle schreibbaren Dateiformate göffnet und bearbeitet werden. Für schreibgeschützte Dateien musst ```sudo``` vorgesetzt werden.
+Mit ```nano <Dateiname>``` wird die benannte Datei geöffnet, oder, falls sie nicht existiert, erstellt. Mit ```sudo nano``` erstellte Dateien sind für "normale" User schreibgeschützt und können nur mit ```sudo``` bearbeitet werden.
+
+	sudo nano README.txt
+
+erstellt z.B. eine schreibgeschützte ```README.txt```.
+
+### Tab
+Mit der ```Tab``` Taste können befehle automatisch vervollstöndigt werden.  
+Mit einem doppelten ```Tab``` werden alle möglichen Optionen angezeigt.
+
+### ssh
+```ssh user@host``` stellt eine remote Verbindung zum gewählten Gerät her und loggt sich als der genannte User ein. Der **Host** kann dabei druch die **IP-Adresse** oder den **Gerätenamen** mit dem zusatz ```.local``` angegeben werden.
+
+	ssh resqbots@q-t-pi.local
+
+loggt sich z.B. als user **resqbots** auf unserem RaspberryPi namen **Q-T-Pi** ein.  
+Will man von einem Gerät aus öfter auf das gleiche andere zugreifen, sollte man mit
+
+	ssh-keygen
+
+ein **ssh public key** erstellt werden und dann mit
+
+	ssh-copy-id user@host
+
+auf das Gerät kopiert werden, dass man per ssh ansteuern will.
+
+### ros2 run & ros2 launch
+```ros2``` ist ähnlich wie ```sudo``` eine Vorsilbe, die der Shell sagt, dass sie das Programm mit der ROS2 Umgebung ausführen soll.  
+
+```run``` und ```launch``` sind zwei varianten programme in ROS zu starten. ```run``` startet das Programm in seiner einfachsten Form. ```launch``` startet das **launch file** des Packages und kann oft mit einer vielzahl von Optionen versehen werden.
+
+	ros2 run resqbots_drive_interface drive_interface
+
+startet z.B. unser drive_interface. Das zweite ```drive_interface``` ist die Startoption, die wir einfach nicht sehr kreativ benannt haben.
+
+	ros2 launch tele_op operator.launch.py
+
+startet unser ```tele_op``` programm und die ```joy_node```. Die option ```operator.launch.py``` sagt dem Package, welche Nodes gestartet werden sollen.
+
+Die meisten launch Befehlen enden auf ```.launch``` und ```.py``` für **Python** oder ```.cpp``` für **C++**.
+
+### andere ros2 Befehle
+
+```ros2 node list``` -> Liste aktiver ROS Nodes
+
+```ros2 topic list``` -> Liste aktiver ROS Topics
+
+```ros2 topic echo``` -> Zeigt angegebenes Topic an
+
+```ros2 service list``` -> Liste verfügbarer ROS Services
+
+### ./
+```./<Dateiname>``` führt die gewählte Datei als **Shell-Skript** aus, falls das möglich ist. In einem Skript können z.B. mehrere Befehle aneinander gereiht sein, oder Befehle mit vielen Optionen ausgeführt werden.
+
+&nbsp;
+
+### Nützliche Programme
+
+```network-manager``` -> Netzwerk-Management
+
+```net-tools``` -> Netzwerkadapter
+
+```iperf3``` -> Netzwerkgeschwindigkeit
+
+```nmap``` -> Geräte im Netzwerk finden
+
+&nbsp;
+
+## 3. ROS2 Installation
+
+Wir verwenden auf unseren Rechnern ```ros2 humble```. Auf dem Raspberry Pi 5 kann leider nur ```ros2 jazzy``` per ```apt``` installiert werden, daher kommt dort die andere Distro zum Einsatz. Bisher haben wir noch keine Kompatibilitätsprobleme entdekt, sie können aber auftreten.  
+
+Dieser Abschnitt folgt der Installationsanleitung der ```ros2 humble``` Dokumentation
 
 ### Locale einrichten:
 	sudo apt update && sudo apt install locales
@@ -234,16 +250,16 @@ Dieser Abschnitt folg noch
 	
 ### ROS installieren:
 	sudo apt update && sudo apt upgrade -y
-	sudo apt install ros-jazzy-desktop
+	sudo apt install ros-humble-desktop
 	
 ### ROS einrichten:
 Alle Packages in Ros müssen **gesourced** werden, damit sie von der Shell gestartet werden können.
-Um ein Package schnell in der aktuellen Shell zu sourcen kann der Befehl ```source $package_ws$/install/setup.bash``` verwendet werden. Wobei ```$package_ws$``` durch den Pfad zum Ordner, in dem der ```colcon-build``` Befehl ausgeführt wurde, ersetzt werden muss. (z.B. /home/resqbots/ros_ws) 
-Falls man den ```colcon-build``` Befehl gerade erst verwendet hat, reicht in der Regel ```source install/setup.bash```.
+Um ein Package schnell in der aktuellen Shell zu sourcen kann der Befehl ```source $package_ws$/install/setup.bash``` verwendet werden. Wobei ```$package_ws$``` durch den Pfad zum Ordner, in dem der ```colcon-build``` Befehl ausgeführt wurde, ersetzt werden muss. (z.B. ~/ros_ws) 
+Falls man den ```colcon-build``` Befehl im aktuellen Ordner verwendet hat, reicht ```source install/setup.bash```.
 
 Um ein Package permanent zu sourcen muss der Befehlt in die **~/.bashrc** Datei geschrieben werden. Das ist eine Setup Datei, die der Shell sagt, was sie vor dem Start alles machen muss. (z.B. ROS sourcen, oder die Hintergrundfarbe ändern.) 
 
-	echo "source /opt/ros/jazzy/setup.bash" >> ~/.bashrc
+	echo "source /opt/ros/humble/setup.bash" >> ~/.bashrc
 
 Die **DOMAIN_ID** sagt ROS welche Geräte in deinem Netzwerk zur gleichen Gruppe gehören. Sie ist per Default auf **0**, kann aber verändert werden. Wir haben sie aus Spaß und zur Sicherheit auf **17** gelegt. 
 Auch das muss in der Shell eingestellt werden:
@@ -262,75 +278,48 @@ Grundsätzlich werden ROS Packages, die nicht einfach per ```sudo apt install```
 
 &nbsp;
 
-## 3. ROS Packages
+## 4. ROS Packages
 
-### 3.1 Package Liste
+### Package Liste
 
-### Fernsteuerung
+**Fernsteuerung**  
+```joy``` -> liest Controllerdaten aus   
+```lotti_teleop``` -> wandelt Controllerdaten in Bewegungsbefehle um  
+```ros2_control``` und ```ros2_controller``` -> Motoren ansteuern und Feedback einholen  
+```robot_state_publisher``` -> zeigt Position und Lage des Roboters an  
+```lotti_control``` -> ros2_control Package für den "Lotti" Roboter  
+```lotti_flipper_controller``` -> Controller für Flipper
 
-```joy``` -> liest Controllerdaten aus 
-
-```resqbots_tele_op``` -> wandelt Controllerdaten in Bewegungsbefehle um
-
-```resqbots_drive_interface``` -> Motorinterface für Ketten
-
-```resqbots_flipper_interface``` -> Motorinterface für Flipper
-
-```resqbots_arm_interface``` -> Motorinterface für Arm
-
-### Sensorik
-
-**Kameras**
-
+**Kameras**  
 ```camera_ros``` -> USB Kamera Interface
 
-**Ton**
-
+**Ton**  
 ```audio_common``` -> Micro und Lautsprecher
 
-
-
-
-**LiDAR**
-
-```Fast_LIO``` -> LiDAR Mapping
-
-```PCL``` -> support für ```Fast_LIO```
-
-```Eigen``` -> support für ```Fast_LIO```
-
-```Livox_SDK2``` -> LiDAR Interface
-
-```livox_ros_driver2``` -> LiDAR Interface
-
+**LiDAR**  
+[```Fast_LIO```](https://github.com/hku-mars/FAST_LIO) -> LiDAR Mapping  
+```PCL``` -> support für ```Fast_LIO```  
+```Eigen``` -> support für ```Fast_LIO```  
+[```Livox_SDK2```](https://github.com/Livox-SDK/Livox-SDK)-> LiDAR Interface  
+[```livox_ros_driver2```](https://github.com/Livox-SDK/livox_ros_driver2) -> LiDAR Interface  
 ```nav2_map_server``` -> speichert LiDAR Karten
 
-
-### Anzeige
-
-```rviz2``` -> zeigt LiDAR Karte und robot_state
-
+**Anzeige**  
+```rviz2``` -> LiDAR Karte und robot_state  
 ```rqt_image_view``` -> zeigt Kamerabilder an
-
-### Simulation
-
-```robot_state_publisher``` -> zeigt Position und Lage des Roboters an
-
-```join_state_publisher_gui``` -> simuliert bewegung des Robots
 
 &nbsp;
 
-## 3.2 Packages installieren und einrichten
+## Packages installieren und einrichten
 
-### joy
-
-ist bereits in ROS2 enthalten
+[Steuerung](#steuerung)  
+[Kameras](#webcams)  
+[Ton](#audio_common)  
+[LiDAR](#lidar-livox-mid-360)
 
 ### audio_common
-Dieses Setup ermöglicht die Audio-Kommunikation über ROS 2 Humble zwischen einem Laptop und einem Raspberry Pi – in beide Richtungen:
-
-Laptop → Raspberry Pi (Audioaufnahme am Laptop, Wiedergabe am Pi)
-
+Dieses Setup ermöglicht die Audio-Kommunikation über ROS 2 Humble zwischen einem Laptop und einem Raspberry Pi – in beide Richtungen:  
+Laptop → Raspberry Pi (Audioaufnahme am Laptop, Wiedergabe am Pi)  
 Raspberry Pi → Laptop (Audioaufnahme am Pi, Wiedergabe am Laptop)
 
 **Installation: Audio-Tools und Dev-Packages**
@@ -404,7 +393,7 @@ Vor der Installation sollte ein **Workspace** für die Livox Packages erstellt w
 ### Livox_SDK2
 Das GitHub Repo der **SDK** in den **Workspaca** kopieren
 
-	cd /home/resqbots/livox_ws/src
+	cd ~/livox_ws/src
 	git clone https://github.com/Livox-SDK/Livox-SDK2.git
 	
 Da die **SDK** ursprünglich für frühere ROS Versionen entwickelt wurde müssen vor dem builden noch Änderungen vorgenommen werden. Dazu wird die Zeile ```#include <cstdint>``` in den Bereichen mit den anderen ```#include``` Zeilen in den Dateien ```sdk_core/comm/define.h``` und ```sdk_core/logger_handler/file_manager.h```  eingefügt: 
@@ -437,7 +426,7 @@ Auch der build-Prozess dauer ewig, nicht wundern. ```Livox_SDK2``` ist nur ein s
 ### livox_ros_driver2 
 Das GitHup Repo in den **Workspace** kopieren
 
-	cd /home/resqbots/livox_ws/src
+	cd ~/livox_ws/src
 	git clone https://github.com/Livox-SDK/livox_ros_driver2.git
 
 und dann builden
@@ -445,12 +434,12 @@ und dann builden
 	cd livox_ros_driver2
 	./build.sh humble
 
-Der Parameter ```humble``` funktioniert auch bei Jazzy, das Package ist einfach etwas älter.
+Der Parameter ```humble``` funktioniert auch bei humble, das Package ist einfach etwas älter.
 
 Nach dem erfolgreichen Builden das Package sourcen:
 
-	source /home/resqbots/livox_ws/install/setup.bash
-	echo "source /home/resqbots/livox_ws/install/setup.bash" >> ~/.bashrc
+	source ~/livox_ws/install/setup.bash
+	echo "source ~/livox_ws/install/setup.bash" >> ~/.bashrc
 	
 
 ### PCL
@@ -498,7 +487,7 @@ Danach kann das Package mit ```colcon``` gebaut und im Anschluss gesourced werde
 
 	colcon build --symlink-install
 	source install/setup.bash
-	echo "source /home/resqbots/fast_lio_ws/install/setup.bash" >> ~/.bashrc
+	echo "source ~/fast_lio_ws/install/setup.bash" >> ~/.bashrc
 
 Falls das Package auf einem Gerät installiert wurde, das selbst nicht live die erstellte Karte anzeigen soll muss noch die **launch-Datei** angepasst werden.
 
@@ -512,7 +501,7 @@ Die Zeile ```ld.add_action(rviz_node)``` mit **#** auskommentieren.
 **Installation:**
 
 	sudo apt update
-	sudo apt install ros-jazzy-nav2-map-server
+	sudo apt install ros-humble-nav2-map-server
 
 **Verwendung:**
 
@@ -621,9 +610,9 @@ In der Liste sollte irgendwo der LiDAR auftauchen. Die **Default IP** unseres Li
 
 
 ### Lidar Optionen
-In der Datei ```*/src/FAST_LIO_ROS2/config/mid360.yaml``` können Einstellungen für den LiDAR Betrieb vorgenommen werden. ```*``` steht für die übergeordneten Verzeichnisse. In unserem Fall wahrscheinlich ```/home/resqbots/fast_lio_ws```
+In der Datei ```*/src/FAST_LIO_ROS2/config/mid360.yaml``` können Einstellungen für den LiDAR Betrieb vorgenommen werden. ```*``` steht für die übergeordneten Verzeichnisse. In unserem Fall wahrscheinlich ```~/fast_lio_ws```
 
-	nano /home/resqbots/fast_lio_ws/src/FAST_LIO_ROS2/config/mid360.yaml
+	nano ~/fast_lio_ws/src/FAST_LIO_ROS2/config/mid360.yaml
 
 Gibt folgendes aus:
 
@@ -680,7 +669,7 @@ Gibt folgendes aus:
 
 
 
-Bei ```map_file_path:``` den gewünschten Pfad + Dateinamen eingeben z.B. ```"/home/resqbots/maps/latest_map.pcd"```
+Bei ```map_file_path:``` den gewünschten Pfad + Dateinamen eingeben z.B. ```"~/maps/latest_map.pcd"```
 
 ```scan_rate:``` kann auf 10, 30, 50 oder 100 gesetzt werden und steht für die Abtastrate des LiDAR. **Vorsicht:** je höher die ```scan_rate``` desto mehr Rechenleistung wird für die Karte benötigt und desto schneller füllt sich der Arbeitsspeicher.
 
@@ -694,7 +683,7 @@ Wir verwenden das ```camera_ros``` Package für unsere USB Kameras.
 Die Installation ist ganz einfach:
 
 	sudo apt update && sudo apt upgrade
-	sudo apt install ros-jazzy-camera-ros
+	sudo apt install ros-humble-camera-ros
 
 ### Einstellungen
 
@@ -702,30 +691,24 @@ Die Installation ist ganz einfach:
 
 &nbsp;
 
-## Simulation
-
-ROS bietet eingebaute Möglichkeiten, einen Roboter zu simulieren. 
+## Steuerung
 
 ### Vorbereitung.
 
-**Zu installierende Programme:**
-
-```robot_state_publisher``` -> published Position und Lage des Roboters basierend auf URDF-File.
-
-```joint_state_publisher_gui``` -> lässt alle Gelenke manuel bewegen.
-
+**Zu installierende Programme:**  
+```robot_state_publisher``` -> published Position und Lage des Roboters basierend auf URDF-File.  
+```joint_state_publisher_gui``` -> lässt alle Gelenke manuel bewegen.  
 ```xacro``` -> vereinfacht Erstellen von URDF-Files
 
 	sudo apt install ros-humble-robot-state-publisher
 	sudo apt install ros-humble-joint-state-publisher-gui
 	sudo apt install ros-humble-xacro
 
-**URDF-File**
+**URDF**
 
-Das ```.urdf``` File enthält Informationen über alle Bauteile und Gelenke des Roboters. Wobei die Bauteile oft stark vereinfacht dargestellt werden, um die Simulation zu vereinfachen.
+Das ```.urdf``` File enthält Informationen über alle Bauteile und Gelenke des Roboters. Zum Erstellen eines einfachen ```.urdf``` Files am besten [diesem](https://articulatedrobotics.xyz/tutorials/ready-for-ros/urdf/) Tutorial folgen.
 
-Zum Erstellen des ```.urdf``` Files am besten diesem Tutorial folgen:
-https://articulatedrobotics.xyz/tutorials/ready-for-ros/urdf/ 
+Ein URDF kann auch aus CAD Dateien exportiert werden. Für SolidWorks einfach [hier](https://github.com/ros/solidworks_urdf_exporter) das Plugin installieren und dem im GitHub verlinkten Tutorial folgen.  
 
 Falls das ```.urdf``` File mit ```xacro``` erstellt wurde, muss es erst mit
 
@@ -736,9 +719,60 @@ zu einem normalen ```.urdf``` File kompiliert werden. Danach 2 Terminals öffnen
 	1. ros2 run robot_state_publisher robot_state_publisher file_name.urdf
 	2. ros2 run joint_state_publisher_gui joint_state_publisher_gui
 
-```1.``` published die Position und Lage des Robots, ```2.``` published das ```/tf``` Topic und ermöglicht, die Gelenke des Roboters durch Schieber zu bewegen.  
+```1.``` publisht die Position und Lage des Robots, ```2.``` published das ```/tf``` Topic und ermöglicht, die Gelenke des Roboters durch Schieber zu bewegen.  
 
+
+### ros2_control und MoveIt2
+Für die Steuerung des Roboters verwenden wir ```ros2_control```. Für die inverse Kinematik und Motorkoordinierung des Arms kommt ```moveit2``` zum Einsatz. 
+
+**Installation:**
+
+```ros2_control``` ist ein Standard-Package in ROS2 und somit einfach zu installieren:
+
+	sudo apt install ros-humble-ros2-control ros-humble-ros2-controller
+
+```moveit2``` ist etwas aufwändiger:  
+Vorbereitung:
+
+	sudo apt install python3-rosdep		#rosdep sollte bereits installiert sein
+	sudo rosdep init					#rosdep sollte bereits initiallisiert sein
+	rosdep update						#vor der Verwendung alles auf den neusten Stand bringen
+	sudo apt update
+	sudo apt dist-upgrade
+
+Colcon ist bereits in der ROS installation enthalten, aber die Funktion ```--mixin-release``` nicht. Deshalb wird sie installiert:
+
+	sudo apt install python3-colcon-common-extensions
+	sudo apt install python3-colcon-mixin
+	colcon mixin add default https://raw.githubusercontent.com/colcon/colcon-mixin-repository/master/index.yaml
+	colcon mixin update default
+	sudo apt install python3-vcstool
+
+Als nächstes wird ein Workspace erstellt, damit MoveIt2 nicht versehentlich neu kompiliert wird, wenn wir an anderen Projekten arbeiten:
+
+	mkdir -p ~/moveit2_ws/src
+
+Nun den Tutorial-Ordner aus dem GitHub Repo installieren:
+	
+	cd ~/moveit2_ws/src
+	git clone --branch humble https://github.com/ros-planning/moveit2_tutorials
+	vcs import < moveit2_tutorials/moveit2_tutorials.repos
+	sudo apt update && rosdep install -r --from-paths . --ignore-src --rosdistro $ROS_DISTRO -y
+	cd ~/moveit2_ws
+
+Das Kompilieren von MoveIt2 dauer extrem lang und ist absurd Resourcenaufwendig. Vor dem Start alle anderen Anwendungen und Prozesse schließen und externe Bildschirme abstecken. Der Prozess wird ca. 30 Minuten dauern, wenn alles gut geht. Evtl. hängt sich der Computer zwischendurch auf, in dem Fall einfach neu Starten und den ```colcon``` Befehl wiederholen. Der Fortschritt bis zum Aufhängen bleibt bestehen. Man kann das also einfach so oft wiederholen, bis das Package fertig kompiliert ist.
+
+	colcon build --mixin-release --symlink-install --executor sequential
+
+Wenn der Prozess erfolgreich beendet wurde, das Package sourcen und in der ```.bashrc``` integrieren.
+
+	source install/setup.bash
+	echo "source ~/moveit2_ws/install/setup.bash" >> ~/.bashrc
+
+
+**Modifikationen**
+Wir verwenden das MoveIt2 Modul ```moveit_servo``` um unseren Arm mit dem X-Box Controller zu steuern. Um das Modul mit unsererm ```lotti_teleop``` Package kombinieren zu können, müssen ein paar Modifikationen vorgenommen werden.  
 
 &nbsp;
 
-## 4. Arduino Packages
+## 5. Arduino Packages
