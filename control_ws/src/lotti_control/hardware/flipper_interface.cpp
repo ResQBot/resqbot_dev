@@ -23,6 +23,9 @@ namespace flipper_interface{
       return CallbackReturn::ERROR;
     }
 
+    //get the Arduino ID from the ros2_control file
+    device_ = info_.hardware_parameters["device"];
+
     // robot has 4 joints, 2 interfaces
     joint_positions_.assign(4, 0);
     joint_velocities_command_.assign(4, 0);
@@ -60,7 +63,7 @@ namespace flipper_interface{
 /*     if (flipper_comms_.connected()){
       flipper_comms_.disconnect();
     }
-    flipper_comms_.connect("/dev/serial/by-id/usb-Arduino__www.arduino.cc__0043_8503331313735151A0F0-if00"); 
+    flipper_comms_.connect(device_); 
  */
     RCLCPP_INFO(rclcpp::get_logger("FlipperInterface"), "Successfully configured");
     return hardware_interface::CallbackReturn::SUCCESS;

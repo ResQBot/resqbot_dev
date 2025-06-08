@@ -55,7 +55,8 @@ namespace arm_interface
       std::vector<double> joint_volts_;
 
       double state_pos_[6] = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
-
+      std::string device_ = "";
+      
       std::unordered_map<std::string, std::vector<std::string>> joint_interfaces = {
         {"position", {}}, {"velocity", {}}, {"torque", {}}, {"volt", {}}};
 

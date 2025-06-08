@@ -50,6 +50,8 @@ namespace flipper_interface{
       std::vector<double> joint_velocities_command_;
       std::vector<double> joint_positions_;
 
+      std::string device_ = "";
+
       float fr_cmd_ = 0;
       float fl_cmd_ = 0;
       float rr_cmd_ = 0;

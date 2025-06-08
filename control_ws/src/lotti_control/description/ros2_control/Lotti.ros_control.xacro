@@ -1,12 +1,17 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro" >
 
+    <!-- Arduino device IDs:
+    1: /dev/serial/by-id/usb-Arduino__www.arduino.cc__0043_8503331313735151A0F0-if00
+    2: 
+    3:
+    4: 
+     -->
+
     <ros2_control name="LottiArm" type="system">
         <hardware>
             <plugin>arm_interface/ArmInterface</plugin>    
-            <!-- <param name="arm_enc_res">4096</param> -->
-            <!-- <param name="arm_max_torque">${9.81*30/100}</param> -->
-            <!-- <param name="arm_max_volt">12</param>           -->
+            <param name="device">/dev/serial/by-id/</param>
         </hardware>
 
         <joint name="arm_link1_joint">
@@ -63,6 +68,7 @@
     <ros2_control name="LottiFlipper" type="system" rw_rate="20">
         <hardware>
             <plugin>flipper_interface/FlipperInterface</plugin>
+            <param name="device">/dev/serial/by-id/usb-Arduino__www.arduino.cc__0043_8503331313735151A0F0-if00</param>
         </hardware>
         
         <joint name="flipper_fr_joint">
@@ -106,31 +112,4 @@
         </joint>
     </ros2_control>
 
-<!-- 
-        <ros2_control name="LottiChains" type="system">
-        <hardware>
-            <plugin>chain_interface/ChainInterface</plugin>
-            <param name="chains_max_speed" value="28"/> 
-            <param name="chains_max_torque" value="20"/> 
-        </hardware>
-
-        <joint name="left_chain_joint">
-            <command_interface name="velocity"/>
-            <command_interface name="torque"/>
-            <state_interface name="position"/>
-            <state_interface name="velocity"/>
-            <state_interface name="torque"/>
-            <state_interface name="temp"/>
-        </joint>
-
-        <joint name="right_chain_joint">
-            <command_interface name="velocity"/>
-            <command_interface name="torque"/>
-            <state_interface name="position"/>
-            <state_interface name="velocity"/>
-            <state_interface name="torque"/>
-            <state_interface name="temp"/>
-        </joint>
-    </ros2_control>
- -->
 </robot>
