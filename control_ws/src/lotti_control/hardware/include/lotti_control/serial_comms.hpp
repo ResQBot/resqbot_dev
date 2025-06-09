@@ -47,7 +47,7 @@ class SerialComms{
             std::string response = "";
 
             try{
-                serial_conn_.ReadLine(response, '\n', timeout_ms_);
+                serial_conn_.ReadLine(response, '\n');
             }
             catch (const LibSerial::ReadTimeout&){
                 std::cerr << "The ReadByte() call has timed out." << std::endl ;
@@ -56,9 +56,9 @@ class SerialComms{
         }
 
 
-        void set_arm_values(std::vector<double> pos, std::vector<double> vel){
+        void set_arm_values(std::vector<int> pos, std::vector<int> vel){
             std::stringstream ss;
-            for (size_t i = 0; i < 5; i++){
+            for (size_t i = 0; i < pos.size(); i++){
                 ss << pos[i] << ":" << vel[i] << "/";
             }
             ss << "\n";

@@ -9,6 +9,8 @@
 #include <limits>
 #include <memory>
 #include <sstream>
+#include "sstream"
+#include <iostream>
 
 #include "hardware_interface/lexical_casts.hpp"
 #include "hardware_interface/types/hardware_interface_type_values.hpp"
@@ -24,7 +26,8 @@ namespace arm_interface
     }
     
     //get the Arduino ID from the ros2_control file
-//-    device_ = info_.hardware_parameters["device"];
+//-
+    device_ = info_.hardware_parameters["device"];
 
     // robot has 6 joints, 4 interfaces
     joint_positions_.assign(6, 0);
@@ -90,10 +93,14 @@ namespace arm_interface
   hardware_interface::CallbackReturn ArmInterface::on_configure(const rclcpp_lifecycle::State & previous_state){
     RCLCPP_INFO(rclcpp::get_logger("ArmInterface"), "Configuring ...please wait...");
 
-//-    if (arm_comms_.connected()){
-//-      arm_comms_.disconnect();
-//-    }
-//-    arm_comms_.connect(device_); 
+//-
+    if (arm_comms_.connected()){
+//-
+      arm_comms_.disconnect();
+//-
+    }
+//-
+    arm_comms_.connect(device_); 
 
     RCLCPP_INFO(rclcpp::get_logger("ArmInterface"), "Successfully configured!");
     return hardware_interface::CallbackReturn::SUCCESS;
@@ -102,9 +109,12 @@ namespace arm_interface
    hardware_interface::CallbackReturn ArmInterface::on_cleanup(const rclcpp_lifecycle::State & previous_state){
     RCLCPP_INFO(rclcpp::get_logger("ArmInterface"), "Cleaning up ...please wait...");
 
-//-    if (arm_comms_.connected()){
-//-      arm_comms_.disconnect();
-//-    } 
+//-
+    if (arm_comms_.connected()){
+//-
+      arm_comms_.disconnect();
+//-
+    } 
 
     RCLCPP_INFO(rclcpp::get_logger("ArmInterface"), "Successfully cleaned up!");
     return hardware_interface::CallbackReturn::SUCCESS;
@@ -113,10 +123,14 @@ namespace arm_interface
   hardware_interface::CallbackReturn ArmInterface::on_activate(const rclcpp_lifecycle::State & previous_state){
     RCLCPP_INFO(rclcpp::get_logger("ArmInterface"), "Activating ...please wait...");
 
-//-    if (!arm_comms_.connected()){
-//-      RCLCPP_ERROR(rclcpp::get_logger("ArmInterface"), "Arduino not connected");
-//-      return hardware_interface::CallbackReturn::ERROR;
-//-    }
+//-
+    if (!arm_comms_.connected()){
+//-
+      RCLCPP_ERROR(rclcpp::get_logger("ArmInterface"), "Arduino not connected");
+//-
+      return hardware_interface::CallbackReturn::ERROR;
+//-
+    }
 
     RCLCPP_INFO(rclcpp::get_logger("ArmInterface"), "Successfully activated!");
     return hardware_interface::CallbackReturn::SUCCESS;
@@ -131,13 +145,18 @@ namespace arm_interface
   }
 
   return_type ArmInterface::read(const rclcpp::Time & /*time*/, const rclcpp::Duration & period){
-//-    if (!arm_comms_.connected()){
-//-      return hardware_interface::return_type::ERROR;
-//-    }
+//-
+    if (!arm_comms_.connected()){
+//-
+      return hardware_interface::return_type::ERROR;
+//-
+    }
 
-//-    std::string arm_answer_ = arm_comms_.read_msg();
+//-
+    std::string arm_answer_ = arm_comms_.read_msg();
 
-//-    sscanf(arm_answer_.c_str(), "%lf/%lf/%lf/%lf/%lf/%lf", &state_pos_[0], &state_pos_[1], &state_pos_[2], &state_pos_[3], &state_pos_[4], &state_pos_[5]);
+//-
+    sscanf(arm_answer_.c_str(), "%lf/%lf/%lf/%lf/%lf/%lf", &state_pos_[0], &state_pos_[1], &state_pos_[2], &state_pos_[3], &state_pos_[4], &state_pos_[5]);
 
     for (auto i = 0ul; i < joint_velocities_command_.size(); i++){
       joint_velocities_[i] = joint_velocities_command_[i];
@@ -159,7 +178,17 @@ namespace arm_interface
   }
 
   return_type ArmInterface::write(const rclcpp::Time &, const rclcpp::Duration &){
-//-    arm_comms_.set_arm_values(joint_positions_command_, joint_velocities_command_);  
+
+    std::stringstream msg;
+
+    for (auto i = 0ul; i < joint_positions_command_.size(); i++){
+      command_positions[i]= int((joint_positions_command_[i]/3.1416) * 2048);
+      command_velocities[i]= int(abs(joint_velocities_command_[i] * 200));
+    }
+
+
+//-
+    arm_comms_.set_arm_values(command_positions, command_velocities);  
 
     return return_type::OK;
   }

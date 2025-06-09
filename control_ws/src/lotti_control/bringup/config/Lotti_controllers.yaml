@@ -37,6 +37,7 @@ arm_controller:
     constraints:
       stopped_velocity_tolerance: 0.01
       goal_time: 0.05
+    publish_rate: 20.0
 #    gains:
 #      arm_link1_joint:
 #        p: 0.5
@@ -95,7 +96,7 @@ chain_controller:
     right_wheel_names: ["right_chain_joint"]
 
     wheel_separation: 0.192
-    wheels_per_side: 1  # actually 2, but both are controlled by 1 signal
+    wheels_per_side: 1
     wheel_radius: 0.10
 
     wheel_separation_multiplier: 1.0

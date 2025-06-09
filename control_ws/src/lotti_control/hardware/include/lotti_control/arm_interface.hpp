@@ -53,6 +53,9 @@ namespace arm_interface
       std::vector<double> joint_velocities_;
       std::vector<double> joint_torques_;
       std::vector<double> joint_volts_;
+      
+      std::vector<int> command_positions = {0, 0, 0, 0, 0, 0};
+      std::vector<int> command_velocities = {0, 0, 0, 0, 0, 0};
 
       double state_pos_[6] = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
       std::string device_ = "";

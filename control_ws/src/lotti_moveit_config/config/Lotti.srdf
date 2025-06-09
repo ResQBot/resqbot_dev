@@ -13,7 +13,7 @@
         <chain base_link="body_link" tip_link="arm_link6_link"/>
     </group>
     <!--END EFFECTOR: Purpose: Represent information about an end effector.-->
-    <end_effector name="arm_link6_link" parent_link="arm_link5_link" group="lotti_arm_group" parent_group="lotti_arm_group"/>
+    <end_effector name="arm_link6_link" parent_link="arm_link5_link" group="lotti_arm_group"/>
     <!--VIRTUAL JOINT: Purpose: this element defines a virtual joint between a robot link and an external frame of reference (considered fixed with respect to the robot)-->
     <virtual_joint name="virtual_body_joint" type="fixed" parent_frame="body" child_link="body_link"/>
     <!--DISABLE COLLISIONS: By default it is assumed that any link of the robot could potentially come into collision with any other link in the robot. This tag disables collision checking between a specified pair of links. -->

@@ -104,8 +104,8 @@
     <child link="arm_link2_link" />
     <axis xyz="0 1 0" />
     <limit
-      lower="-3"
-      upper="0.2"
+      lower="-6"
+      upper="6"
       effort="3"
       velocity="2" />
   </joint>
@@ -141,8 +141,8 @@
     <child link="arm_link3_link" />
     <axis xyz="0 1 0" />
     <limit
-      lower="-0.15"
-      upper="2.9"
+      lower="-6"
+      upper="6"
       effort="3"
       velocity="2" />
   </joint>
