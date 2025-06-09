@@ -2,16 +2,18 @@
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro" >
 
     <!-- Arduino device IDs:
-    1: /dev/serial/by-id/usb-Arduino__www.arduino.cc__0043_8503331313735151A0F0-if00
-    2: 
-    3:
-    4: 
+    /dev/serial/by-id/
+    1: usb-Arduino__www.arduino.cc__0043_8503331313735151A0F0-if00
+    2: usb-Arduino__www.arduino.cc__0043_85033313137351919182-if00
+    3: usb-Arduino__www.arduino.cc__0043_03536383236351E0A111-if00
+    4: usb-Arduino__www.arduino.cc__0043_035363832363516043D2-if00
+    Mega: usb-Arduino__www.arduino.cc__0042_950353139353515082C1-if00
      -->
 
     <ros2_control name="LottiArm" type="system">
         <hardware>
             <plugin>arm_interface/ArmInterface</plugin>    
-            <param name="device">/dev/serial/by-id/</param>
+            <!-- <param name="device">/dev/serial/by-id/usb-Arduino__www.arduino.cc__0043_85033313137351919182-if00</param> -->
         </hardware>
 
         <joint name="arm_link1_joint">
@@ -68,7 +70,7 @@
     <ros2_control name="LottiFlipper" type="system" rw_rate="20">
         <hardware>
             <plugin>flipper_interface/FlipperInterface</plugin>
-            <param name="device">/dev/serial/by-id/usb-Arduino__www.arduino.cc__0043_8503331313735151A0F0-if00</param>
+            <!-- <param name="device">/dev/serial/by-id/usb-Arduino__www.arduino.cc__0043_8503331313735151A0F0-if00</param> -->
         </hardware>
         
         <joint name="flipper_fr_joint">

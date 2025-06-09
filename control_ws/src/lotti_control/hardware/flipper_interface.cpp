@@ -24,7 +24,7 @@ namespace flipper_interface{
     }
 
     //get the Arduino ID from the ros2_control file
-    device_ = info_.hardware_parameters["device"];
+    //device_ = info_.hardware_parameters["device"];
 
     // robot has 4 joints, 2 interfaces
     joint_positions_.assign(4, 0);

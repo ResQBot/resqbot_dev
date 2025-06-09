@@ -1,5 +1,4 @@
 #include "lotti_control/arm_interface.hpp"
-//#include "lotti_control/RS485_comms.hpp"
 
 #include <string>
 #include <vector>
@@ -151,7 +150,7 @@ namespace arm_interface
 //+
     for (auto i = 0ul; i < joint_positions_.size(); i++){
 //+
-      joint_positions_[i] = joint_positions_command[i];
+      joint_positions_[i] = joint_positions_command_[i];
 //+
     }
 
