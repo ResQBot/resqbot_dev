@@ -5,6 +5,7 @@
 #include "unordered_map"
 #include "vector"
 
+
 #include "hardware_interface/handle.hpp"
 #include "hardware_interface/hardware_info.hpp"
 #include "hardware_interface/system_interface.hpp"
@@ -18,6 +19,7 @@
 #include "rclcpp/time.hpp"
 #include "rclcpp_lifecycle/node_interfaces/lifecycle_node_interface.hpp"
 #include "rclcpp_lifecycle/state.hpp"
+
 
 #include "lotti_control/serial_comms.hpp"
 
@@ -54,17 +56,19 @@ namespace arm_interface
       std::vector<double> joint_torques_;
       std::vector<double> joint_volts_;
 
-      std::vector<int> com_pos = {0, 0, 0, 0, 0, 0};
-      std::vector<int> com_vel = {0, 0, 0, 0, 0, 0};
+      int com_pos[6] = {0, 0, 0, 0, 0, 0};
+      int com_vel[6] = {0, 0, 0, 0, 0, 0};
 
-      double state_pos_[6] = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
+      double state_pos_[6] = {0, 0, 0, 0, 0, 0};
+      double state_vel_[6] = {0, 0, 0, 0, 0, 0};
+      
       std::string device_ = "";
+      std::string arm_answer_;
       
       std::unordered_map<std::string, std::vector<std::string>> joint_interfaces = {
         {"position", {}}, {"velocity", {}}, {"torque", {}}, {"volt", {}}};
 
       SerialComms arm_comms_;
-      
   };
 
 }  // namespace arm_interface

@@ -70,7 +70,7 @@
       lower="-3"
       upper="3"
       effort="3"
-      velocity="2" />
+      velocity="1" />
   </joint>
 
   <link name="arm_link2_link">
@@ -107,7 +107,7 @@
       lower="-3"
       upper="0.2"
       effort="3"
-      velocity="2" />
+      velocity="1" />
   </joint>
 
   <link name="arm_link3_link">
@@ -144,7 +144,7 @@
       lower="-0.15"
       upper="2.9"
       effort="3"
-      velocity="2" />
+      velocity="1" />
   </joint>
 
   <link name="arm_link4_link">
@@ -178,7 +178,7 @@
       lower="-1.5"
       upper="1.5"
       effort="3"
-      velocity="2" />
+      velocity="1" />
   </joint>
 
   <link name="arm_link5_link">
@@ -212,7 +212,7 @@
       lower="-1.5"
       upper="1.5"
       effort="3"
-      velocity="2" />
+      velocity="1" />
   </joint>
 
   <link name="arm_link6_link">
@@ -246,7 +246,7 @@
       lower="-3"
       upper="3"
       effort="3"
-      velocity="2" />
+      velocity="1" />
   </joint>
 
 </robot>
