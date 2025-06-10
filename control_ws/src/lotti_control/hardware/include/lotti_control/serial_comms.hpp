@@ -56,7 +56,7 @@ class SerialComms{
         }
 
 
-        void set_arm_values(std::vector<double> pos, std::vector<double> vel){
+        void set_arm_values(std::vector<int> pos, std::vector<int> vel){
             std::stringstream ss;
             for (size_t i = 0; i < 5; i++){
                 ss << pos[i] << ":" << vel[i] << "/";

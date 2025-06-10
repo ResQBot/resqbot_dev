@@ -159,7 +159,12 @@ namespace arm_interface
   }
 
   return_type ArmInterface::write(const rclcpp::Time &, const rclcpp::Duration &){
-//-    arm_comms_.set_arm_values(joint_positions_command_, joint_velocities_command_);  
+    
+    for (auto i = 0ul; i < joint_positions_command_.size(); i++){
+      com_pos[i] = int((joint_positions_command_[i]/3.1416) * 2048);
+      com_vel[i] = int(abs(joint_velocities_command_[i] * 200));
+    }
+//-    arm_comms_.set_arm_values(com_pos, com_vel);  
 
     return return_type::OK;
   }
