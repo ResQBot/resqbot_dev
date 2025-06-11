@@ -1,0 +1,15 @@
+/home/resqbots/control_ws/install/lotti_arm_controller/share/ament_index/resource_index/package_run_dependencies/lotti_arm_controller
+/home/resqbots/control_ws/install/lotti_arm_controller/share/ament_index/resource_index/parent_prefix_path/lotti_arm_controller
+/home/resqbots/control_ws/install/lotti_arm_controller/share/lotti_arm_controller/environment/ament_prefix_path.sh
+/home/resqbots/control_ws/install/lotti_arm_controller/share/lotti_arm_controller/environment/ament_prefix_path.dsv
+/home/resqbots/control_ws/install/lotti_arm_controller/share/lotti_arm_controller/environment/path.sh
+/home/resqbots/control_ws/install/lotti_arm_controller/share/lotti_arm_controller/environment/path.dsv
+/home/resqbots/control_ws/install/lotti_arm_controller/share/lotti_arm_controller/local_setup.bash
+/home/resqbots/control_ws/install/lotti_arm_controller/share/lotti_arm_controller/local_setup.sh
+/home/resqbots/control_ws/install/lotti_arm_controller/share/lotti_arm_controller/local_setup.zsh
+/home/resqbots/control_ws/install/lotti_arm_controller/share/lotti_arm_controller/local_setup.dsv
+/home/resqbots/control_ws/install/lotti_arm_controller/share/lotti_arm_controller/package.dsv
+/home/resqbots/control_ws/install/lotti_arm_controller/share/ament_index/resource_index/packages/lotti_arm_controller
+/home/resqbots/control_ws/install/lotti_arm_controller/share/lotti_arm_controller/cmake/lotti_arm_controllerConfig.cmake
+/home/resqbots/control_ws/install/lotti_arm_controller/share/lotti_arm_controller/cmake/lotti_arm_controllerConfig-version.cmake
+/home/resqbots/control_ws/install/lotti_arm_controller/share/lotti_arm_controller/package.xml

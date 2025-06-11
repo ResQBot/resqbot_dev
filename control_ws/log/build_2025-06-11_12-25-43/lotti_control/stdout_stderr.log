@@ -1,0 +1,45 @@
+[100%] Built target lotti_control
+-- Install configuration: ""
+-- Execute custom install script
+-- Up-to-date symlink: /home/resqbots/control_ws/install/lotti_control/share/lotti_control//lotti_control.xml
+-- Up-to-date symlink: /home/resqbots/control_ws/install/lotti_control/include/lotti_control/lotti_control/RS485_comms.bak
+-- Up-to-date symlink: /home/resqbots/control_ws/install/lotti_control/include/lotti_control/lotti_control/arm_interface.hpp
+-- Up-to-date symlink: /home/resqbots/control_ws/install/lotti_control/include/lotti_control/lotti_control/diffbot_system.hpp
+-- Up-to-date symlink: /home/resqbots/control_ws/install/lotti_control/include/lotti_control/lotti_control/flipper_comms.hpp
+-- Up-to-date symlink: /home/resqbots/control_ws/install/lotti_control/include/lotti_control/lotti_control/flipper_interface.hpp
+-- Up-to-date symlink: /home/resqbots/control_ws/install/lotti_control/include/lotti_control/lotti_control/visibility_control.h
+-- Up-to-date symlink: /home/resqbots/control_ws/install/lotti_control/include/lotti_control/lotti_control/wheel.hpp
+-- Up-to-date symlink: /home/resqbots/control_ws/install/lotti_control/share/lotti_control/launch/view_lotti.launch.py
+-- Up-to-date symlink: /home/resqbots/control_ws/install/lotti_control/share/lotti_control/ros2_control/Lotti.ros_control.xacro
+-- Up-to-date symlink: /home/resqbots/control_ws/install/lotti_control/share/lotti_control/urdf/Lotti_arm.xacro
+-- Up-to-date symlink: /home/resqbots/control_ws/install/lotti_control/share/lotti_control/urdf/Lotti_body.xacro
+-- Up-to-date symlink: /home/resqbots/control_ws/install/lotti_control/share/lotti_control/urdf/Lotti_gazebo_control.xacro
+-- Up-to-date symlink: /home/resqbots/control_ws/install/lotti_control/share/lotti_control/urdf/Lotti_main.urdf.xacro
+-- Up-to-date symlink: /home/resqbots/control_ws/install/lotti_control/share/lotti_control/urdf/urdf_inertial_shapes.xacro
+-- Up-to-date symlink: /home/resqbots/control_ws/install/lotti_control/share/lotti_control/urdf/urdf_materials.xacro
+-- Up-to-date symlink: /home/resqbots/control_ws/install/lotti_control/share/lotti_control/launch/lotti_controller.launch.py
+-- Up-to-date symlink: /home/resqbots/control_ws/install/lotti_control/share/lotti_control/config/lotti_controller.yaml
+-- Up-to-date symlink: /home/resqbots/control_ws/install/lotti_control/share/lotti_control/config/view_lotti.rviz
+-- Up-to-date symlink: /home/resqbots/control_ws/install/lotti_control/share/lotti_control/environment/library_path.sh
+-- Up-to-date symlink: /home/resqbots/control_ws/install/lotti_control/share/lotti_control/environment/library_path.dsv
+-- Up-to-date symlink: /home/resqbots/control_ws/install/lotti_control/share/ament_index/resource_index/package_run_dependencies/lotti_control
+-- Up-to-date symlink: /home/resqbots/control_ws/install/lotti_control/share/ament_index/resource_index/parent_prefix_path/lotti_control
+-- Up-to-date symlink: /home/resqbots/control_ws/install/lotti_control/share/lotti_control/environment/ament_prefix_path.sh
+-- Up-to-date symlink: /home/resqbots/control_ws/install/lotti_control/share/lotti_control/environment/ament_prefix_path.dsv
+-- Up-to-date symlink: /home/resqbots/control_ws/install/lotti_control/share/lotti_control/environment/path.sh
+-- Up-to-date symlink: /home/resqbots/control_ws/install/lotti_control/share/lotti_control/environment/path.dsv
+-- Up-to-date symlink: /home/resqbots/control_ws/install/lotti_control/share/lotti_control/local_setup.bash
+-- Up-to-date symlink: /home/resqbots/control_ws/install/lotti_control/share/lotti_control/local_setup.sh
+-- Up-to-date symlink: /home/resqbots/control_ws/install/lotti_control/share/lotti_control/local_setup.zsh
+-- Up-to-date symlink: /home/resqbots/control_ws/install/lotti_control/share/lotti_control/local_setup.dsv
+-- Symlinking: /home/resqbots/control_ws/install/lotti_control/share/lotti_control/package.dsv
+-- Up-to-date symlink: /home/resqbots/control_ws/install/lotti_control/share/ament_index/resource_index/packages/lotti_control
+-- Up-to-date symlink: /home/resqbots/control_ws/install/lotti_control/share/ament_index/resource_index/hardware_interface__pluginlib__plugin/lotti_control
+-- Up-to-date symlink: /home/resqbots/control_ws/install/lotti_control/share/lotti_control/cmake/ament_cmake_export_targets-extras.cmake
+-- Up-to-date symlink: /home/resqbots/control_ws/install/lotti_control/share/lotti_control/cmake/ament_cmake_export_dependencies-extras.cmake
+-- Up-to-date symlink: /home/resqbots/control_ws/install/lotti_control/share/lotti_control/cmake/lotti_controlConfig.cmake
+-- Up-to-date symlink: /home/resqbots/control_ws/install/lotti_control/share/lotti_control/cmake/lotti_controlConfig-version.cmake
+-- Up-to-date symlink: /home/resqbots/control_ws/install/lotti_control/share/lotti_control/package.xml
+-- Up-to-date: /home/resqbots/control_ws/install/lotti_control/lib/liblotti_control.so
+-- Up-to-date: /home/resqbots/control_ws/install/lotti_control/share/lotti_control/cmake/export_lotti_controlExport.cmake
+-- Up-to-date: /home/resqbots/control_ws/install/lotti_control/share/lotti_control/cmake/export_lotti_controlExport-noconfig.cmake

@@ -1,0 +1,66 @@
+[0.035s] Invoking command in '/home/resqbots/control_ws/build/lotti_arm_controller': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/resqbots/control_ws/install/lotti_teleop:/home/resqbots/dev_ws/install/velocityListener:/home/resqbots/dev_ws/install/resqbot_flipper_interface:/home/resqbots/dev_ws/install/resqbot_drive_motor_controller:/home/resqbots/dev_ws/install/resqbot_drive_interface:/home/resqbots/dev_ws/install/resqbot_camera_arm:/home/resqbots/dev_ws/install/flipper_drive:/home/resqbots/dev_ws/install/chain_controller:/home/resqbots/dev_ws/install/camera_arm:/home/resqbots/dev_ws/install/botlaunch:/home/resqbots/dev_ws/install/bot_camera_arm:/home/resqbots/dev_ws/install/angle_publisher:/home/resqbots/ros2_ws/install/tele_op:/home/resqbots/ros2_ws/install/resqbot_flipper_interface:/home/resqbots/ros2_ws/install/resqbot_drive_interface:/home/resqbots/ros2_ws/install/camera_arm:/home/resqbots/ros2_ws/install/botlaunch:/home/resqbots/ros2_ws/install/bot_camera_arm:/opt/ros/humble /usr/bin/cmake /home/resqbots/control_ws/src/lotti_arm_controller -DCMAKE_INSTALL_PREFIX=/home/resqbots/control_ws/install/lotti_arm_controller
+[0.114s] -- The C compiler identification is GNU 11.4.0
+[0.189s] -- The CXX compiler identification is GNU 11.4.0
+[0.200s] -- Detecting C compiler ABI info
+[0.285s] -- Detecting C compiler ABI info - done
+[0.293s] -- Check for working C compiler: /usr/bin/cc - skipped
+[0.293s] -- Detecting C compile features
+[0.294s] -- Detecting C compile features - done
+[0.297s] -- Detecting CXX compiler ABI info
+[0.394s] -- Detecting CXX compiler ABI info - done
+[0.417s] -- Check for working CXX compiler: /usr/bin/c++ - skipped
+[0.418s] -- Detecting CXX compile features
+[0.419s] -- Detecting CXX compile features - done
+[0.429s] -- Found ament_cmake: 1.3.11 (/opt/ros/humble/share/ament_cmake/cmake)
+[0.683s] -- Found Python3: /usr/bin/python3 (found version "3.10.12") found components: Interpreter 
+[0.864s] -- Found ament_lint_auto: 0.12.12 (/opt/ros/humble/share/ament_lint_auto/cmake)
+[1.073s] -- Found rosidl_generator_c: 3.1.6 (/opt/ros/humble/share/rosidl_generator_c/cmake)
+[1.086s] -- Found rosidl_adapter: 3.1.6 (/opt/ros/humble/share/rosidl_adapter/cmake)
+[1.102s] -- Found rosidl_generator_cpp: 3.1.6 (/opt/ros/humble/share/rosidl_generator_cpp/cmake)
+[1.124s] -- Using all available rosidl_typesupport_c: rosidl_typesupport_fastrtps_c;rosidl_typesupport_introspection_c
+[1.155s] -- Using all available rosidl_typesupport_cpp: rosidl_typesupport_fastrtps_cpp;rosidl_typesupport_introspection_cpp
+[1.495s] -- Found rmw_implementation_cmake: 6.1.2 (/opt/ros/humble/share/rmw_implementation_cmake/cmake)
+[1.506s] -- Found rmw_fastrtps_cpp: 6.2.7 (/opt/ros/humble/share/rmw_fastrtps_cpp/cmake)
+[1.568s] -- Found TinyXML2 via Config file: TinyXML2_DIR-NOTFOUND
+[1.643s] -- Found OpenSSL: /usr/lib/x86_64-linux-gnu/libcrypto.so (found version "3.0.2")  
+[1.647s] -- Found TinyXML2 via Config file: TinyXML2_DIR-NOTFOUND
+[1.666s] -- Found FastRTPS: /opt/ros/humble/include  
+[1.670s] -- Found TinyXML2 via Config file: TinyXML2_DIR-NOTFOUND
+[1.680s] -- Found TinyXML2 via Config file: TinyXML2_DIR-NOTFOUND
+[1.695s] -- Using RMW implementation 'rmw_fastrtps_cpp' as default
+[1.718s] -- Looking for pthread.h
+[1.801s] -- Looking for pthread.h - found
+[1.801s] -- Performing Test CMAKE_HAVE_LIBC_PTHREAD
+[1.888s] -- Performing Test CMAKE_HAVE_LIBC_PTHREAD - Success
+[1.890s] -- Found Threads: TRUE  
+[2.111s] -- Added test 'cppcheck' to perform static code analysis on C / C++ code
+[2.111s] -- Configured cppcheck include dirs: 
+[2.111s] -- Configured cppcheck exclude dirs and/or files: 
+[2.112s] -- Added test 'lint_cmake' to check CMake code style
+[2.114s] -- Added test 'uncrustify' to check C / C++ code style
+[2.114s] -- Configured uncrustify additional arguments: 
+[2.115s] -- Added test 'xmllint' to check XML markup files
+[2.118s] -- Configuring done
+[2.124s] -- Generating done
+[2.126s] -- Build files have been written to: /home/resqbots/control_ws/build/lotti_arm_controller
+[2.139s] Invoked command in '/home/resqbots/control_ws/build/lotti_arm_controller' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/resqbots/control_ws/install/lotti_teleop:/home/resqbots/dev_ws/install/velocityListener:/home/resqbots/dev_ws/install/resqbot_flipper_interface:/home/resqbots/dev_ws/install/resqbot_drive_motor_controller:/home/resqbots/dev_ws/install/resqbot_drive_interface:/home/resqbots/dev_ws/install/resqbot_camera_arm:/home/resqbots/dev_ws/install/flipper_drive:/home/resqbots/dev_ws/install/chain_controller:/home/resqbots/dev_ws/install/camera_arm:/home/resqbots/dev_ws/install/botlaunch:/home/resqbots/dev_ws/install/bot_camera_arm:/home/resqbots/dev_ws/install/angle_publisher:/home/resqbots/ros2_ws/install/tele_op:/home/resqbots/ros2_ws/install/resqbot_flipper_interface:/home/resqbots/ros2_ws/install/resqbot_drive_interface:/home/resqbots/ros2_ws/install/camera_arm:/home/resqbots/ros2_ws/install/botlaunch:/home/resqbots/ros2_ws/install/bot_camera_arm:/opt/ros/humble /usr/bin/cmake /home/resqbots/control_ws/src/lotti_arm_controller -DCMAKE_INSTALL_PREFIX=/home/resqbots/control_ws/install/lotti_arm_controller
+[2.143s] Invoking command in '/home/resqbots/control_ws/build/lotti_arm_controller': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/resqbots/control_ws/install/lotti_teleop:/home/resqbots/dev_ws/install/velocityListener:/home/resqbots/dev_ws/install/resqbot_flipper_interface:/home/resqbots/dev_ws/install/resqbot_drive_motor_controller:/home/resqbots/dev_ws/install/resqbot_drive_interface:/home/resqbots/dev_ws/install/resqbot_camera_arm:/home/resqbots/dev_ws/install/flipper_drive:/home/resqbots/dev_ws/install/chain_controller:/home/resqbots/dev_ws/install/camera_arm:/home/resqbots/dev_ws/install/botlaunch:/home/resqbots/dev_ws/install/bot_camera_arm:/home/resqbots/dev_ws/install/angle_publisher:/home/resqbots/ros2_ws/install/tele_op:/home/resqbots/ros2_ws/install/resqbot_flipper_interface:/home/resqbots/ros2_ws/install/resqbot_drive_interface:/home/resqbots/ros2_ws/install/camera_arm:/home/resqbots/ros2_ws/install/botlaunch:/home/resqbots/ros2_ws/install/bot_camera_arm:/opt/ros/humble /usr/bin/cmake --build /home/resqbots/control_ws/build/lotti_arm_controller -- -j8 -l8
+[2.190s] Invoked command in '/home/resqbots/control_ws/build/lotti_arm_controller' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/resqbots/control_ws/install/lotti_teleop:/home/resqbots/dev_ws/install/velocityListener:/home/resqbots/dev_ws/install/resqbot_flipper_interface:/home/resqbots/dev_ws/install/resqbot_drive_motor_controller:/home/resqbots/dev_ws/install/resqbot_drive_interface:/home/resqbots/dev_ws/install/resqbot_camera_arm:/home/resqbots/dev_ws/install/flipper_drive:/home/resqbots/dev_ws/install/chain_controller:/home/resqbots/dev_ws/install/camera_arm:/home/resqbots/dev_ws/install/botlaunch:/home/resqbots/dev_ws/install/bot_camera_arm:/home/resqbots/dev_ws/install/angle_publisher:/home/resqbots/ros2_ws/install/tele_op:/home/resqbots/ros2_ws/install/resqbot_flipper_interface:/home/resqbots/ros2_ws/install/resqbot_drive_interface:/home/resqbots/ros2_ws/install/camera_arm:/home/resqbots/ros2_ws/install/botlaunch:/home/resqbots/ros2_ws/install/bot_camera_arm:/opt/ros/humble /usr/bin/cmake --build /home/resqbots/control_ws/build/lotti_arm_controller -- -j8 -l8
+[2.203s] Invoking command in '/home/resqbots/control_ws/build/lotti_arm_controller': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/resqbots/control_ws/install/lotti_teleop:/home/resqbots/dev_ws/install/velocityListener:/home/resqbots/dev_ws/install/resqbot_flipper_interface:/home/resqbots/dev_ws/install/resqbot_drive_motor_controller:/home/resqbots/dev_ws/install/resqbot_drive_interface:/home/resqbots/dev_ws/install/resqbot_camera_arm:/home/resqbots/dev_ws/install/flipper_drive:/home/resqbots/dev_ws/install/chain_controller:/home/resqbots/dev_ws/install/camera_arm:/home/resqbots/dev_ws/install/botlaunch:/home/resqbots/dev_ws/install/bot_camera_arm:/home/resqbots/dev_ws/install/angle_publisher:/home/resqbots/ros2_ws/install/tele_op:/home/resqbots/ros2_ws/install/resqbot_flipper_interface:/home/resqbots/ros2_ws/install/resqbot_drive_interface:/home/resqbots/ros2_ws/install/camera_arm:/home/resqbots/ros2_ws/install/botlaunch:/home/resqbots/ros2_ws/install/bot_camera_arm:/opt/ros/humble /usr/bin/cmake --install /home/resqbots/control_ws/build/lotti_arm_controller
+[2.211s] -- Install configuration: ""
+[2.211s] -- Installing: /home/resqbots/control_ws/install/lotti_arm_controller/share/ament_index/resource_index/package_run_dependencies/lotti_arm_controller
+[2.211s] -- Installing: /home/resqbots/control_ws/install/lotti_arm_controller/share/ament_index/resource_index/parent_prefix_path/lotti_arm_controller
+[2.212s] -- Installing: /home/resqbots/control_ws/install/lotti_arm_controller/share/lotti_arm_controller/environment/ament_prefix_path.sh
+[2.212s] -- Installing: /home/resqbots/control_ws/install/lotti_arm_controller/share/lotti_arm_controller/environment/ament_prefix_path.dsv
+[2.212s] -- Installing: /home/resqbots/control_ws/install/lotti_arm_controller/share/lotti_arm_controller/environment/path.sh
+[2.212s] -- Installing: /home/resqbots/control_ws/install/lotti_arm_controller/share/lotti_arm_controller/environment/path.dsv
+[2.212s] -- Installing: /home/resqbots/control_ws/install/lotti_arm_controller/share/lotti_arm_controller/local_setup.bash
+[2.212s] -- Installing: /home/resqbots/control_ws/install/lotti_arm_controller/share/lotti_arm_controller/local_setup.sh
+[2.213s] -- Installing: /home/resqbots/control_ws/install/lotti_arm_controller/share/lotti_arm_controller/local_setup.zsh
+[2.213s] -- Installing: /home/resqbots/control_ws/install/lotti_arm_controller/share/lotti_arm_controller/local_setup.dsv
+[2.213s] -- Installing: /home/resqbots/control_ws/install/lotti_arm_controller/share/lotti_arm_controller/package.dsv
+[2.213s] -- Installing: /home/resqbots/control_ws/install/lotti_arm_controller/share/ament_index/resource_index/packages/lotti_arm_controller
+[2.213s] -- Installing: /home/resqbots/control_ws/install/lotti_arm_controller/share/lotti_arm_controller/cmake/lotti_arm_controllerConfig.cmake
+[2.213s] -- Installing: /home/resqbots/control_ws/install/lotti_arm_controller/share/lotti_arm_controller/cmake/lotti_arm_controllerConfig-version.cmake
+[2.214s] -- Installing: /home/resqbots/control_ws/install/lotti_arm_controller/share/lotti_arm_controller/package.xml
+[2.217s] Invoked command in '/home/resqbots/control_ws/build/lotti_arm_controller' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/resqbots/control_ws/install/lotti_teleop:/home/resqbots/dev_ws/install/velocityListener:/home/resqbots/dev_ws/install/resqbot_flipper_interface:/home/resqbots/dev_ws/install/resqbot_drive_motor_controller:/home/resqbots/dev_ws/install/resqbot_drive_interface:/home/resqbots/dev_ws/install/resqbot_camera_arm:/home/resqbots/dev_ws/install/flipper_drive:/home/resqbots/dev_ws/install/chain_controller:/home/resqbots/dev_ws/install/camera_arm:/home/resqbots/dev_ws/install/botlaunch:/home/resqbots/dev_ws/install/bot_camera_arm:/home/resqbots/dev_ws/install/angle_publisher:/home/resqbots/ros2_ws/install/tele_op:/home/resqbots/ros2_ws/install/resqbot_flipper_interface:/home/resqbots/ros2_ws/install/resqbot_drive_interface:/home/resqbots/ros2_ws/install/camera_arm:/home/resqbots/ros2_ws/install/botlaunch:/home/resqbots/ros2_ws/install/bot_camera_arm:/opt/ros/humble /usr/bin/cmake --install /home/resqbots/control_ws/build/lotti_arm_controller

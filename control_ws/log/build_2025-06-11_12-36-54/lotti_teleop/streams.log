@@ -1,0 +1,22 @@
+[0.852s] Invoking command in '/home/resqbots/control_ws/src/lotti_teleop': PYTHONPATH=/home/resqbots/control_ws/build/lotti_teleop/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/resqbots/control_ws/install/lotti_teleop/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/lotti_teleop build --build-base /home/resqbots/control_ws/build/lotti_teleop/build install --record /home/resqbots/control_ws/build/lotti_teleop/install.log --single-version-externally-managed install_data
+[1.158s] running egg_info
+[1.159s] writing ../../build/lotti_teleop/lotti_teleop.egg-info/PKG-INFO
+[1.159s] writing dependency_links to ../../build/lotti_teleop/lotti_teleop.egg-info/dependency_links.txt
+[1.159s] writing entry points to ../../build/lotti_teleop/lotti_teleop.egg-info/entry_points.txt
+[1.159s] writing requirements to ../../build/lotti_teleop/lotti_teleop.egg-info/requires.txt
+[1.160s] writing top-level names to ../../build/lotti_teleop/lotti_teleop.egg-info/top_level.txt
+[1.162s] reading manifest file '../../build/lotti_teleop/lotti_teleop.egg-info/SOURCES.txt'
+[1.162s] adding license file 'LICENSE'
+[1.163s] writing manifest file '../../build/lotti_teleop/lotti_teleop.egg-info/SOURCES.txt'
+[1.163s] running build
+[1.163s] running build_py
+[1.163s] running install
+[1.164s] running install_lib
+[1.165s] running install_data
+[1.165s] running install_egg_info
+[1.168s] removing '/home/resqbots/control_ws/install/lotti_teleop/lib/python3.10/site-packages/lotti_teleop-0.0.0-py3.10.egg-info' (and everything under it)
+[1.168s] Copying ../../build/lotti_teleop/lotti_teleop.egg-info to /home/resqbots/control_ws/install/lotti_teleop/lib/python3.10/site-packages/lotti_teleop-0.0.0-py3.10.egg-info
+[1.169s] running install_scripts
+[1.193s] Installing teleop script to /home/resqbots/control_ws/install/lotti_teleop/lib/lotti_teleop
+[1.193s] writing list of installed files to '/home/resqbots/control_ws/build/lotti_teleop/install.log'
+[1.223s] Invoked command in '/home/resqbots/control_ws/src/lotti_teleop' returned '0': PYTHONPATH=/home/resqbots/control_ws/build/lotti_teleop/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/resqbots/control_ws/install/lotti_teleop/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/lotti_teleop build --build-base /home/resqbots/control_ws/build/lotti_teleop/build install --record /home/resqbots/control_ws/build/lotti_teleop/install.log --single-version-externally-managed install_data

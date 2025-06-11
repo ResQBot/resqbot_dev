@@ -1,0 +1,147 @@
+#include "lotti_control/flipper_interface.hpp"
+//#include "lotti_control/flipper_comms.hpp"
+//#include "lotti_control/RS485_comms.hpp"
+
+#include <string>
+#include <vector>
+#include <chrono>
+#include <cmath>
+#include <cstddef>
+#include <iomanip>
+#include <limits>
+#include <memory>
+#include <sstream>
+
+#include "hardware_interface/lexical_casts.hpp"
+#include "hardware_interface/types/hardware_interface_type_values.hpp"
+#include "rclcpp/rclcpp.hpp"
+
+
+namespace flipper_interface{
+  CallbackReturn FlipperInterface::on_init(const hardware_interface::HardwareInfo &info){
+    if (hardware_interface::SystemInterface::on_init(info) != CallbackReturn::SUCCESS){
+      return CallbackReturn::ERROR;
+    }
+
+    // robot has 4 joints, 2 interfaces
+    joint_positions_.assign(4, 0);
+    joint_velocities_command_.assign(4, 0);
+
+    for (const auto &joint : info_.joints){
+      for (const auto &interface : joint.state_interfaces){
+        joint_interfaces[interface.name].push_back(joint.name);
+      }
+    }
+    return CallbackReturn::SUCCESS;
+  }
+
+  std::vector<hardware_interface::StateInterface> FlipperInterface::export_state_interfaces(){
+    std::vector<hardware_interface::StateInterface> state_interfaces;
+
+    int ind = 0;
+    for (const auto &joint_name : joint_interfaces["position"]){
+      state_interfaces.emplace_back(joint_name, "position", &joint_positions_[ind++]);
+    }
+    return state_interfaces;
+  }
+
+  std::vector<hardware_interface::CommandInterface> FlipperInterface::export_command_interfaces(){
+    std::vector<hardware_interface::CommandInterface> command_interfaces;
+
+    for (int ind = 0; ind < 4; ind++){
+      command_interfaces.emplace_back(info_.joints[ind].name, "velocity", &joint_velocities_command_[ind]);
+    }
+    return command_interfaces;
+  }
+
+  hardware_interface::CallbackReturn FlipperInterface::on_configure(const rclcpp_lifecycle::State &previous_state){
+    RCLCPP_INFO(rclcpp::get_logger("FlipperInterface"), "Configuring ...please wait...");
+
+    if (flipper_comms_.connected()){
+      flipper_comms_.disconnect();
+    }
+    flipper_comms_.connect(); 
+
+    RCLCPP_INFO(rclcpp::get_logger("FlipperInterface"), "Successfully configured");
+    return hardware_interface::CallbackReturn::SUCCESS;
+  }
+
+  hardware_interface::CallbackReturn FlipperInterface::on_cleanup(const rclcpp_lifecycle::State &previous_state){
+    RCLCPP_INFO(rclcpp::get_logger("FlipperInterface"), "Cleaning up ...please wait...");
+
+    if (flipper_comms_.connected()){
+      flipper_comms_.disconnect();
+    }
+
+    RCLCPP_INFO(rclcpp::get_logger("FlipperInterface"), "Successfully cleaned up!");
+    return hardware_interface::CallbackReturn::SUCCESS;
+  }
+
+  hardware_interface::CallbackReturn FlipperInterface::on_activate(const rclcpp_lifecycle::State &previous_state){
+    RCLCPP_INFO(rclcpp::get_logger("FlipperInterface"), "Configuring ...please wait...");
+
+    if (!flipper_comms_.connected()){
+      RCLCPP_ERROR(rclcpp::get_logger("FlipperInterface"), "Arduino not connected");
+      return hardware_interface::CallbackReturn::ERROR;
+    }
+
+    RCLCPP_INFO(rclcpp::get_logger("FlipperInterface"), "Successfully activated");
+    return hardware_interface::CallbackReturn::SUCCESS;
+  }
+
+  hardware_interface::CallbackReturn FlipperInterface::on_deactivate(const rclcpp_lifecycle::State &previous_state){
+    RCLCPP_INFO(rclcpp::get_logger("FlipperInterface"), "Deactivating ...please wait...");
+
+    RCLCPP_INFO(rclcpp::get_logger("FlipperInterface"), "Successfully deactivated!");
+    return hardware_interface::CallbackReturn::SUCCESS;
+  }
+
+  return_type FlipperInterface::read(const rclcpp::Time & /*time*/, const rclcpp::Duration & period){    
+    if (!flipper_comms_.connected()){
+      return hardware_interface::return_type::ERROR;
+    }
+
+    std::string flipper_answer_ = flipper_comms_.read_msg();
+
+/*     fl_cmd_ = fl_cmd_ + joint_velocities_command_[1] * period.seconds() * 360/12;
+    fr_cmd_ = fr_cmd_ + joint_velocities_command_[0] * period.seconds() * 360/12;
+    rl_cmd_ = rl_cmd_ + joint_velocities_command_[3] * period.seconds() * 360/12;
+    rr_cmd_ = rr_cmd_ + joint_velocities_command_[2] * period.seconds() * 360/12;
+    
+    std::string flipper_answer_ =
+      "FL" + std::to_string(fl_cmd_) +
+      "FR" + std::to_string(fr_cmd_) +
+      "RL" + std::to_string(rl_cmd_) +
+      "RR" + std::to_string(rr_cmd_);
+
+      std::cout << flipper_answer_ << "\n"; */
+
+    sscanf(flipper_answer_.c_str(), "FL%fFR%fRL%fRR%f", &fl_state_, &fr_state_, &rl_state_, &rr_state_);
+
+    joint_positions_[0] = (fr_state_ /360) * (2*3.1415);
+    joint_positions_[1] = (fl_state_ /360) * (2*3.1415);
+    joint_positions_[2] = (rr_state_ /360) * (2*3.1415);
+    joint_positions_[3] = (rl_state_ /360) * (2*3.1415);
+     
+    return return_type::OK;
+  }
+
+  return_type FlipperInterface::write(const rclcpp::Time & /*time*/, const rclcpp::Duration &){
+
+
+     flipper_comms_.set_flipper_values(
+      joint_velocities_command_[0],
+      joint_velocities_command_[1],
+      joint_velocities_command_[2],
+      joint_velocities_command_[3]
+    ); 
+
+    return return_type::OK;
+  }
+
+}  // namespace flipper_interface
+
+#include "pluginlib/class_list_macros.hpp"
+
+PLUGINLIB_EXPORT_CLASS(
+  flipper_interface::FlipperInterface, hardware_interface::SystemInterface)

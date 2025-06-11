@@ -1,0 +1,3 @@
+/home/resqbots/control_ws/install/lotti_control/lib/liblotti_control.so
+/home/resqbots/control_ws/install/lotti_control/share/lotti_control/cmake/export_lotti_controlExport.cmake
+/home/resqbots/control_ws/install/lotti_control/share/lotti_control/cmake/export_lotti_controlExport-noconfig.cmake

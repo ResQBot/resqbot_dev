@@ -1,0 +1,49 @@
+[0.016s] Invoking command in '/home/resqbots/control_ws/build/lotti_control': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/resqbots/control_ws/install/lotti_teleop:/home/resqbots/dev_ws/install/velocityListener:/home/resqbots/dev_ws/install/resqbot_flipper_interface:/home/resqbots/dev_ws/install/resqbot_drive_motor_controller:/home/resqbots/dev_ws/install/resqbot_drive_interface:/home/resqbots/dev_ws/install/resqbot_camera_arm:/home/resqbots/dev_ws/install/flipper_drive:/home/resqbots/dev_ws/install/chain_controller:/home/resqbots/dev_ws/install/camera_arm:/home/resqbots/dev_ws/install/botlaunch:/home/resqbots/dev_ws/install/bot_camera_arm:/home/resqbots/dev_ws/install/angle_publisher:/home/resqbots/ros2_ws/install/tele_op:/home/resqbots/ros2_ws/install/resqbot_flipper_interface:/home/resqbots/ros2_ws/install/resqbot_drive_interface:/home/resqbots/ros2_ws/install/camera_arm:/home/resqbots/ros2_ws/install/botlaunch:/home/resqbots/ros2_ws/install/bot_camera_arm:/opt/ros/humble /usr/bin/cmake --build /home/resqbots/control_ws/build/lotti_control -- -j8 -l8
+[0.084s] [100%] Built target lotti_control
+[0.096s] Invoked command in '/home/resqbots/control_ws/build/lotti_control' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/resqbots/control_ws/install/lotti_teleop:/home/resqbots/dev_ws/install/velocityListener:/home/resqbots/dev_ws/install/resqbot_flipper_interface:/home/resqbots/dev_ws/install/resqbot_drive_motor_controller:/home/resqbots/dev_ws/install/resqbot_drive_interface:/home/resqbots/dev_ws/install/resqbot_camera_arm:/home/resqbots/dev_ws/install/flipper_drive:/home/resqbots/dev_ws/install/chain_controller:/home/resqbots/dev_ws/install/camera_arm:/home/resqbots/dev_ws/install/botlaunch:/home/resqbots/dev_ws/install/bot_camera_arm:/home/resqbots/dev_ws/install/angle_publisher:/home/resqbots/ros2_ws/install/tele_op:/home/resqbots/ros2_ws/install/resqbot_flipper_interface:/home/resqbots/ros2_ws/install/resqbot_drive_interface:/home/resqbots/ros2_ws/install/camera_arm:/home/resqbots/ros2_ws/install/botlaunch:/home/resqbots/ros2_ws/install/bot_camera_arm:/opt/ros/humble /usr/bin/cmake --build /home/resqbots/control_ws/build/lotti_control -- -j8 -l8
+[0.107s] Invoking command in '/home/resqbots/control_ws/build/lotti_control': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/resqbots/control_ws/install/lotti_teleop:/home/resqbots/dev_ws/install/velocityListener:/home/resqbots/dev_ws/install/resqbot_flipper_interface:/home/resqbots/dev_ws/install/resqbot_drive_motor_controller:/home/resqbots/dev_ws/install/resqbot_drive_interface:/home/resqbots/dev_ws/install/resqbot_camera_arm:/home/resqbots/dev_ws/install/flipper_drive:/home/resqbots/dev_ws/install/chain_controller:/home/resqbots/dev_ws/install/camera_arm:/home/resqbots/dev_ws/install/botlaunch:/home/resqbots/dev_ws/install/bot_camera_arm:/home/resqbots/dev_ws/install/angle_publisher:/home/resqbots/ros2_ws/install/tele_op:/home/resqbots/ros2_ws/install/resqbot_flipper_interface:/home/resqbots/ros2_ws/install/resqbot_drive_interface:/home/resqbots/ros2_ws/install/camera_arm:/home/resqbots/ros2_ws/install/botlaunch:/home/resqbots/ros2_ws/install/bot_camera_arm:/opt/ros/humble /usr/bin/cmake --install /home/resqbots/control_ws/build/lotti_control
+[0.116s] -- Install configuration: ""
+[0.117s] -- Execute custom install script
+[0.117s] -- Up-to-date symlink: /home/resqbots/control_ws/install/lotti_control/share/lotti_control//lotti_control.xml
+[0.118s] -- Up-to-date symlink: /home/resqbots/control_ws/install/lotti_control/include/lotti_control/lotti_control/RS485_comms.bak
+[0.118s] -- Up-to-date symlink: /home/resqbots/control_ws/install/lotti_control/include/lotti_control/lotti_control/arm_interface.hpp
+[0.118s] -- Up-to-date symlink: /home/resqbots/control_ws/install/lotti_control/include/lotti_control/lotti_control/diffbot_system.hpp
+[0.118s] -- Up-to-date symlink: /home/resqbots/control_ws/install/lotti_control/include/lotti_control/lotti_control/flipper_comms.hpp
+[0.118s] -- Up-to-date symlink: /home/resqbots/control_ws/install/lotti_control/include/lotti_control/lotti_control/flipper_interface.hpp
+[0.118s] -- Up-to-date symlink: /home/resqbots/control_ws/install/lotti_control/include/lotti_control/lotti_control/visibility_control.h
+[0.118s] -- Up-to-date symlink: /home/resqbots/control_ws/install/lotti_control/include/lotti_control/lotti_control/wheel.hpp
+[0.118s] -- Up-to-date symlink: /home/resqbots/control_ws/install/lotti_control/share/lotti_control/launch/view_lotti.launch.py
+[0.119s] -- Up-to-date symlink: /home/resqbots/control_ws/install/lotti_control/share/lotti_control/ros2_control/Lotti.ros_control.xacro
+[0.119s] -- Up-to-date symlink: /home/resqbots/control_ws/install/lotti_control/share/lotti_control/urdf/Lotti_arm.xacro
+[0.119s] -- Up-to-date symlink: /home/resqbots/control_ws/install/lotti_control/share/lotti_control/urdf/Lotti_body.xacro
+[0.119s] -- Up-to-date symlink: /home/resqbots/control_ws/install/lotti_control/share/lotti_control/urdf/Lotti_gazebo_control.xacro
+[0.119s] -- Up-to-date symlink: /home/resqbots/control_ws/install/lotti_control/share/lotti_control/urdf/Lotti_main.urdf.xacro
+[0.119s] -- Up-to-date symlink: /home/resqbots/control_ws/install/lotti_control/share/lotti_control/urdf/urdf_inertial_shapes.xacro
+[0.120s] -- Up-to-date symlink: /home/resqbots/control_ws/install/lotti_control/share/lotti_control/urdf/urdf_materials.xacro
+[0.120s] -- Up-to-date symlink: /home/resqbots/control_ws/install/lotti_control/share/lotti_control/launch/lotti_controller.launch.py
+[0.120s] -- Up-to-date symlink: /home/resqbots/control_ws/install/lotti_control/share/lotti_control/config/lotti_controller.yaml
+[0.120s] -- Up-to-date symlink: /home/resqbots/control_ws/install/lotti_control/share/lotti_control/config/view_lotti.rviz
+[0.120s] -- Up-to-date symlink: /home/resqbots/control_ws/install/lotti_control/share/lotti_control/environment/library_path.sh
+[0.120s] -- Up-to-date symlink: /home/resqbots/control_ws/install/lotti_control/share/lotti_control/environment/library_path.dsv
+[0.121s] -- Up-to-date symlink: /home/resqbots/control_ws/install/lotti_control/share/ament_index/resource_index/package_run_dependencies/lotti_control
+[0.121s] -- Up-to-date symlink: /home/resqbots/control_ws/install/lotti_control/share/ament_index/resource_index/parent_prefix_path/lotti_control
+[0.121s] -- Up-to-date symlink: /home/resqbots/control_ws/install/lotti_control/share/lotti_control/environment/ament_prefix_path.sh
+[0.121s] -- Up-to-date symlink: /home/resqbots/control_ws/install/lotti_control/share/lotti_control/environment/ament_prefix_path.dsv
+[0.121s] -- Up-to-date symlink: /home/resqbots/control_ws/install/lotti_control/share/lotti_control/environment/path.sh
+[0.121s] -- Up-to-date symlink: /home/resqbots/control_ws/install/lotti_control/share/lotti_control/environment/path.dsv
+[0.122s] -- Up-to-date symlink: /home/resqbots/control_ws/install/lotti_control/share/lotti_control/local_setup.bash
+[0.122s] -- Up-to-date symlink: /home/resqbots/control_ws/install/lotti_control/share/lotti_control/local_setup.sh
+[0.122s] -- Up-to-date symlink: /home/resqbots/control_ws/install/lotti_control/share/lotti_control/local_setup.zsh
+[0.122s] -- Up-to-date symlink: /home/resqbots/control_ws/install/lotti_control/share/lotti_control/local_setup.dsv
+[0.122s] -- Symlinking: /home/resqbots/control_ws/install/lotti_control/share/lotti_control/package.dsv
+[0.134s] -- Up-to-date symlink: /home/resqbots/control_ws/install/lotti_control/share/ament_index/resource_index/packages/lotti_control
+[0.134s] -- Up-to-date symlink: /home/resqbots/control_ws/install/lotti_control/share/ament_index/resource_index/hardware_interface__pluginlib__plugin/lotti_control
+[0.134s] -- Up-to-date symlink: /home/resqbots/control_ws/install/lotti_control/share/lotti_control/cmake/ament_cmake_export_targets-extras.cmake
+[0.134s] -- Up-to-date symlink: /home/resqbots/control_ws/install/lotti_control/share/lotti_control/cmake/ament_cmake_export_dependencies-extras.cmake
+[0.134s] -- Up-to-date symlink: /home/resqbots/control_ws/install/lotti_control/share/lotti_control/cmake/lotti_controlConfig.cmake
+[0.134s] -- Up-to-date symlink: /home/resqbots/control_ws/install/lotti_control/share/lotti_control/cmake/lotti_controlConfig-version.cmake
+[0.135s] -- Up-to-date symlink: /home/resqbots/control_ws/install/lotti_control/share/lotti_control/package.xml
+[0.135s] -- Up-to-date: /home/resqbots/control_ws/install/lotti_control/lib/liblotti_control.so
+[0.135s] -- Up-to-date: /home/resqbots/control_ws/install/lotti_control/share/lotti_control/cmake/export_lotti_controlExport.cmake
+[0.135s] -- Up-to-date: /home/resqbots/control_ws/install/lotti_control/share/lotti_control/cmake/export_lotti_controlExport-noconfig.cmake
+[0.137s] Invoked command in '/home/resqbots/control_ws/build/lotti_control' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/resqbots/control_ws/install/lotti_teleop:/home/resqbots/dev_ws/install/velocityListener:/home/resqbots/dev_ws/install/resqbot_flipper_interface:/home/resqbots/dev_ws/install/resqbot_drive_motor_controller:/home/resqbots/dev_ws/install/resqbot_drive_interface:/home/resqbots/dev_ws/install/resqbot_camera_arm:/home/resqbots/dev_ws/install/flipper_drive:/home/resqbots/dev_ws/install/chain_controller:/home/resqbots/dev_ws/install/camera_arm:/home/resqbots/dev_ws/install/botlaunch:/home/resqbots/dev_ws/install/bot_camera_arm:/home/resqbots/dev_ws/install/angle_publisher:/home/resqbots/ros2_ws/install/tele_op:/home/resqbots/ros2_ws/install/resqbot_flipper_interface:/home/resqbots/ros2_ws/install/resqbot_drive_interface:/home/resqbots/ros2_ws/install/camera_arm:/home/resqbots/ros2_ws/install/botlaunch:/home/resqbots/ros2_ws/install/bot_camera_arm:/opt/ros/humble /usr/bin/cmake --install /home/resqbots/control_ws/build/lotti_control
