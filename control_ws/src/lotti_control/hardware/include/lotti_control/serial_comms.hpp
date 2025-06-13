@@ -59,23 +59,23 @@ class SerialComms{
     }
 
 
-/*     void set_arm_values(int pos[6], int vel[6]){
+    void set_arm_values(int pos[6], int vel[6]){
       std::stringstream ss;
       for (size_t i = 0; i < 6; i++){
         ss << pos[i] << ":" << vel[i] << "/";
       }
       ss << "\n";
       send_msg(ss.str());
-    } */
+    }
 
-    void set_arm_values(int pos[6]){
+/*     void set_arm_values(int pos[6]){
       std::stringstream ss;
       for (size_t i = 0; i < 6; i++){
         ss << pos[i] << "/";
       }
       ss << "\n";
       send_msg(ss.str());
-    }
+    } */
 
     void set_flipper_values(int FR, int FL, int RR, int RL){
       std::stringstream ss;

@@ -27,6 +27,7 @@ namespace arm_interface
     //get the Arduino ID from the ros2_control file
 //-
     device_ = info_.hardware_parameters["device"];
+    max_speed_ = std::stoi(info_.hardware_parameters["max_speed"]);
 
     // robot has 6 joints, 4 interfaces
     joint_positions_.assign(6, 0);
@@ -34,7 +35,7 @@ namespace arm_interface
     //joint_torques_.assign(6, 0);
     //joint_volts_.assign(6, 0);
     joint_positions_command_.assign(6, 0);
-    //joint_velocities_command_.assign(6, 0);
+    joint_velocities_command_.assign(6, 0);
 
 
 
@@ -83,10 +84,10 @@ namespace arm_interface
       command_interfaces.emplace_back(joint_name, "position", &joint_positions_command_[ind++]);
     }
 
-//    ind = 0;
-//    for (const auto &joint_name : joint_interfaces["velocity"]){
-//      command_interfaces.emplace_back(joint_name, "velocity", &joint_velocities_command_[ind++]);
-//    }
+    ind = 0;
+    for (const auto &joint_name : joint_interfaces["velocity"]){
+      command_interfaces.emplace_back(joint_name, "velocity", &joint_velocities_command_[ind++]);
+    }
 
     return command_interfaces;
   }
@@ -195,12 +196,11 @@ namespace arm_interface
 
     for (auto i = 0ul; i < joint_positions_command_.size(); i++){
       com_pos[i] = int((joint_positions_command_[i] * 2048) / 3.1416);
-      //com_vel[i] = int(abs(joint_velocities_command_[i] * 200));
+      com_vel[i] = int(abs(joint_velocities_command_[i] * max_speed_));
       
     }
 //-
-    arm_comms_.set_arm_values(com_pos);  
-    //arm_comms_.set_arm_values(com_pos, com_vel);  
+    arm_comms_.set_arm_values(com_pos, com_vel);  
 
     return return_type::OK;
   }

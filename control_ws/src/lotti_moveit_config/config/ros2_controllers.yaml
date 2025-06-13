@@ -21,5 +21,6 @@ arm_controller:
       - arm_link6_joint
     command_interfaces:
       - position
+      - velocity
     state_interfaces:
       - position
