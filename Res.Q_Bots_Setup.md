@@ -434,8 +434,6 @@ und dann builden
 	cd livox_ros_driver2
 	./build.sh humble
 
-Der Parameter ```humble``` funktioniert auch bei humble, das Package ist einfach etwas älter.
-
 Nach dem erfolgreichen Builden das Package sourcen:
 
 	source ~/livox_ws/install/setup.bash

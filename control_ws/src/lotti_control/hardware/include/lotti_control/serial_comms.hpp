@@ -59,10 +59,19 @@ class SerialComms{
     }
 
 
-    void set_arm_values(int pos[6], int vel[6]){
+/*     void set_arm_values(int pos[6], int vel[6]){
       std::stringstream ss;
       for (size_t i = 0; i < 6; i++){
         ss << pos[i] << ":" << vel[i] << "/";
+      }
+      ss << "\n";
+      send_msg(ss.str());
+    } */
+
+    void set_arm_values(int pos[6]){
+      std::stringstream ss;
+      for (size_t i = 0; i < 6; i++){
+        ss << pos[i] << "/";
       }
       ss << "\n";
       send_msg(ss.str());
@@ -78,6 +87,7 @@ class SerialComms{
   private:
     LibSerial::SerialPort serial_conn_;
     int timeout_ms_;
+    int vel = 0;
       
 };
 

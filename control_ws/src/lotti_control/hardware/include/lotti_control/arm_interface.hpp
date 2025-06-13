@@ -25,12 +25,10 @@
 
 using hardware_interface::return_type;
 
-namespace arm_interface
-{
+namespace arm_interface{
   using CallbackReturn = rclcpp_lifecycle::node_interfaces::LifecycleNodeInterface::CallbackReturn;
 
-  class HARDWARE_INTERFACE_PUBLIC ArmInterface : public hardware_interface::SystemInterface 
-  {
+  class HARDWARE_INTERFACE_PUBLIC ArmInterface : public hardware_interface::SystemInterface {
     public:
       CallbackReturn on_init(const hardware_interface::HardwareInfo & info) override;
 
@@ -49,24 +47,25 @@ namespace arm_interface
     
     protected:
       /// The size of this vector is (standard_interfaces_.size() x nr_joints)
-      std::vector<double> joint_velocities_command_;
+      //std::vector<double> joint_velocities_command_;
       std::vector<double> joint_positions_command_;
       std::vector<double> joint_positions_;
-      std::vector<double> joint_velocities_;
-      std::vector<double> joint_torques_;
-      std::vector<double> joint_volts_;
+      //std::vector<double> joint_velocities_;
+      //std::vector<double> joint_torques_;
+      //std::vector<double> joint_volts_;
 
       int com_pos[6] = {0, 0, 0, 0, 0, 0};
-      int com_vel[6] = {0, 0, 0, 0, 0, 0};
+      //int com_vel[6] = {0, 0, 0, 0, 0, 0};
 
       double state_pos_[6] = {0, 0, 0, 0, 0, 0};
-      double state_vel_[6] = {0, 0, 0, 0, 0, 0};
+      //double state_vel_[6] = {0, 0, 0, 0, 0, 0};
       
       std::string device_ = "";
       std::string arm_answer_;
       
       std::unordered_map<std::string, std::vector<std::string>> joint_interfaces = {
-        {"position", {}}, {"velocity", {}}, {"torque", {}}, {"volt", {}}};
+        {"position", {}}}; 
+        //, {"velocity", {}}, {"torque", {}}, {"volt", {}}};
 
       SerialComms arm_comms_;
   };

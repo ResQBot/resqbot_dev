@@ -30,11 +30,11 @@ namespace arm_interface
 
     // robot has 6 joints, 4 interfaces
     joint_positions_.assign(6, 0);
-    joint_velocities_.assign(6, 0);
-    joint_torques_.assign(6, 0);
-    joint_volts_.assign(6, 0);
+    //joint_velocities_.assign(6, 0);
+    //joint_torques_.assign(6, 0);
+    //joint_volts_.assign(6, 0);
     joint_positions_command_.assign(6, 0);
-    joint_velocities_command_.assign(6, 0);
+    //joint_velocities_command_.assign(6, 0);
 
 
 
@@ -57,20 +57,20 @@ namespace arm_interface
       state_interfaces.emplace_back(joint_name, "position", &joint_positions_[ind++]);
     }
 
-    ind = 0;
-    for (const auto &joint_name : joint_interfaces["velocity"]){
-      state_interfaces.emplace_back(joint_name, "velocity", &joint_velocities_[ind++]);
-    }
-
-    ind = 0;
-    for (const auto &joint_name : joint_interfaces["torque"]){
-      state_interfaces.emplace_back(joint_name, "torque", &joint_torques_[ind++]);
-    }
-
-    ind = 0;
-    for (const auto &joint_name : joint_interfaces["volt"]){
-      state_interfaces.emplace_back(joint_name, "volt", &joint_volts_[ind++]);
-    }
+//    ind = 0;
+//    for (const auto &joint_name : joint_interfaces["velocity"]){
+//      state_interfaces.emplace_back(joint_name, "velocity", &joint_velocities_[ind++]);
+//    }
+//
+//    ind = 0;
+//    for (const auto &joint_name : joint_interfaces["torque"]){
+//      state_interfaces.emplace_back(joint_name, "torque", &joint_torques_[ind++]);
+//    }
+//
+//    ind = 0;
+//    for (const auto &joint_name : joint_interfaces["volt"]){
+//      state_interfaces.emplace_back(joint_name, "volt", &joint_volts_[ind++]);
+//    }
 
     return state_interfaces;
   }
@@ -83,10 +83,10 @@ namespace arm_interface
       command_interfaces.emplace_back(joint_name, "position", &joint_positions_command_[ind++]);
     }
 
-    ind = 0;
-    for (const auto &joint_name : joint_interfaces["velocity"]){
-      command_interfaces.emplace_back(joint_name, "velocity", &joint_velocities_command_[ind++]);
-    }
+//    ind = 0;
+//    for (const auto &joint_name : joint_interfaces["velocity"]){
+//      command_interfaces.emplace_back(joint_name, "velocity", &joint_velocities_command_[ind++]);
+//    }
 
     return command_interfaces;
   }
@@ -154,13 +154,11 @@ namespace arm_interface
 
 //-
     std::string arm_answer_ = arm_comms_.read_msg();
-     RCLCPP_INFO(rclcpp::get_logger("ArmAnswer"), arm_answer_.c_str());
+    //RCLCPP_INFO(rclcpp::get_logger("ArmAnswer"), arm_answer_.c_str());
 
 
 //-
-    sscanf(arm_answer_.c_str(), "%lf:%lf/%lf:%lf/%lf:%lf/%lf:%lf/%lf:%lf/%lf:%lf/\n", 
-      &state_pos_[0],&state_vel_[0], &state_pos_[1],&state_vel_[1], &state_pos_[2],&state_vel_[2], 
-      &state_pos_[3],&state_vel_[3], &state_pos_[4],&state_vel_[4], &state_pos_[5],&state_vel_[5]); 
+    sscanf(arm_answer_.c_str(), "%lf/%lf/%lf/%lf/%lf/%lf/\n", &state_pos_[0], &state_pos_[1], &state_pos_[2], &state_pos_[3], &state_pos_[4], &state_pos_[5]); 
 
     std::stringstream arm_states_;
     std::stringstream arm_stat;
@@ -168,17 +166,17 @@ namespace arm_interface
     for (auto i = 0ul; i < joint_positions_.size(); i++){
 //-
       joint_positions_[i] = (state_pos_[i] * 3.1416) / 2048;
-      joint_velocities_[i] = state_vel_[i] / 200;
+      //joint_velocities_[i] = state_vel_[i] / 200;
 //-   
-      arm_states_ << joint_positions_[i] << ":" << joint_velocities_[i] << "/";
-      arm_stat << joint_positions_command_[i] << ":" << joint_velocities_command_[i] << "/";
+      //arm_states_ << joint_positions_[i] << ":" << joint_velocities_[i] << "/";
+      //arm_stat << joint_positions_command_[i] << ":" << joint_velocities_command_[i] << "/";
       // arm_stat << state_pos_[i] << "/";
     }
 
-    std::string log1 = arm_states_.str();
-    std::string log2 = arm_stat.str();
-    RCLCPP_INFO(rclcpp::get_logger("ArmStats"), log2.c_str());
-    RCLCPP_INFO(rclcpp::get_logger("ArmInterface"), log1.c_str());
+    //std::string log1 = arm_states_.str();
+    //std::string log2 = arm_stat.str();
+    //RCLCPP_INFO(rclcpp::get_logger("ArmStats"), log2.c_str());
+    //RCLCPP_INFO(rclcpp::get_logger("ArmInterface"), log1.c_str());
 
 
 
@@ -197,11 +195,12 @@ namespace arm_interface
 
     for (auto i = 0ul; i < joint_positions_command_.size(); i++){
       com_pos[i] = int((joint_positions_command_[i] * 2048) / 3.1416);
-      com_vel[i] = int(abs(joint_velocities_command_[i] * 200));
+      //com_vel[i] = int(abs(joint_velocities_command_[i] * 200));
       
     }
 //-
-    arm_comms_.set_arm_values(com_pos, com_vel);  
+    arm_comms_.set_arm_values(com_pos);  
+    //arm_comms_.set_arm_values(com_pos, com_vel);  
 
     return return_type::OK;
   }

@@ -25,10 +25,10 @@ arm_controller:
       - arm_link6_joint       
     command_interfaces:
       - position
-      - velocity
+      #- velocity
     state_interfaces:
       - position
-      - velocity
+      #- velocity
     allow_partial_joints_goal: true
     open_loop_control: false
     interpolate_from_desired_state: true

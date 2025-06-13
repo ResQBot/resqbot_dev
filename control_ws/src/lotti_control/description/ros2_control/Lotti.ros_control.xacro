@@ -8,66 +8,67 @@
     Uno3 usb-Arduino__www.arduino.cc__0043_03536383236351E0A111-if00
     Uno4 usb-Arduino__www.arduino.cc__0043_035363832363516043D2-if00
     Mega1 usb-Arduino__www.arduino.cc__0042_950353139353515082C1-if00
+    Mega2 usb-Arduino__www.arduino.cc__0042_8513030353835180A0B1-if00
     -->
 
     <ros2_control name="LottiArm" type="system">
         <hardware>
             <plugin>arm_interface/ArmInterface</plugin>    
-            <param name="device">/dev/serial/by-id/usb-Arduino__www.arduino.cc__0042_8513030353835180A0B1-if00</param>
+            <param name="device">/dev/serial/by-id/usb-Arduino__www.arduino.cc__0042_950353139353515082C1-if00</param>
         </hardware>
 
         <joint name="arm_link1_joint">
             <command_interface name="position"/>
-            <command_interface name="velocity"/>
+            <!-- <command_interface name="velocity"/> -->
             <state_interface name="position"/>
-            <state_interface name="velocity"/>
-            <state_interface name="torque"/>
-            <state_interface name="volt"/>
+            <!-- <state_interface name="velocity"/> -->
+            <!-- <state_interface name="torque"/> -->
+            <!-- <state_interface name="volt"/> -->
         </joint>
 
         <joint name="arm_link2_joint">
             <command_interface name="position"/>
-            <command_interface name="velocity"/>
+            <!-- <command_interface name="velocity"/> -->
             <state_interface name="position"/>
-            <state_interface name="velocity"/>
-            <state_interface name="torque"/>
-            <state_interface name="volt"/>
+            <!-- <state_interface name="velocity"/> -->
+            <!-- <state_interface name="torque"/> -->
+            <!-- <state_interface name="volt"/> -->
         </joint>
 
         <joint name="arm_link3_joint">
             <command_interface name="position"/>
-            <command_interface name="velocity"/>
+            <!-- <command_interface name="velocity"/> -->
             <state_interface name="position"/>
-            <state_interface name="velocity"/>
-            <state_interface name="torque"/>
-            <state_interface name="volt"/>
+            <!-- <state_interface name="velocity"/> -->
+            <!-- <state_interface name="torque"/> -->
+            <!-- <state_interface name="volt"/> -->
         </joint>
 
         <joint name="arm_link4_joint">
             <command_interface name="position"/>
-            <command_interface name="velocity"/>
+            <!-- <command_interface name="velocity"/> -->
             <state_interface name="position"/>
-            <state_interface name="velocity"/>
-            <state_interface name="torque"/>
-            <state_interface name="volt"/>
+            <!-- <state_interface name="velocity"/> -->
+            <!-- <state_interface name="torque"/> -->
+            <!-- <state_interface name="volt"/> -->
         </joint>
 
         <joint name="arm_link5_joint">
             <command_interface name="position"/>
-            <command_interface name="velocity"/>
+            <!-- <command_interface name="velocity"/> -->
             <state_interface name="position"/>
-            <state_interface name="velocity"/>
-            <state_interface name="torque"/>
-            <state_interface name="volt"/>
+            <!-- <state_interface name="velocity"/> -->
+            <!-- <state_interface name="torque"/> -->
+            <!-- <state_interface name="volt"/> -->
         </joint>
 
         <joint name="arm_link6_joint">
             <command_interface name="position"/>
-            <command_interface name="velocity"/>
+            <!-- <command_interface name="velocity"/> -->
             <state_interface name="position"/>
-            <state_interface name="velocity"/>
-            <state_interface name="torque"/>
-            <state_interface name="volt"/>
+            <!-- <state_interface name="velocity"/> -->
+            <!-- <state_interface name="torque"/> -->
+            <!-- <state_interface name="volt"/> -->
         </joint>
     </ros2_control>
 
