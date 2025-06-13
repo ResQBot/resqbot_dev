@@ -27,11 +27,11 @@ namespace arm_interface
     //get the Arduino ID from the ros2_control file
 //-
     device_ = info_.hardware_parameters["device"];
-    max_speed_ = std::stoi(info_.hardware_parameters["max_speed"]);
+    max_speed_ = std::stoi(info_.hardware_parameters["maxSpeed"]);
 
     // robot has 6 joints, 4 interfaces
     joint_positions_.assign(6, 0);
-    //joint_velocities_.assign(6, 0);
+    joint_velocities_.assign(6, 0);
     //joint_torques_.assign(6, 0);
     //joint_volts_.assign(6, 0);
     joint_positions_command_.assign(6, 0);
@@ -58,20 +58,20 @@ namespace arm_interface
       state_interfaces.emplace_back(joint_name, "position", &joint_positions_[ind++]);
     }
 
-//    ind = 0;
-//    for (const auto &joint_name : joint_interfaces["velocity"]){
-//      state_interfaces.emplace_back(joint_name, "velocity", &joint_velocities_[ind++]);
-//    }
-//
-//    ind = 0;
-//    for (const auto &joint_name : joint_interfaces["torque"]){
-//      state_interfaces.emplace_back(joint_name, "torque", &joint_torques_[ind++]);
-//    }
-//
-//    ind = 0;
-//    for (const auto &joint_name : joint_interfaces["volt"]){
-//      state_interfaces.emplace_back(joint_name, "volt", &joint_volts_[ind++]);
-//    }
+    ind = 0;
+    for (const auto &joint_name : joint_interfaces["velocity"]){
+      state_interfaces.emplace_back(joint_name, "velocity", &joint_velocities_[ind++]);
+    }
+
+/*     ind = 0;
+    for (const auto &joint_name : joint_interfaces["torque"]){
+      state_interfaces.emplace_back(joint_name, "torque", &joint_torques_[ind++]);
+    }
+
+    ind = 0;
+    for (const auto &joint_name : joint_interfaces["volt"]){
+      state_interfaces.emplace_back(joint_name, "volt", &joint_volts_[ind++]);
+    } */
 
     return state_interfaces;
   }
@@ -196,8 +196,7 @@ namespace arm_interface
 
     for (auto i = 0ul; i < joint_positions_command_.size(); i++){
       com_pos[i] = int((joint_positions_command_[i] * 2048) / 3.1416);
-      com_vel[i] = int(abs(joint_velocities_command_[i] * max_speed_));
-      
+      com_vel[i] = int(abs(joint_velocities_command_[i] * 200));
     }
 //-
     arm_comms_.set_arm_values(com_pos, com_vel);  

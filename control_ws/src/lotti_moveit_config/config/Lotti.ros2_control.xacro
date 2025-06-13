@@ -14,6 +14,7 @@
                 <state_interface name="position">
                   <param name="initial_value">${initial_positions['arm_link1_joint']}</param>
                 </state_interface>
+                <state_interface name="velocity"/>
             </joint>
             <joint name="arm_link2_joint">
                 <command_interface name="position"/>
@@ -21,6 +22,7 @@
                 <state_interface name="position">
                   <param name="initial_value">${initial_positions['arm_link2_joint']}</param>
                 </state_interface>
+                <state_interface name="velocity"/>
             </joint>
             <joint name="arm_link3_joint">
                 <command_interface name="position"/>
@@ -28,6 +30,7 @@
                 <state_interface name="position">
                   <param name="initial_value">${initial_positions['arm_link3_joint']}</param>
                 </state_interface>
+                <state_interface name="velocity"/>
             </joint>
             <joint name="arm_link4_joint">
                 <command_interface name="position"/>
@@ -35,6 +38,7 @@
                 <state_interface name="position">
                   <param name="initial_value">${initial_positions['arm_link4_joint']}</param>
                 </state_interface>
+                <state_interface name="velocity"/>
             </joint>
             <joint name="arm_link5_joint">
                 <command_interface name="position"/>
@@ -42,6 +46,7 @@
                 <state_interface name="position">
                   <param name="initial_value">${initial_positions['arm_link5_joint']}</param>
                 </state_interface>
+                <state_interface name="velocity"/>
             </joint>
             <joint name="arm_link6_joint">
                 <command_interface name="position"/>
@@ -49,6 +54,7 @@
                 <state_interface name="position">
                   <param name="initial_value">${initial_positions['arm_link6_joint']}</param>
                 </state_interface>
+                <state_interface name="velocity"/>
             </joint>
 
         </ros2_control>

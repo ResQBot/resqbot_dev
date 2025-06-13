@@ -50,9 +50,9 @@ namespace arm_interface{
       std::vector<double> joint_velocities_command_;
       std::vector<double> joint_positions_command_;
       std::vector<double> joint_positions_;
-      //std::vector<double> joint_velocities_;
-      //std::vector<double> joint_torques_;
-      //std::vector<double> joint_volts_;
+      std::vector<double> joint_velocities_;
+      // std::vector<double> joint_torques_;
+      // std::vector<double> joint_volts_;
 
       int com_pos[6] = {0, 0, 0, 0, 0, 0};
       int com_vel[6] = {0, 0, 0, 0, 0, 0};

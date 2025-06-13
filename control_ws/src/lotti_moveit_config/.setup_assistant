@@ -7,13 +7,14 @@ moveit_setup_assistant_config:
   package_settings:
     author_name: Res.Q Bots
     author_email: office@campus-robo.at
-    generated_timestamp: 1749817310
+    generated_timestamp: 1749818978
   control_xacro:
     command:
       - position
       - velocity
     state:
       - position
+      - velocity
   modified_urdf:
     xacros:
       - control_xacro
@@ -23,3 +24,4 @@ moveit_setup_assistant_config:
       - velocity
     state:
       - position
+      - velocity
