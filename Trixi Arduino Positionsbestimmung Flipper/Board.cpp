@@ -74,13 +74,13 @@ boolean TLE9879_Group::Board::sendMessageAndCheckAnswer(uint16_t command)
     if(answer == (command + CONFIRM_OFFSET)) return true;
     else
     {
-        Serial.print(F("WARNING: Board["));
-        Serial.print(boardnr);
-        Serial.print(F("]; Command["));
-        Serial.print(command, HEX);
-        Serial.print(F("]; Answer["));
-        Serial.print(answer, HEX);
-        Serial.println(F("]"));
+        //Serial.print(F("WARNING: Board["));
+        //Serial.print(boardnr);
+        //Serial.print(F("]; Command["));
+        //Serial.print(command, HEX);
+        //Serial.print(F("]; Answer["));
+        //Serial.print(answer, HEX);
+        //Serial.println(F("]"));
         return false;
     }
 }
@@ -519,14 +519,14 @@ boolean TLE9879_Group::Board::motorControl(uint8_t command)
 
     if(answer != MOTORCONTROL + command + CONFIRM_OFFSET)
      {
-        status->code = ERR_FAILED;
+        /*status->code = ERR_FAILED;
         Serial.print(F("WARNING: Board["));
         Serial.print(boardnr);
         Serial.print(F("]; Command["));
         Serial.print(command, HEX);
         Serial.print(F("]; Answer["));
         Serial.print(answer, HEX);
-        Serial.println(F("]"));
+        Serial.println(F("]"));*/
         return false;
     }
     return true;
@@ -564,7 +564,7 @@ boolean TLE9879_Group::Board::LEDOff(uint8_t led)
 
     if((led != LED_RED) && (led != LED_GREEN) && (led != LED_BLUE))
     {
-        Serial.println(F("Requested LED was not valid. Valid LEDs are: LED_RED, LED_GREEN, LED_BLUE"));
+        //Serial.println(F("Requested LED was not valid. Valid LEDs are: LED_RED, LED_GREEN, LED_BLUE"));
         return false;
     }
     boolean success = sendMessageAndCheckAnswer(LED_OFF + led);
@@ -581,12 +581,12 @@ int16_t TLE9879_Group::Board::getMotorspeed()
         return false;
     }
     
-    sendMessage(GETMOTORSPEED);
+    /*sendMessage(GETMOTORSPEED);
     act_speed = readAnswer();
     Serial.print(F("INFO: Speed Of Motor"));
     Serial.print(boardnr);
     Serial.print(F("->"));
-    Serial.println(act_speed);
+    Serial.println(act_speed);*/
     return true;
 }
 
@@ -668,9 +668,9 @@ boolean TLE9879_Group::Board::checkuint16val(uint8_t mode, uint8_t index, uint16
                         case 4: *data = 2; break;
                         case 8: *data = 3; break;
                         default:							
-                            Serial.print(F("Invalid value '"));
+                            /*Serial.print(F("Invalid value '"));
                             Serial.print(*data);
-                            Serial.println(F("' for BEMF_SPIKE_FILT. Valid values are: 1, 2, 4, 8"));
+                            Serial.println(F("' for BEMF_SPIKE_FILT. Valid values are: 1, 2, 4, 8"));*/
                             return false;
                     }
                     break;
@@ -683,9 +683,9 @@ boolean TLE9879_Group::Board::checkuint16val(uint8_t mode, uint8_t index, uint16
                         case 12: *data = 2; break;
                         case 16: *data = 3; break;
                         default:
-                            Serial.print(F("Invalid value '"));
+                            /*Serial.print(F("Invalid value '"));
                             Serial.print(*data);
-                            Serial.println(F("' for BEMF_BLANK_FILT. Valid values are: 3, 6, 8, 12, 16"));
+                            Serial.println(F("' for BEMF_BLANK_FILT. Valid values are: 3, 6, 8, 12, 16"));*/
                             return false;
                     }
                     break;
@@ -697,36 +697,36 @@ boolean TLE9879_Group::Board::checkuint16val(uint8_t mode, uint8_t index, uint16
                 case HALL_INIT_DUTY: // 0-100
                     if((*data < 0) || (*data > 100))
                     {
-                        Serial.print(F("Invalid value '"));
+                        /*Serial.print(F("Invalid value '"));
                         Serial.print(*data);
-                        Serial.println(F("' for HALL_INIT_DUTY. Valid values are: 0-100"));
+                        Serial.println(F("' for HALL_INIT_DUTY. Valid values are: 0-100"));*/
                         return false;
                     }
                     break;
                 case HALL_INPUT_A: // 0/1/2
                     if(*data > 2)
                     {
-                        Serial.print(F("Invalid value '"));
+                        /*Serial.print(F("Invalid value '"));
                         Serial.print(*data);
-                        Serial.println(F("' for HALL_INPUT_A. Valid values are: 0/1/2"));
+                        Serial.println(F("' for HALL_INPUT_A. Valid values are: 0/1/2"));*/
                         return false;
                     }
                     break;
                 case HALL_INPUT_B: // 0/1/2
                     if(*data > 2)
                     {
-                        Serial.print(F("Invalid value '"));
+                        /*Serial.print(F("Invalid value '"));
                         Serial.print(*data);
-                        Serial.println(F("' for HALL_INPUT_B. Valid values are: 0/1/2"));
+                        Serial.println(F("' for HALL_INPUT_B. Valid values are: 0/1/2"));*/
                         return false;
                     }
                     break;
                 case HALL_INPUT_C: // 0/1/2
                     if(*data > 2)
                     {
-                        Serial.print(F("Invalid value '"));
+                        /*Serial.print(F("Invalid value '"));
                         Serial.print(*data);
-                        Serial.println(F("' for HALL_INPUT_C. Valid values are: 0/1/2"));
+                        Serial.println(F("' for HALL_INPUT_C. Valid values are: 0/1/2"));*/
                         return false;
                     }
                     break;
@@ -737,18 +737,18 @@ boolean TLE9879_Group::Board::checkuint16val(uint8_t mode, uint8_t index, uint16
                 case HALL_DELAY_ANGLE: // 0-59
                     if(*data > 59)
                     {
-                        Serial.print(F("Invalid value '"));
+                        /*Serial.print(F("Invalid value '"));
                         Serial.print(*data);
-                        Serial.println(F("' for HALL_DELAY_ANGLE. Valid values are: 0-59"));
+                        Serial.println(F("' for HALL_DELAY_ANGLE. Valid values are: 0-59"));*/
                         return false;
                     }
                     break;
                 case HALL_DELAY_MINSPEED: // 0-2000
                     if(*data > 2000)
                     {
-                        Serial.print(F("Invalid value '"));
+                        /*Serial.print(F("Invalid value '"));
                         Serial.print(*data);
-                        Serial.println(F("' for HALL_DELAY_MINSPEED. Valid values are: 0-2000"));
+                        Serial.println(F("' for HALL_DELAY_MINSPEED. Valid values are: 0-2000"));*/
                         return false;
                     }
                     break;
@@ -760,18 +760,18 @@ boolean TLE9879_Group::Board::checkuint16val(uint8_t mode, uint8_t index, uint16
                 case FOC_SPEED_KP: // >0
                     if(*data == 0)
                     {
-                        Serial.print(F("Invalid value '"));
+                        /*Serial.print(F("Invalid value '"));
                         Serial.print(*data);
-                        Serial.println(F("' for FOC_SPEED_KP. Valid values are: >0"));
+                        Serial.println(F("' for FOC_SPEED_KP. Valid values are: >0"));*/
                         return false;
                     }
                     break;
                 case FOC_SPEED_KI: // >0
                     if(*data == 0)
                     {
-                        Serial.print(F("Invalid value '"));
+                        /*Serial.print(F("Invalid value '"));
                         Serial.print(*data);
-                        Serial.println(F("' for FOC_SPEED_KI. Valid values are: >0"));
+                        Serial.println(F("' for FOC_SPEED_KI. Valid values are: >0"));*/
                         return false;
                     }
                     break;
@@ -793,45 +793,45 @@ boolean TLE9879_Group::Board::checkfloatval(uint8_t mode, uint8_t index, float *
                 case BEMF_TIME_CONST_SPEED_FILT_TIME: // 0.01-1
                     if((*data < 0.01) || (*data > 1))
                     {
-                        Serial.print(F("Invalid value '"));
+                        /*Serial.print(F("Invalid value '"));
                         Serial.print(*data);
-                        Serial.println(F("' for BEMF_SPEED_FILT_TIME. Valid values are: 0.01-1."));
+                        Serial.println(F("' for BEMF_SPEED_FILT_TIME. Valid values are: 0.01-1."));*/
                         return false;
                     }
                     break;
                 case BEMF_START_SPEED_PWM_MIN: // 0-0.95
                     if((*data < 0) || (*data > 0.95))
                     {
-                        Serial.print(F("Invalid value '"));
+                        /*Serial.print(F("Invalid value '"));
                         Serial.print(*data);
-                        Serial.println(F("' for BEMF_START_SPEED_PWM_MIN_OFFSET. Valid values are: 0-0.95."));
+                        Serial.println(F("' for BEMF_START_SPEED_PWM_MIN_OFFSET. Valid values are: 0-0.95."));*/
                         return false;
                     }
                     break;
                 case BEMF_START_SPEED_PWM_MIN_OFFSET: // 0-0.95
                     if((*data < 0) || (*data > 0.95))
                     {
-                        Serial.print(F("Invalid value '"));
+                        /*Serial.print(F("Invalid value '"));
                         Serial.print(*data);
-                        Serial.println(F("' for BEMF_START_SPEED_PWM_MIN_OFFSET. Valid values are: 0-0.95."));
+                        Serial.println(F("' for BEMF_START_SPEED_PWM_MIN_OFFSET. Valid values are: 0-0.95."));*/
                         return false;
                     }
                     break;
                 case BEMF_SPEED_BEGIN_PWM_MIN: // 0-0.95
                     if((*data < 0) || (*data > 0.95))
                     {
-                        Serial.print(F("Invalid value '"));
+                        /*Serial.print(F("Invalid value '"));
                         Serial.print(*data);
-                        Serial.println(F("' for BEMF_RUN_SPEED_PWM_MIN. Valid values are: 0-0.95."));
+                        Serial.println(F("' for BEMF_RUN_SPEED_PWM_MIN. Valid values are: 0-0.95."));*/
                         return false;
                     }
                     break;
                 case BEMF_SPEED_PWM_MIN: // 0-0.95
                     if((*data < 0) || (*data > 0.95))
                     {
-                        Serial.print(F("Invalid value '"));
+                        /*Serial.print(F("Invalid value '"));
                         Serial.print(*data);
-                        Serial.println(F("' for BEMF_END_SPEED_PWM_MIN. Valid values are: 0-0.95."));
+                        Serial.println(F("' for BEMF_END_SPEED_PWM_MIN. Valid values are: 0-0.95."));*/
                         return false;
                     }
                     break;
@@ -844,36 +844,36 @@ boolean TLE9879_Group::Board::checkfloatval(uint8_t mode, uint8_t index, float *
                 case HALL_SPEED_IMIN: // 0-100
                     if((*data < 0) || (*data > 100))
                     {
-                        Serial.print(F("Invalid value '"));
+                        /*Serial.print(F("Invalid value '"));
                         Serial.print(*data);
-                        Serial.println(F("' for HALL_SPEED_IMIN. Valid values are: 0-100."));
+                        Serial.println(F("' for HALL_SPEED_IMIN. Valid values are: 0-100."));*/
                         return false;
                     }
                     break;
                 case HALL_SPEED_IMAX: // 0-100
                     if((*data < 0) || (*data > 100))
                     {
-                        Serial.print(F("Invalid value '"));
+                        /*Serial.print(F("Invalid value '"));
                         Serial.print(*data);
-                        Serial.println(F("' for HALL_SPEED_IMAX. Valid values are: 0-100."));
+                        Serial.println(F("' for HALL_SPEED_IMAX. Valid values are: 0-100."));*/
                         return false;
                     }
                     break;
                 case HALL_SPEED_PIMIN: // 0-100
                     if((*data < 0) || (*data > 100))
                     {
-                        Serial.print(F("Invalid value '"));
+                        /*Serial.print(F("Invalid value '"));
                         Serial.print(*data);
-                        Serial.println(F("' for HALL_SPEED_PIMIN. Valid values are: 0-100."));
+                        Serial.println(F("' for HALL_SPEED_PIMIN. Valid values are: 0-100."));*/
                         return false;
                     }
                     break;
                 case HALL_SPEED_PIMAX: // 0-100
                     if((*data < 0) || (*data > 100))
                     {
-                        Serial.print(F("Invalid value '"));
+                        /*Serial.print(F("Invalid value '"));
                         Serial.print(*data);
-                        Serial.println(F("' for HALL_SPEED_PIMAX. Valid values are: 0-100."));
+                        Serial.println(F("' for HALL_SPEED_PIMAX. Valid values are: 0-100."));*/
                         return false;
                     }
                     break;
@@ -886,54 +886,54 @@ boolean TLE9879_Group::Board::checkfloatval(uint8_t mode, uint8_t index, float *
                 case FOC_CUR_ADJUST: // 0.01-1
                     if((*data < 0.01) || (*data > 1))
                     {
-                        Serial.print(F("Invalid value '"));
+                        /*Serial.print(F("Invalid value '"));
                         Serial.print(*data);
-                        Serial.println(F("' for FOC_CUR_ADJUST. Valid values are: 0.01-1"));
+                        Serial.println(F("' for FOC_CUR_ADJUST. Valid values are: 0.01-1"));*/
                         return false;
                     }
                     break;
                 case FOC_FLUX_ADJUST: // 0.01-1
                     if((*data < 0.01) || (*data > 1))
                     {
-                        Serial.print(F("Invalid value '"));
+                        /*Serial.print(F("Invalid value '"));
                         Serial.print(*data);
-                        Serial.println(F("' for FOC_FLUX_ADJUST. Valid values are: 0.01-1"));
+                        Serial.println(F("' for FOC_FLUX_ADJUST. Valid values are: 0.01-1"));*/
                         return false;
                     }
                     break;
                 case FOC_SPEED_FILT_TIME: // 0.01-1
                     if((*data < 0.01) || (*data > 1))
                     {
-                        Serial.print(F("Invalid value '"));
+                        /*Serial.print(F("Invalid value '"));
                         Serial.print(*data);
-                        Serial.println(F("' for FOC_SPEED_FILT_TIME. Valid values are: 0.01-1"));
+                        Serial.println(F("' for FOC_SPEED_FILT_TIME. Valid values are: 0.01-1"));*/
                         return false;
                     }
                     break;
                 case FOC_MIN_NEG_REF_CUR: // <0
                     if(*data > 0)
                     {
-                        Serial.print(F("Invalid value '"));
+                        /*Serial.print(F("Invalid value '"));
                         Serial.print(*data);
-                        Serial.println(F("' for FOC_MIN_NEG_REF_CUR. Valid values are: <0"));
+                        Serial.println(F("' for FOC_MIN_NEG_REF_CUR. Valid values are: <0"));*/
                         return false;
                     }
                     break;
                 case FOC_MIN_CUR_SPEED: // <0
                     if(*data > 0)
                     {
-                        Serial.print(F("Invalid value '"));
+                        /*Serial.print(F("Invalid value '"));
                         Serial.print(*data);
-                        Serial.println(F("' for FOC_MIN_CUR_SPEED. Valid values are: <0"));
+                        Serial.println(F("' for FOC_MIN_CUR_SPEED. Valid values are: <0"));*/
                         return false;
                     }
                     break;
                 case FOC_MAX_NEG_REF_CUR: // <0
                     if(*data > 0)
                     {
-                        Serial.print(F("Invalid value '"));
+                        /*Serial.print(F("Invalid value '"));
                         Serial.print(*data);
-                        Serial.println(F("' for FOC_MAX_NEG_REF_CUR. Valid values are: <0"));
+                        Serial.println(F("' for FOC_MAX_NEG_REF_CUR. Valid values are: <0"));*/
                         return false;
                     }
                     break;
