@@ -6,8 +6,8 @@
 // CONFIGURATION
 // ————————————————————————
 static const uint8_t MAX_MOTORS = 4;
-static const uint8_t MOTOR_COUNT = 1;
-static const uint8_t BOARD_ID[MAX_MOTORS] = { BOARD1, BOARD2, BOARD3, BOARD4 };
+static const uint8_t MOTOR_COUNT = 4;
+static const uint8_t BOARD_ID[MAX_MOTORS] = { BOARD4, BOARD1, BOARD3, BOARD2 };
 
 static const int16_t STOP_DELAY    = 10;    // ms per motor stop
 static const int16_t REFRESH_RATE  = 20;    // Hz
@@ -15,16 +15,14 @@ static const int16_t DELAY_MS = (1000 / REFRESH_RATE) - (STOP_DELAY * MOTOR_COUN
 
 static const int16_t DEFAULT_SPEED = 2900;  // motor‐speed scale
 
-static const unsigned long PRINT_INTERVAL  = 50;  // ms
+// static const unsigned long PRINT_INTERVAL  = 500UL;  // ms
 static const unsigned long POLL_INTERVAL   = 1;   // ms
 static const unsigned long ERROR_THRESHOLD = 1000; // ms
 
 // mechanical / Hall constants
 static const int16_t FHBLDC_HALL_POLE_PAIRS = 2;
-static const float GEAR_RATIO = 44.0f;
-static const float WORM_GEAR_RATIO = 10.0f;
-static const float TOTAL_GEAR_RATIO = 44.0f;
-static const float CORRECTION_FACTOR = 1.2f;
+static const float TOTAL_GEAR_RATIO = 120.0f; // relevant für Annäherung an tatsächliche Position
+static const float CORRECTION_FACTOR = 1.2f; // relevant für Annäherung an tatsächliche Position
 static const float STEP_ELEC = 60.0f;
 static const float STEP_CORR = STEP_ELEC * CORRECTION_FACTOR;
 static const float TRANS_PER_OUT = (360.0f * FHBLDC_HALL_POLE_PAIRS * TOTAL_GEAR_RATIO) / STEP_CORR;
@@ -128,18 +126,6 @@ void handleTransition(int i, float currAng, unsigned long now)
 }
 
 
-
-
-bool checkMotorError(int i, unsigned long now) {
-  if (now - lastTransTime[i] > ERROR_THRESHOLD) {
-    Serial.print("[ERROR] Motor ");
-    Serial.print(i);
-    Serial.println(" stuck or no hall!");
-    return true;
-  }
-  return false;
-}
-
 float computeTotalElec(int i, unsigned long now) {
   float frac = 0;
   if (transPeriod[i] > 0) {
@@ -159,14 +145,33 @@ float motorToOutputAngle(float mech) {
   return mech / TOTAL_GEAR_RATIO;
 }
 
+void calibrateFlippersTo355(unsigned long now) {
+  float targetAngle = 355.0f;
+  for (int i = 0; i < MOTOR_COUNT; ++i) {
+    float mech = targetAngle;
+    if (i == 2 || i == 3) {
+      mech = -targetAngle;  // Spiegelung für RL/RR
+    }
+
+    float elec = mech * TOTAL_GEAR_RATIO;                      // mech → motor
+    elec *= FHBLDC_HALL_POLE_PAIRS;                            // motor → elektrisch
+    float totalSteps = elec / STEP_CORR;                       // elektrisch → Schritte
+    reportCount[i] = (int32_t)round(totalSteps);               // Schrittzähler setzen
+    transPeriod[i] = 0;
+    lastTransTime[i] = now;
+    lastIdx[i] = -1;
+  }
+}
+
+
 // ————————————————————————
 // SETUP
 // ————————————————————————
 void setup() {
-  Serial.begin(9600);
-  while (!Serial);
-
-  shields = new TLE9879_Group(1);
+    Serial.begin(115200);
+    while (!Serial) ;           
+ 
+  shields = new TLE9879_Group(4);
 
   // initialize each enabled board
   for (int i = 0; i < MOTOR_COUNT; i++) {
@@ -202,16 +207,23 @@ void setup() {
 // MAIN LOOP
 // ————————————————————————
 void loop() {
-  // 1) Read serial for up to MOTOR_COUNT values
+
   if (Serial.available()) {
-    String rx = Serial.readStringUntil('\n');
-    int tmp[MAX_MOTORS] = {0,0,0,0};
-    sscanf(rx.c_str(), "FL%iFR%iRL%iRR%i",
-           &tmp[0], &tmp[1], &tmp[2], &tmp[3]);
-    for (int i = 0; i < MOTOR_COUNT; i++) {
-      commanded[i] = tmp[i];
-    }
+  String rx = Serial.readStringUntil('\n');
+  rx.trim();
+
+  if (rx == "flipper355") {
+    calibrateFlippersTo355(millis());
+    return;
   }
+
+  int tmp[MAX_MOTORS] = {0,0,0,0};
+  sscanf(rx.c_str(), "FL%iFR%iRL%iRR%i",
+         &tmp[0], &tmp[1], &tmp[2], &tmp[3]);
+  for (int i = 0; i < MOTOR_COUNT; i++) {
+    commanded[i] = tmp[i];
+  }
+}
 
   // 2) Flip rear motors (indices 2 and 3) if they exist
   for (int i = 2; i < MOTOR_COUNT; i++) {
@@ -250,35 +262,35 @@ void loop() {
                   : -1.0f;
       if (ang >= 0) {
         handleTransition(i, ang, now);
-        checkMotorError(i, now);
+        // checkMotorError(i, now);
       }
     }
   }
-    // b) print every PRINT_INTERVAL
-    static unsigned long lastPrintTimeGlobal = 0;               // NEW
+  
+  String line = "";
 
-  if (now - lastPrintTimeGlobal >= PRINT_INTERVAL) {
-    lastPrintTimeGlobal = now;
+  for (int i = 0; i < MOTOR_COUNT; ++i) {
+    float elec = computeTotalElec(i, now);
+    float mech = electricalToMechanical(elec);
+    float out  = motorToOutputAngle(mech);
 
-    String line = "";
-
-
-    for (int i = 0; i < MOTOR_COUNT; ++i) {
-      float elec = computeTotalElec(i, now);
-      float mech = electricalToMechanical(elec);
-      float out  = motorToOutputAngle(mech);
-      const char* pfx = (i == 0 ? "FL"
-                       : i == 1 ? "FR"
-                       : i == 2 ? "RL"
-                                : "RR");
-
-        line += pfx;
-        line += String((int)round(normalizeAngle(out)));    
+    if (i == 2 || i == 3) {
+      out = -out;  // Spiegelung der hinteren Flipper
     }
 
-    Serial.println(line); // print the whole line once
+    const char* pfx = (i == 0 ? "FL"
+                    : i == 1 ? "FR"
+                    : i == 2 ? "RL"
+                              : "RR");
+
+    line += pfx;
+    line += String((int)round(normalizeAngle(out)));
   }
 
+  Serial.println(line);
+  Serial.flush();
+
   // 6) enforce overall loop rate
-  delay(DELAY_MS);
+  // delay(DELAY_MS);
 }
+
