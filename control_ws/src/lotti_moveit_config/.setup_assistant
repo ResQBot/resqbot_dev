@@ -7,7 +7,7 @@ moveit_setup_assistant_config:
   package_settings:
     author_name: Res.Q Bots
     author_email: office@campus-robo.at
-    generated_timestamp: 1749818978
+    generated_timestamp: 1749826873
   control_xacro:
     command:
       - position

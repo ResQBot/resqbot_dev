@@ -1,6 +1,16 @@
 cmake_minimum_required(VERSION 3.16)
 project(lotti_control LANGUAGES CXX)
 
+# Include and lib directories
+include_directories(include)
+link_directories(lib)
+
+set(UNITREE_SDK_LIB "${CMAKE_CURRENT_SOURCE_DIR}/lib/libUnitreeMotorSDK_Linux64.so")
+
+# Output path for libraries
+set(LIBRARY_OUTPUT_PATH "../lib")
+
+# Compiler options for GCC/Clang
 if(CMAKE_CXX_COMPILER_ID MATCHES "(GNU|Clang)")
   add_compile_options(-Wall -Wextra)
 endif()
@@ -16,70 +26,47 @@ set(HW_IF_INCLUDE_DEPENDS
   rclcpp
 )
 
-#set(CONTROLLER_INCLUDE_DEPENDS
-#  pluginlib
-#  rcpputils
-#  controller_interface
-#  realtime_tools
-#  sensor_msgs
-#)
-
 # find dependencies
 find_package(backward_ros REQUIRED)
 find_package(ament_cmake REQUIRED)
+
 foreach(Dependency IN ITEMS ${HW_IF_INCLUDE_DEPENDS})
   find_package(${Dependency} REQUIRED)
 endforeach()
-#foreach(Dependency IN ITEMS ${CONTROLLER_INCLUDE_DEPENDS})
-#  find_package(${Dependency} REQUIRED)
-#endforeach()
 
-## COMPILE
-#add_executable(arm_teleop lotti_control/arm_teleop.cpp)
-#add_executable(chain_controller lotti_control/chain_controller.cpp)
-#add_executable(flipper_controller lotti_control/flipper_controller.cpp)
-
-
-#ament_target_dependencies(
-#  send_trajectory PUBLIC
-#  ${REF_GEN_INCLUDE_DEPENDS}
-#)
-
+# Your main shared library
 add_library(
   lotti_control
   SHARED
   hardware/arm_interface.cpp
   hardware/flipper_interface.cpp
   hardware/diffbot_system.cpp
+  hardware/drive_interface.cpp
 )
 
+# Compile features and includes
 target_compile_features(lotti_control PUBLIC cxx_std_17)
 target_include_directories(lotti_control PUBLIC
 $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/hardware/include>
-#$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/controller/include>
 $<INSTALL_INTERFACE:include/lotti_control>
 )
+
 ament_target_dependencies(
   lotti_control PUBLIC
   ${HW_IF_INCLUDE_DEPENDS}
-#  ${CONTROLLER_INCLUDE_DEPENDS}
 )
-target_link_libraries(lotti_control PUBLIC serial)
+
+# Link serial and Unitree SDK library
+target_link_libraries(lotti_control PUBLIC serial ${UNITREE_SDK_LIB})
 
 # Export hardware plugins
 pluginlib_export_plugin_description_file(hardware_interface lotti_control.xml)
-# Export controller plugins
-#pluginlib_export_plugin_description_file(controller_interface lotti_control.xml)
 
 # INSTALL
 install(
   DIRECTORY hardware/include/
   DESTINATION include/lotti_control
 )
-#install(
-#  DIRECTORY controller/include/
-#  DESTINATION include/lotti_control
-#)
 install(
   DIRECTORY description/launch description/urdf description/srdf description/meshes
   DESTINATION share/lotti_control/description
@@ -91,6 +78,10 @@ install(
 install(
   DIRECTORY bringup/launch bringup/config
   DESTINATION share/lotti_control
+)
+install(
+  DIRECTORY lib
+  DESTINATION lib
 )
 
 install(TARGETS lotti_control

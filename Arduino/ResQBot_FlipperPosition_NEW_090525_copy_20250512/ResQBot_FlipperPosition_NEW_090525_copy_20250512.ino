@@ -85,8 +85,7 @@ float getClockwiseElectricalAngle(uint16_t hallPattern) {
 // ————————————————————————
 // TRANSITION HANDLING
 // ————————————————————————
-void handleTransition(int i, float currAng, unsigned long now)
-{
+void handleTransition(int i, float currAng, unsigned long now){
     // 0°, 60°, … 300° → Index 0 … 5
     int8_t currIdx = (int)round(currAng / STEP_ELEC) % 6;
 
@@ -163,9 +162,6 @@ float motorToOutputAngle(float mech) {
 // SETUP
 // ————————————————————————
 void setup() {
-  Serial.begin(115200);
-  while (!Serial);
-
   shields = new TLE9879_Group(1);
 
   // initialize each enabled board

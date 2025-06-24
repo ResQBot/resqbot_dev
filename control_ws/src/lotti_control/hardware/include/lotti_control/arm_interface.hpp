@@ -58,7 +58,7 @@ namespace arm_interface{
       int com_vel[6] = {0, 0, 0, 0, 0, 0};
 
       double state_pos_[6] = {0, 0, 0, 0, 0, 0};
-      //double state_vel_[6] = {0, 0, 0, 0, 0, 0};
+      double state_vel_[6] = {0, 0, 0, 0, 0, 0};
       
       std::string device_ = "";
       int max_speed_ = 0;

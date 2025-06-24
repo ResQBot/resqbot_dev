@@ -11,11 +11,11 @@
     Mega2 usb-Arduino__www.arduino.cc__0042_8513030353835180A0B1-if00
     -->
 
-    <ros2_control name="LottiArm" type="system">
+    <ros2_control name="LottiArm" type="system" rw_rate="20">
         <hardware>
             <plugin>arm_interface/ArmInterface</plugin>    
             <param name="device">/dev/serial/by-id/usb-Arduino__www.arduino.cc__0042_950353139353515082C1-if00</param>
-            <param name="maxSpeed">200</param>
+            <param name="maxSpeed">2000</param>
         </hardware>
 
         <joint name="arm_link1_joint">
@@ -106,9 +106,12 @@
     
      <ros2_control name="LottiChains" type="system">
         <hardware>
-            <plugin>diffdrive_lotti/DiffDriveLotti</plugin>
-            <param name="left_wheel_name">left_chain_joint</param>
-            <param name="right_wheel_name">right_chain_joint</param>
+            <plugin>drive_interface/DriveInterface</plugin>
+            <param name="device">/dev/serial/by-id/usb-FTDI_USB__-__Serial_Converter_FTA2HIEQ-if00-port0</param>
+            <param name="max_speed">6</param>
+            <!-- <plugin>diffdrive_lotti/DiffDriveLotti</plugin> -->
+            <!-- <param name="left_wheel_name">left_chain_joint</param> -->
+            <!-- <param name="right_wheel_name">right_chain_joint</param> -->
         </hardware>
         <joint name="left_chain_joint">
             <command_interface name="velocity"/>

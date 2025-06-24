@@ -25,8 +25,7 @@ namespace arm_interface
     }
     
     //get the Arduino ID from the ros2_control file
-//-
-    device_ = info_.hardware_parameters["device"];
+//-    device_ = info_.hardware_parameters["device"];
     max_speed_ = std::stoi(info_.hardware_parameters["maxSpeed"]);
 
     // robot has 6 joints, 4 interfaces
@@ -95,14 +94,10 @@ namespace arm_interface
   hardware_interface::CallbackReturn ArmInterface::on_configure(const rclcpp_lifecycle::State & previous_state){
     RCLCPP_INFO(rclcpp::get_logger("ArmInterface"), "Configuring ...please wait...");
 
-//-
-    if (arm_comms_.connected()){
-//-
-      arm_comms_.disconnect();
-//-
-    }
-//-
-    arm_comms_.connect(device_); 
+//-    if (arm_comms_.connected()){
+//-      arm_comms_.disconnect();
+//-    }
+//-    arm_comms_.connect(device_); 
 
     RCLCPP_INFO(rclcpp::get_logger("ArmInterface"), "Successfully configured!");
     return hardware_interface::CallbackReturn::SUCCESS;
@@ -111,12 +106,9 @@ namespace arm_interface
    hardware_interface::CallbackReturn ArmInterface::on_cleanup(const rclcpp_lifecycle::State & previous_state){
     RCLCPP_INFO(rclcpp::get_logger("ArmInterface"), "Cleaning up ...please wait...");
 
-//-
-    if (arm_comms_.connected()){
-//-
-      arm_comms_.disconnect();
-//-
-    } 
+//-    if (arm_comms_.connected()){
+//-      arm_comms_.disconnect();
+//-    } 
 
     RCLCPP_INFO(rclcpp::get_logger("ArmInterface"), "Successfully cleaned up!");
     return hardware_interface::CallbackReturn::SUCCESS;
@@ -125,13 +117,20 @@ namespace arm_interface
   hardware_interface::CallbackReturn ArmInterface::on_activate(const rclcpp_lifecycle::State & previous_state){
     RCLCPP_INFO(rclcpp::get_logger("ArmInterface"), "Activating ...please wait...");
 
-//-
-    if (!arm_comms_.connected()){
-//-
-      RCLCPP_ERROR(rclcpp::get_logger("ArmInterface"), "Arduino not connected");
-//-
-      return hardware_interface::CallbackReturn::ERROR;
-//-
+//-    if (!arm_comms_.connected()){
+//-      RCLCPP_ERROR(rclcpp::get_logger("ArmInterface"), "Arduino not connected");
+//-      return hardware_interface::CallbackReturn::ERROR;
+//-    }
+
+    std::string arm_answer_ = arm_comms_.read_msg();
+
+    sscanf(arm_answer_.c_str(), "%lf:%lf/%lf:%lf/%lf:%lf/%lf:%lf/%lf:%lf/%lf:%lf", 
+      &state_pos_[0], &state_vel_[0], &state_pos_[1], &state_vel_[1], &state_pos_[2], &state_vel_[2], 
+      &state_pos_[3], &state_vel_[3], &state_pos_[4], &state_vel_[4], &state_pos_[5], &state_vel_[5]); 
+
+    for (auto i = 0ul; i < joint_positions_.size(); i++){
+      joint_positions_[i] = (state_pos_[i] * 3.1416) / 2048;
+      joint_velocities_[i] = state_vel_[i] / 2000;
     }
 
     RCLCPP_INFO(rclcpp::get_logger("ArmInterface"), "Successfully activated!");
@@ -146,61 +145,67 @@ namespace arm_interface
   }
 
   return_type ArmInterface::read(const rclcpp::Time & /*time*/, const rclcpp::Duration & period){
-//-
-    if (!arm_comms_.connected()){
-//-
-      return hardware_interface::return_type::ERROR;
-//-
-    }
+//-    if (!arm_comms_.connected()){
+//-      return hardware_interface::return_type::ERROR;
+//-    }
 
-//-
-    std::string arm_answer_ = arm_comms_.read_msg();
+//-    std::string arm_answer_ = arm_comms_.read_msg();
     //RCLCPP_INFO(rclcpp::get_logger("ArmAnswer"), arm_answer_.c_str());
 
 
-//-
-    sscanf(arm_answer_.c_str(), "%lf/%lf/%lf/%lf/%lf/%lf/\n", &state_pos_[0], &state_pos_[1], &state_pos_[2], &state_pos_[3], &state_pos_[4], &state_pos_[5]); 
+//-    sscanf(arm_answer_.c_str(), "%lf:%lf/%lf:%lf/%lf:%lf/%lf:%lf/%lf:%lf/%lf:%lf", 
+//-      &state_pos_[0], &state_vel_[0], &state_pos_[1], &state_vel_[1], &state_pos_[2], &state_vel_[2], 
+//-      &state_pos_[3], &state_vel_[3], &state_pos_[4], &state_vel_[4], &state_pos_[5], &state_vel_[5]); 
 
     std::stringstream arm_states_;
     std::stringstream arm_stat;
-//-
-    for (auto i = 0ul; i < joint_positions_.size(); i++){
-//-
-      joint_positions_[i] = (state_pos_[i] * 3.1416) / 2048;
-      //joint_velocities_[i] = state_vel_[i] / 200;
-//-   
+//-    for (auto i = 0ul; i < joint_positions_.size(); i++){
+//-      joint_positions_[i] = (state_pos_[i] * 3.1416) / 2048;
+//-      joint_velocities_[i] = state_vel_[i] / 2000;
+  
       //arm_states_ << joint_positions_[i] << ":" << joint_velocities_[i] << "/";
       //arm_stat << joint_positions_command_[i] << ":" << joint_velocities_command_[i] << "/";
-      // arm_stat << state_pos_[i] << "/";
-    }
+      //arm_stat << state_pos_[i] << ":" << state_vel_[i] <<"/";
+//-    }
 
-    //std::string log1 = arm_states_.str();
+    std::string log1 = arm_states_.str();
     //std::string log2 = arm_stat.str();
     //RCLCPP_INFO(rclcpp::get_logger("ArmStats"), log2.c_str());
     //RCLCPP_INFO(rclcpp::get_logger("ArmInterface"), log1.c_str());
 
 
 
-//+    for (auto i = 0ul; i < joint_positions_.size(); i++){
-//+      joint_positions_[i] = joint_positions_command_[i];
-//+    }
+//+
+    for (auto i = 0ul; i < joint_positions_.size(); i++){
+//+
+      joint_positions_[i] = joint_positions_command_[i];
+//+
+    }
 
-//+    for (auto i = 0ul; i < joint_velocities_command_.size(); i++){
-//+      joint_velocities_[i] = joint_velocities_command_[i];
-//+    }
+//+
+    for (auto i = 0ul; i < joint_velocities_command_.size(); i++){
+//+
+      joint_velocities_[i] = joint_velocities_command_[i];
+//+
+    }
 
     return return_type::OK;
   }
 
   return_type ArmInterface::write(const rclcpp::Time &, const rclcpp::Duration &){
 
+    std::stringstream arm_coms;
+
     for (auto i = 0ul; i < joint_positions_command_.size(); i++){
       com_pos[i] = int((joint_positions_command_[i] * 2048) / 3.1416);
-      com_vel[i] = int(abs(joint_velocities_command_[i] * 200));
+      com_vel[i] = int(abs(joint_velocities_command_[i] * 2000));
+    
+      arm_coms << com_pos[i] << ":" << com_vel[i] << "/";
     }
-//-
-    arm_comms_.set_arm_values(com_pos, com_vel);  
+//-    arm_comms_.set_arm_values(com_pos, com_vel);  
 
+    std::string com_log = arm_coms.str();
+    //RCLCPP_INFO(rclcpp::get_logger("Commands"), com_log.c_str());
     return return_type::OK;
   }
 

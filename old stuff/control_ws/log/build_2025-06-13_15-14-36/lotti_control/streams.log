@@ -1,0 +1,85 @@
+[0.048s] Invoking command in '/home/paul/resqbot_dev/control_ws/build/lotti_control': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/paul/resqbot_dev/control_ws/install/lotti_teleop:/home/paul/resqbot_dev/control_ws/install/learning_tf2_py:/home/paul/moveit2_ws/src/install/moveit_configs_utils:/home/paul/moveit2_ws/src/install/launch_param_builder:/opt/ros/humble /usr/bin/cmake --build /home/paul/resqbot_dev/control_ws/build/lotti_control -- -j8 -l8
+[0.236s] [35m[1mConsolidate compiler generated dependencies of target lotti_control[0m
+[0.323s] [ 25%] [32mBuilding CXX object CMakeFiles/lotti_control.dir/hardware/arm_interface.cpp.o[0m
+[5.001s] [01m[K/home/paul/resqbot_dev/control_ws/src/lotti_control/hardware/arm_interface.cpp:[m[K In member function ‘[01m[Kvirtual hardware_interface::CallbackReturn arm_interface::ArmInterface::on_configure(const rclcpp_lifecycle::State&)[m[K’:
+[5.002s] [01m[K/home/paul/resqbot_dev/control_ws/src/lotti_control/hardware/arm_interface.cpp:95:97:[m[K [01;35m[Kwarning: [m[Kunused parameter ‘[01m[Kprevious_state[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-parameter-Wunused-parameter]8;;[m[K]
+[5.002s]    95 |   hardware_interface::CallbackReturn ArmInterface::on_configure([01;35m[Kconst rclcpp_lifecycle::State & previous_state[m[K){
+[5.002s]       |                                                                 [01;35m[K~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~[m[K
+[5.003s] [01m[K/home/paul/resqbot_dev/control_ws/src/lotti_control/hardware/arm_interface.cpp:[m[K In member function ‘[01m[Kvirtual hardware_interface::CallbackReturn arm_interface::ArmInterface::on_cleanup(const rclcpp_lifecycle::State&)[m[K’:
+[5.003s] [01m[K/home/paul/resqbot_dev/control_ws/src/lotti_control/hardware/arm_interface.cpp:111:96:[m[K [01;35m[Kwarning: [m[Kunused parameter ‘[01m[Kprevious_state[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-parameter-Wunused-parameter]8;;[m[K]
+[5.003s]   111 |    hardware_interface::CallbackReturn ArmInterface::on_cleanup([01;35m[Kconst rclcpp_lifecycle::State & previous_state[m[K){
+[5.003s]       |                                                                [01;35m[K~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~[m[K
+[5.005s] [01m[K/home/paul/resqbot_dev/control_ws/src/lotti_control/hardware/arm_interface.cpp:[m[K In member function ‘[01m[Kvirtual hardware_interface::CallbackReturn arm_interface::ArmInterface::on_activate(const rclcpp_lifecycle::State&)[m[K’:
+[5.005s] [01m[K/home/paul/resqbot_dev/control_ws/src/lotti_control/hardware/arm_interface.cpp:125:96:[m[K [01;35m[Kwarning: [m[Kunused parameter ‘[01m[Kprevious_state[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-parameter-Wunused-parameter]8;;[m[K]
+[5.005s]   125 |   hardware_interface::CallbackReturn ArmInterface::on_activate([01;35m[Kconst rclcpp_lifecycle::State & previous_state[m[K){
+[5.006s]       |                                                                [01;35m[K~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~[m[K
+[5.006s] [01m[K/home/paul/resqbot_dev/control_ws/src/lotti_control/hardware/arm_interface.cpp:[m[K In member function ‘[01m[Kvirtual hardware_interface::CallbackReturn arm_interface::ArmInterface::on_deactivate(const rclcpp_lifecycle::State&)[m[K’:
+[5.007s] [01m[K/home/paul/resqbot_dev/control_ws/src/lotti_control/hardware/arm_interface.cpp:141:98:[m[K [01;35m[Kwarning: [m[Kunused parameter ‘[01m[Kprevious_state[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-parameter-Wunused-parameter]8;;[m[K]
+[5.007s]   141 |   hardware_interface::CallbackReturn ArmInterface::on_deactivate([01;35m[Kconst rclcpp_lifecycle::State & previous_state[m[K){
+[5.008s]       |                                                                  [01;35m[K~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~[m[K
+[5.008s] [01m[K/home/paul/resqbot_dev/control_ws/src/lotti_control/hardware/arm_interface.cpp:[m[K In member function ‘[01m[Kvirtual hardware_interface::return_type arm_interface::ArmInterface::read(const rclcpp::Time&, const rclcpp::Duration&)[m[K’:
+[5.008s] [01m[K/home/paul/resqbot_dev/control_ws/src/lotti_control/hardware/arm_interface.cpp:148:90:[m[K [01;35m[Kwarning: [m[Kunused parameter ‘[01m[Kperiod[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-parameter-Wunused-parameter]8;;[m[K]
+[5.008s]   148 |   return_type ArmInterface::read(const rclcpp::Time & /*time*/, [01;35m[Kconst rclcpp::Duration & period[m[K){
+[5.009s]       |                                                                 [01;35m[K~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~[m[K
+[7.281s] [ 50%] [32m[1mLinking CXX shared library liblotti_control.so[0m
+[7.791s] [100%] Built target lotti_control
+[7.832s] Invoked command in '/home/paul/resqbot_dev/control_ws/build/lotti_control' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/paul/resqbot_dev/control_ws/install/lotti_teleop:/home/paul/resqbot_dev/control_ws/install/learning_tf2_py:/home/paul/moveit2_ws/src/install/moveit_configs_utils:/home/paul/moveit2_ws/src/install/launch_param_builder:/opt/ros/humble /usr/bin/cmake --build /home/paul/resqbot_dev/control_ws/build/lotti_control -- -j8 -l8
+[7.879s] Invoking command in '/home/paul/resqbot_dev/control_ws/build/lotti_control': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/paul/resqbot_dev/control_ws/install/lotti_teleop:/home/paul/resqbot_dev/control_ws/install/learning_tf2_py:/home/paul/moveit2_ws/src/install/moveit_configs_utils:/home/paul/moveit2_ws/src/install/launch_param_builder:/opt/ros/humble /usr/bin/cmake --install /home/paul/resqbot_dev/control_ws/build/lotti_control
+[7.907s] -- Install configuration: ""
+[7.908s] -- Execute custom install script
+[7.908s] -- Up-to-date symlink: /home/paul/resqbot_dev/control_ws/install/lotti_control/share/lotti_control//lotti_control.xml
+[7.909s] -- Up-to-date symlink: /home/paul/resqbot_dev/control_ws/install/lotti_control/include/lotti_control/lotti_control/arm_interface.hpp
+[7.909s] -- Up-to-date symlink: /home/paul/resqbot_dev/control_ws/install/lotti_control/include/lotti_control/lotti_control/diffbot_system.hpp
+[7.909s] -- Up-to-date symlink: /home/paul/resqbot_dev/control_ws/install/lotti_control/include/lotti_control/lotti_control/flipper_interface.hpp
+[7.910s] -- Up-to-date symlink: /home/paul/resqbot_dev/control_ws/install/lotti_control/include/lotti_control/lotti_control/serial_comms.hpp
+[7.910s] -- Up-to-date symlink: /home/paul/resqbot_dev/control_ws/install/lotti_control/include/lotti_control/lotti_control/visibility_control.h
+[7.910s] -- Up-to-date symlink: /home/paul/resqbot_dev/control_ws/install/lotti_control/include/lotti_control/lotti_control/wheel.hpp
+[7.910s] -- Up-to-date symlink: /home/paul/resqbot_dev/control_ws/install/lotti_control/share/lotti_control/description/launch/view_lotti.launch.py
+[7.911s] -- Up-to-date symlink: /home/paul/resqbot_dev/control_ws/install/lotti_control/share/lotti_control/description/urdf/Lotti.urdf.xacro
+[7.911s] -- Up-to-date symlink: /home/paul/resqbot_dev/control_ws/install/lotti_control/share/lotti_control/description/urdf/Lotti_arm.xacro
+[7.911s] -- Up-to-date symlink: /home/paul/resqbot_dev/control_ws/install/lotti_control/share/lotti_control/description/urdf/Lotti_body.xacro
+[7.912s] -- Up-to-date symlink: /home/paul/resqbot_dev/control_ws/install/lotti_control/share/lotti_control/description/urdf/Lotti_lidar.xacro
+[7.912s] -- Up-to-date symlink: /home/paul/resqbot_dev/control_ws/install/lotti_control/share/lotti_control/description/urdf/urdf_inertial_shapes.xacro
+[7.912s] -- Up-to-date symlink: /home/paul/resqbot_dev/control_ws/install/lotti_control/share/lotti_control/description/urdf/urdf_materials.xacro
+[7.912s] -- Up-to-date symlink: /home/paul/resqbot_dev/control_ws/install/lotti_control/share/lotti_control/description/srdf/Lotti.srdf.xacro
+[7.912s] -- Up-to-date symlink: /home/paul/resqbot_dev/control_ws/install/lotti_control/share/lotti_control/description/srdf/lotti_arm_group.xacro
+[7.913s] -- Up-to-date symlink: /home/paul/resqbot_dev/control_ws/install/lotti_control/share/lotti_control/description/srdf/lotti_body_group.xacro
+[7.913s] -- Up-to-date symlink: /home/paul/resqbot_dev/control_ws/install/lotti_control/share/lotti_control/description/meshes/arm_base_link.STL
+[7.914s] -- Up-to-date symlink: /home/paul/resqbot_dev/control_ws/install/lotti_control/share/lotti_control/description/meshes/arm_link1_link.STL
+[7.914s] -- Up-to-date symlink: /home/paul/resqbot_dev/control_ws/install/lotti_control/share/lotti_control/description/meshes/arm_link2_link.STL
+[7.914s] -- Up-to-date symlink: /home/paul/resqbot_dev/control_ws/install/lotti_control/share/lotti_control/description/meshes/arm_link3_link.STL
+[7.915s] -- Up-to-date symlink: /home/paul/resqbot_dev/control_ws/install/lotti_control/share/lotti_control/description/meshes/arm_link4_link.STL
+[7.915s] -- Up-to-date symlink: /home/paul/resqbot_dev/control_ws/install/lotti_control/share/lotti_control/description/meshes/arm_link5_link.STL
+[7.915s] -- Up-to-date symlink: /home/paul/resqbot_dev/control_ws/install/lotti_control/share/lotti_control/description/meshes/arm_link6_link.STL
+[7.915s] -- Up-to-date symlink: /home/paul/resqbot_dev/control_ws/install/lotti_control/share/lotti_control/ros2_control/Lotti.ros_control.xacro
+[7.916s] -- Up-to-date symlink: /home/paul/resqbot_dev/control_ws/install/lotti_control/share/lotti_control/launch/full.launch.py
+[7.916s] -- Up-to-date symlink: /home/paul/resqbot_dev/control_ws/install/lotti_control/share/lotti_control/launch/operator.launch.py
+[7.917s] -- Up-to-date symlink: /home/paul/resqbot_dev/control_ws/install/lotti_control/share/lotti_control/launch/robot.launch.py
+[7.917s] -- Up-to-date symlink: /home/paul/resqbot_dev/control_ws/install/lotti_control/share/lotti_control/config/Lotti_controllers.yaml
+[7.917s] -- Up-to-date symlink: /home/paul/resqbot_dev/control_ws/install/lotti_control/share/lotti_control/config/lotti_servo_config.yaml
+[7.917s] -- Up-to-date symlink: /home/paul/resqbot_dev/control_ws/install/lotti_control/share/lotti_control/config/view_lotti.rviz
+[7.917s] -- Up-to-date symlink: /home/paul/resqbot_dev/control_ws/install/lotti_control/share/lotti_control/environment/library_path.sh
+[7.918s] -- Up-to-date symlink: /home/paul/resqbot_dev/control_ws/install/lotti_control/share/lotti_control/environment/library_path.dsv
+[7.918s] -- Up-to-date symlink: /home/paul/resqbot_dev/control_ws/install/lotti_control/share/ament_index/resource_index/package_run_dependencies/lotti_control
+[7.918s] -- Up-to-date symlink: /home/paul/resqbot_dev/control_ws/install/lotti_control/share/ament_index/resource_index/parent_prefix_path/lotti_control
+[7.919s] -- Up-to-date symlink: /home/paul/resqbot_dev/control_ws/install/lotti_control/share/lotti_control/environment/ament_prefix_path.sh
+[7.919s] -- Up-to-date symlink: /home/paul/resqbot_dev/control_ws/install/lotti_control/share/lotti_control/environment/ament_prefix_path.dsv
+[7.919s] -- Up-to-date symlink: /home/paul/resqbot_dev/control_ws/install/lotti_control/share/lotti_control/environment/path.sh
+[7.919s] -- Up-to-date symlink: /home/paul/resqbot_dev/control_ws/install/lotti_control/share/lotti_control/environment/path.dsv
+[7.920s] -- Up-to-date symlink: /home/paul/resqbot_dev/control_ws/install/lotti_control/share/lotti_control/local_setup.bash
+[7.920s] -- Up-to-date symlink: /home/paul/resqbot_dev/control_ws/install/lotti_control/share/lotti_control/local_setup.sh
+[7.920s] -- Up-to-date symlink: /home/paul/resqbot_dev/control_ws/install/lotti_control/share/lotti_control/local_setup.zsh
+[7.920s] -- Up-to-date symlink: /home/paul/resqbot_dev/control_ws/install/lotti_control/share/lotti_control/local_setup.dsv
+[7.921s] -- Symlinking: /home/paul/resqbot_dev/control_ws/install/lotti_control/share/lotti_control/package.dsv
+[7.960s] -- Up-to-date symlink: /home/paul/resqbot_dev/control_ws/install/lotti_control/share/ament_index/resource_index/packages/lotti_control
+[7.961s] -- Up-to-date symlink: /home/paul/resqbot_dev/control_ws/install/lotti_control/share/ament_index/resource_index/hardware_interface__pluginlib__plugin/lotti_control
+[7.961s] -- Up-to-date symlink: /home/paul/resqbot_dev/control_ws/install/lotti_control/share/lotti_control/cmake/ament_cmake_export_targets-extras.cmake
+[7.961s] -- Up-to-date symlink: /home/paul/resqbot_dev/control_ws/install/lotti_control/share/lotti_control/cmake/ament_cmake_export_dependencies-extras.cmake
+[7.962s] -- Up-to-date symlink: /home/paul/resqbot_dev/control_ws/install/lotti_control/share/lotti_control/cmake/lotti_controlConfig.cmake
+[7.962s] -- Up-to-date symlink: /home/paul/resqbot_dev/control_ws/install/lotti_control/share/lotti_control/cmake/lotti_controlConfig-version.cmake
+[7.962s] -- Up-to-date symlink: /home/paul/resqbot_dev/control_ws/install/lotti_control/share/lotti_control/package.xml
+[7.962s] -- Installing: /home/paul/resqbot_dev/control_ws/install/lotti_control/lib/liblotti_control.so
+[7.966s] -- Set runtime path of "/home/paul/resqbot_dev/control_ws/install/lotti_control/lib/liblotti_control.so" to ""
+[7.967s] -- Up-to-date: /home/paul/resqbot_dev/control_ws/install/lotti_control/share/lotti_control/cmake/export_lotti_controlExport.cmake
+[7.967s] -- Up-to-date: /home/paul/resqbot_dev/control_ws/install/lotti_control/share/lotti_control/cmake/export_lotti_controlExport-noconfig.cmake
+[7.972s] Invoked command in '/home/paul/resqbot_dev/control_ws/build/lotti_control' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/paul/resqbot_dev/control_ws/install/lotti_teleop:/home/paul/resqbot_dev/control_ws/install/learning_tf2_py:/home/paul/moveit2_ws/src/install/moveit_configs_utils:/home/paul/moveit2_ws/src/install/launch_param_builder:/opt/ros/humble /usr/bin/cmake --install /home/paul/resqbot_dev/control_ws/build/lotti_control

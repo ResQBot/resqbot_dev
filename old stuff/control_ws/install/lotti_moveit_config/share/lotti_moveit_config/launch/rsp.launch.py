@@ -1,0 +1,1 @@
+/home/paul/resqbot_dev/control_ws/src/lotti_moveit_config/launch/rsp.launch.py

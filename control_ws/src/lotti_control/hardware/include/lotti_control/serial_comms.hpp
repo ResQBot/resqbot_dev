@@ -83,6 +83,12 @@ class SerialComms{
       send_msg(ss.str());
     }
 
+    void calibrate_flippers(){
+      std::stringstream ss;
+      ss << "flipper355" << "\n";
+      send_msg(ss.str());
+    }
+
 
   private:
     LibSerial::SerialPort serial_conn_;

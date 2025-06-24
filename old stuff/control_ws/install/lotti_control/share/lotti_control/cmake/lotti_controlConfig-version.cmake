@@ -1,0 +1,1 @@
+/home/paul/resqbot_dev/control_ws/build/lotti_control/ament_cmake_core/lotti_controlConfig-version.cmake

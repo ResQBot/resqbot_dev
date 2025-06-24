@@ -448,7 +448,8 @@ class TeleOp(Node):
 
         self.__chain_publisher = self.create_publisher(
             Twist,
-            'chain_controller/cmd_vel_unstamped',
+            'cmd/drive',
+            #'chain_controller/cmd_vel_unstamped',
             1
         )
 

@@ -1,0 +1,32 @@
+[0.032s] Invoking command in '/home/paul/resqbot_dev/control_ws/build/lotti_flipper_controller': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/paul/resqbot_dev/control_ws/install/lotti_teleop:/home/paul/resqbot_dev/control_ws/install/learning_tf2_py:/home/paul/moveit2_ws/src/install/moveit_configs_utils:/home/paul/moveit2_ws/src/install/launch_param_builder:/opt/ros/humble /usr/bin/cmake --build /home/paul/resqbot_dev/control_ws/build/lotti_flipper_controller -- -j8 -l8
+[0.205s] [100%] Built target lotti_flipper_controller
+[0.239s] Invoked command in '/home/paul/resqbot_dev/control_ws/build/lotti_flipper_controller' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/paul/resqbot_dev/control_ws/install/lotti_teleop:/home/paul/resqbot_dev/control_ws/install/learning_tf2_py:/home/paul/moveit2_ws/src/install/moveit_configs_utils:/home/paul/moveit2_ws/src/install/launch_param_builder:/opt/ros/humble /usr/bin/cmake --build /home/paul/resqbot_dev/control_ws/build/lotti_flipper_controller -- -j8 -l8
+[0.262s] Invoking command in '/home/paul/resqbot_dev/control_ws/build/lotti_flipper_controller': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/paul/resqbot_dev/control_ws/install/lotti_teleop:/home/paul/resqbot_dev/control_ws/install/learning_tf2_py:/home/paul/moveit2_ws/src/install/moveit_configs_utils:/home/paul/moveit2_ws/src/install/launch_param_builder:/opt/ros/humble /usr/bin/cmake --install /home/paul/resqbot_dev/control_ws/build/lotti_flipper_controller
+[0.280s] -- Install configuration: ""
+[0.280s] -- Execute custom install script
+[0.280s] -- Up-to-date symlink: /home/paul/resqbot_dev/control_ws/install/lotti_flipper_controller/share/lotti_flipper_controller//lotti_flipper_controller.xml
+[0.281s] -- Up-to-date symlink: /home/paul/resqbot_dev/control_ws/install/lotti_flipper_controller/include/lotti_flipper_controller/lotti_flipper_controller/flipper_controller.hpp
+[0.281s] -- Up-to-date symlink: /home/paul/resqbot_dev/control_ws/install/lotti_flipper_controller/share/lotti_flipper_controller/environment/library_path.sh
+[0.281s] -- Up-to-date symlink: /home/paul/resqbot_dev/control_ws/install/lotti_flipper_controller/share/lotti_flipper_controller/environment/library_path.dsv
+[0.281s] -- Up-to-date symlink: /home/paul/resqbot_dev/control_ws/install/lotti_flipper_controller/share/ament_index/resource_index/package_run_dependencies/lotti_flipper_controller
+[0.282s] -- Up-to-date symlink: /home/paul/resqbot_dev/control_ws/install/lotti_flipper_controller/share/ament_index/resource_index/parent_prefix_path/lotti_flipper_controller
+[0.282s] -- Up-to-date symlink: /home/paul/resqbot_dev/control_ws/install/lotti_flipper_controller/share/lotti_flipper_controller/environment/ament_prefix_path.sh
+[0.282s] -- Up-to-date symlink: /home/paul/resqbot_dev/control_ws/install/lotti_flipper_controller/share/lotti_flipper_controller/environment/ament_prefix_path.dsv
+[0.282s] -- Up-to-date symlink: /home/paul/resqbot_dev/control_ws/install/lotti_flipper_controller/share/lotti_flipper_controller/environment/path.sh
+[0.283s] -- Up-to-date symlink: /home/paul/resqbot_dev/control_ws/install/lotti_flipper_controller/share/lotti_flipper_controller/environment/path.dsv
+[0.283s] -- Up-to-date symlink: /home/paul/resqbot_dev/control_ws/install/lotti_flipper_controller/share/lotti_flipper_controller/local_setup.bash
+[0.283s] -- Up-to-date symlink: /home/paul/resqbot_dev/control_ws/install/lotti_flipper_controller/share/lotti_flipper_controller/local_setup.sh
+[0.283s] -- Up-to-date symlink: /home/paul/resqbot_dev/control_ws/install/lotti_flipper_controller/share/lotti_flipper_controller/local_setup.zsh
+[0.283s] -- Up-to-date symlink: /home/paul/resqbot_dev/control_ws/install/lotti_flipper_controller/share/lotti_flipper_controller/local_setup.dsv
+[0.284s] -- Symlinking: /home/paul/resqbot_dev/control_ws/install/lotti_flipper_controller/share/lotti_flipper_controller/package.dsv
+[0.306s] -- Up-to-date symlink: /home/paul/resqbot_dev/control_ws/install/lotti_flipper_controller/share/ament_index/resource_index/packages/lotti_flipper_controller
+[0.307s] -- Up-to-date symlink: /home/paul/resqbot_dev/control_ws/install/lotti_flipper_controller/share/ament_index/resource_index/controller_interface__pluginlib__plugin/lotti_flipper_controller
+[0.307s] -- Up-to-date symlink: /home/paul/resqbot_dev/control_ws/install/lotti_flipper_controller/share/lotti_flipper_controller/cmake/ament_cmake_export_targets-extras.cmake
+[0.307s] -- Up-to-date symlink: /home/paul/resqbot_dev/control_ws/install/lotti_flipper_controller/share/lotti_flipper_controller/cmake/ament_cmake_export_dependencies-extras.cmake
+[0.308s] -- Up-to-date symlink: /home/paul/resqbot_dev/control_ws/install/lotti_flipper_controller/share/lotti_flipper_controller/cmake/lotti_flipper_controllerConfig.cmake
+[0.308s] -- Up-to-date symlink: /home/paul/resqbot_dev/control_ws/install/lotti_flipper_controller/share/lotti_flipper_controller/cmake/lotti_flipper_controllerConfig-version.cmake
+[0.308s] -- Up-to-date symlink: /home/paul/resqbot_dev/control_ws/install/lotti_flipper_controller/share/lotti_flipper_controller/package.xml
+[0.309s] -- Up-to-date: /home/paul/resqbot_dev/control_ws/install/lotti_flipper_controller/lib/liblotti_flipper_controller.so
+[0.309s] -- Up-to-date: /home/paul/resqbot_dev/control_ws/install/lotti_flipper_controller/share/lotti_flipper_controller/cmake/export_lotti_flipper_controllerExport.cmake
+[0.310s] -- Up-to-date: /home/paul/resqbot_dev/control_ws/install/lotti_flipper_controller/share/lotti_flipper_controller/cmake/export_lotti_flipper_controllerExport-noconfig.cmake
+[0.315s] Invoked command in '/home/paul/resqbot_dev/control_ws/build/lotti_flipper_controller' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/paul/resqbot_dev/control_ws/install/lotti_teleop:/home/paul/resqbot_dev/control_ws/install/learning_tf2_py:/home/paul/moveit2_ws/src/install/moveit_configs_utils:/home/paul/moveit2_ws/src/install/launch_param_builder:/opt/ros/humble /usr/bin/cmake --install /home/paul/resqbot_dev/control_ws/build/lotti_flipper_controller

@@ -414,7 +414,7 @@ Nach die Umsetzung des Befehls ```make -j``` dauert extrem lang und beim Raspber
 
 ssh aufbauen, dann 
 	
-	cd livox_ws/src/Livox-SDK2/build
+	cd ~/livox_ws/src/Livox-SDK2/build
 
 **weiter builden**
 
@@ -550,7 +550,7 @@ Jetzt hat das Gerät eine **statische IP** von 192.168.1.50 im **Ethernet**. Das
 Jetzt muss in der **Konfig-Datei** die **IP Adresse** festgehalten werden.
 Der Befehlt
 
-	nano livox_ws/install/livox_ros_driver2/share/livox_ros_driver2/config/MID360_config.json 
+	nano ~/livox_ws/install/livox_ros_driver2/share/livox_ros_driver2/config/MID360_config.json 
 
 zeigt die ```MID360_config.json``` Datei. Sie sieht nach der ersten Installation wie folgt aus:
 

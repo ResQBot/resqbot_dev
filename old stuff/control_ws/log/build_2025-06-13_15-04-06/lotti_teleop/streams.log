@@ -1,0 +1,26 @@
+[2.271s] Invoking command in '/home/paul/resqbot_dev/control_ws/build/lotti_teleop': PYTHONPATH=/home/paul/resqbot_dev/control_ws/build/lotti_teleop/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/paul/resqbot_dev/control_ws/install/lotti_teleop/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py develop --editable --build-directory /home/paul/resqbot_dev/control_ws/build/lotti_teleop/build --no-deps symlink_data
+[2.834s] running develop
+[3.163s] running egg_info
+[3.164s] creating lotti_teleop.egg-info
+[3.164s] writing lotti_teleop.egg-info/PKG-INFO
+[3.165s] writing dependency_links to lotti_teleop.egg-info/dependency_links.txt
+[3.165s] writing entry points to lotti_teleop.egg-info/entry_points.txt
+[3.166s] writing requirements to lotti_teleop.egg-info/requires.txt
+[3.166s] writing top-level names to lotti_teleop.egg-info/top_level.txt
+[3.167s] writing manifest file 'lotti_teleop.egg-info/SOURCES.txt'
+[3.171s] reading manifest file 'lotti_teleop.egg-info/SOURCES.txt'
+[3.172s] writing manifest file 'lotti_teleop.egg-info/SOURCES.txt'
+[3.177s] running build_ext
+[3.178s] Creating /home/paul/resqbot_dev/control_ws/install/lotti_teleop/lib/python3.10/site-packages/lotti-teleop.egg-link (link to .)
+[3.181s] Installing teleop script to /home/paul/resqbot_dev/control_ws/install/lotti_teleop/lib/lotti_teleop
+[3.183s] 
+[3.183s] Installed /home/paul/resqbot_dev/control_ws/build/lotti_teleop
+[3.184s] running symlink_data
+[3.184s] creating /home/paul/resqbot_dev/control_ws/install/lotti_teleop/share/ament_index
+[3.184s] creating /home/paul/resqbot_dev/control_ws/install/lotti_teleop/share/ament_index/resource_index
+[3.184s] creating /home/paul/resqbot_dev/control_ws/install/lotti_teleop/share/ament_index/resource_index/packages
+[3.188s] symbolically linking /home/paul/resqbot_dev/control_ws/build/lotti_teleop/resource/lotti_teleop -> /home/paul/resqbot_dev/control_ws/install/lotti_teleop/share/ament_index/resource_index/packages
+[3.188s] symbolically linking /home/paul/resqbot_dev/control_ws/build/lotti_teleop/package.xml -> /home/paul/resqbot_dev/control_ws/install/lotti_teleop/share/lotti_teleop
+[3.188s] creating /home/paul/resqbot_dev/control_ws/install/lotti_teleop/share/lotti_teleop/launch
+[3.189s] symbolically linking /home/paul/resqbot_dev/control_ws/build/lotti_teleop/launch/teleop_launch.py -> /home/paul/resqbot_dev/control_ws/install/lotti_teleop/share/lotti_teleop/launch/
+[3.288s] Invoked command in '/home/paul/resqbot_dev/control_ws/build/lotti_teleop' returned '0': PYTHONPATH=/home/paul/resqbot_dev/control_ws/build/lotti_teleop/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/paul/resqbot_dev/control_ws/install/lotti_teleop/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py develop --editable --build-directory /home/paul/resqbot_dev/control_ws/build/lotti_teleop/build --no-deps symlink_data

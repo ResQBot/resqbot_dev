@@ -1,0 +1,138 @@
+controller_manager:
+  ros__parameters:
+    update_rate: 100 #Hz
+
+    joint_state_broadcaster:
+      type: joint_state_broadcaster/JointStateBroadcaster 
+
+    arm_controller:
+      type: joint_trajectory_controller/JointTrajectoryController
+
+    flipper_controller:
+      type: flipper_controller/FlipperController
+
+    chain_controller:
+      type: diff_drive_controller/DiffDriveController
+
+arm_controller:
+  ros__parameters:
+    joints:
+      - arm_link1_joint
+      - arm_link2_joint
+      - arm_link3_joint
+      - arm_link4_joint
+      - arm_link5_joint
+      - arm_link6_joint       
+    command_interfaces:
+      - position
+      - velocity
+    state_interfaces:
+      - position
+      #- velocity
+    allow_partial_joints_goal: true
+    open_loop_control: false
+    interpolate_from_desired_state: true
+    set_last_command_interface_value_as_state_on_activation: false
+    allow_nonzero_velocity_at_trajectory_end: true
+    constraints:
+      stopped_velocity_tolerance: 0.01
+      goal_time: 0.05
+#    gains:
+#      arm_link1_joint:
+#        p: 0.5
+#        i: 0.0
+#        d: 0.0
+#        i_clamp: 0.0
+#        ff_velocity_scale: 1.0
+#      arm_link2_joint:
+#        p: 0.5
+#        i: 0.0
+#        d: 0.0
+#        i_clamp: 0.0
+#        ff_velocity_scale: 1.0
+#      arm_link3_joint:
+#        p: 0.5
+#        i: 0.0
+#        d: 0.0
+#        i_clamp: 0.0
+#        ff_velocity_scale: 1.0
+#      arm_link4_joint:
+#        p: 0.5
+#        i: 0.0
+#        d: 0.0
+#        i_clamp: 0.0
+#        ff_velocity_scale: 1.0
+#      arm_link5_joint:
+#        p: 0.5
+#        i: 0.0
+#        d: 0.0
+#        i_clamp: 0.0
+#        ff_velocity_scale: 1.0
+#      arm_link6_joint:
+#        p: 0.5
+#        i: 0.0
+#        d: 0.0
+#        i_clamp: 0.0
+#        ff_velocity_scale: 1.0 
+
+
+flipper_controller:
+  ros__parameters:
+    joints:
+    - flipper_fr_joint
+    - flipper_fl_joint
+    - flipper_rr_joint
+    - flipper_rl_joint
+    command_interfaces:
+    - velocity
+    state_interfaces:
+    - position
+
+
+chain_controller:
+  ros__parameters:
+    left_wheel_names: ["left_chain_joint"]
+    right_wheel_names: ["right_chain_joint"]
+
+    wheel_separation: 0.192
+    wheels_per_side: 1  # actually 2, but both are controlled by 1 signal
+    wheel_radius: 0.10
+
+    wheel_separation_multiplier: 1.0
+    left_wheel_radius_multiplier: 1.0
+    right_wheel_radius_multiplier: 1.0
+
+    #publish_rate: 50.0
+    odom_frame_id: odom
+    base_frame_id: body_link
+    pose_covariance_diagonal : [0.001, 0.001, 0.001, 0.001, 0.001, 0.01]
+    twist_covariance_diagonal: [0.001, 0.001, 0.001, 0.001, 0.001, 0.01]
+
+    open_loop: true
+    enable_odom_tf: false
+
+    cmd_vel_timeout: 0.5
+    #publish_limited_velocity: true
+    use_stamped_vel: false
+    #velocity_rolling_window_size: 10
+
+    # Velocity and acceleration limits
+    # Whenever a min_* is unspecified, default to -max_*
+    linear.x.has_velocity_limits: true
+    linear.x.has_acceleration_limits: true
+    linear.x.has_jerk_limits: false
+    linear.x.max_velocity: 23.0
+    linear.x.min_velocity: -23.0
+    linear.x.max_acceleration: 5.0
+    linear.x.max_jerk: 0.0
+    linear.x.min_jerk: 0.0
+
+    angular.z.has_velocity_limits: true
+    angular.z.has_acceleration_limits: true
+    angular.z.has_jerk_limits: false
+    angular.z.max_velocity: 1.0
+    angular.z.min_velocity: -1.0
+    angular.z.max_acceleration: 1.0
+    angular.z.min_acceleration: -1.0
+    angular.z.max_jerk: 0.0
+    angular.z.min_jerk: 0.0

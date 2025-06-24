@@ -1,0 +1,28 @@
+[01m[K/home/paul/resqbot_dev/control_ws/src/lotti_control/hardware/arm_interface.cpp:[m[K In member function ‘[01m[Kvirtual hardware_interface::CallbackReturn arm_interface::ArmInterface::on_configure(const rclcpp_lifecycle::State&)[m[K’:
+[01m[K/home/paul/resqbot_dev/control_ws/src/lotti_control/hardware/arm_interface.cpp:95:97:[m[K [01;35m[Kwarning: [m[Kunused parameter ‘[01m[Kprevious_state[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-parameter-Wunused-parameter]8;;[m[K]
+   95 |   hardware_interface::CallbackReturn ArmInterface::on_configure([01;35m[Kconst rclcpp_lifecycle::State & previous_state[m[K){
+      |                                                                 [01;35m[K~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~[m[K
+[01m[K/home/paul/resqbot_dev/control_ws/src/lotti_control/hardware/arm_interface.cpp:[m[K In member function ‘[01m[Kvirtual hardware_interface::CallbackReturn arm_interface::ArmInterface::on_cleanup(const rclcpp_lifecycle::State&)[m[K’:
+[01m[K/home/paul/resqbot_dev/control_ws/src/lotti_control/hardware/arm_interface.cpp:111:96:[m[K [01;35m[Kwarning: [m[Kunused parameter ‘[01m[Kprevious_state[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-parameter-Wunused-parameter]8;;[m[K]
+  111 |    hardware_interface::CallbackReturn ArmInterface::on_cleanup([01;35m[Kconst rclcpp_lifecycle::State & previous_state[m[K){
+      |                                                                [01;35m[K~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~[m[K
+[01m[K/home/paul/resqbot_dev/control_ws/src/lotti_control/hardware/arm_interface.cpp:[m[K In member function ‘[01m[Kvirtual hardware_interface::CallbackReturn arm_interface::ArmInterface::on_activate(const rclcpp_lifecycle::State&)[m[K’:
+[01m[K/home/paul/resqbot_dev/control_ws/src/lotti_control/hardware/arm_interface.cpp:125:96:[m[K [01;35m[Kwarning: [m[Kunused parameter ‘[01m[Kprevious_state[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-parameter-Wunused-parameter]8;;[m[K]
+  125 |   hardware_interface::CallbackReturn ArmInterface::on_activate([01;35m[Kconst rclcpp_lifecycle::State & previous_state[m[K){
+      |                                                                [01;35m[K~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~[m[K
+[01m[K/home/paul/resqbot_dev/control_ws/src/lotti_control/hardware/arm_interface.cpp:[m[K In member function ‘[01m[Kvirtual hardware_interface::CallbackReturn arm_interface::ArmInterface::on_deactivate(const rclcpp_lifecycle::State&)[m[K’:
+[01m[K/home/paul/resqbot_dev/control_ws/src/lotti_control/hardware/arm_interface.cpp:141:98:[m[K [01;35m[Kwarning: [m[Kunused parameter ‘[01m[Kprevious_state[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-parameter-Wunused-parameter]8;;[m[K]
+  141 |   hardware_interface::CallbackReturn ArmInterface::on_deactivate([01;35m[Kconst rclcpp_lifecycle::State & previous_state[m[K){
+      |                                                                  [01;35m[K~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~[m[K
+[01m[K/home/paul/resqbot_dev/control_ws/src/lotti_control/hardware/arm_interface.cpp:[m[K In member function ‘[01m[Kvirtual hardware_interface::return_type arm_interface::ArmInterface::read(const rclcpp::Time&, const rclcpp::Duration&)[m[K’:
+[01m[K/home/paul/resqbot_dev/control_ws/src/lotti_control/hardware/arm_interface.cpp:162:80:[m[K [01;35m[Kwarning: [m[Kformat ‘[01m[K%lf[m[K’ expects a matching ‘[01m[Kdouble*[m[K’ argument [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wformat=-Wformat=]8;;[m[K]
+  162 |     sscanf(arm_answer_.c_str(), "%lf:%lf/%lf:%lf/%lf:%lf/%lf:%lf/%lf:%lf/%lf:[01;35m[K%lf[m[K\n",
+      |                                                                              [01;35m[K~~^[m[K
+      |                                                                                [01;35m[K|[m[K
+      |                                                                                [01;35m[Kdouble*[m[K
+[01m[K/home/paul/resqbot_dev/control_ws/src/lotti_control/hardware/arm_interface.cpp:164:88:[m[K [01;35m[Kwarning: [m[Kright operand of comma operator has no effect [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-value-Wunused-value]8;;[m[K]
+  164 |       &state_pos_[3], &state_vel_[3], &state_pos_[4], &state_vel_[4], &state_pos_[5]), [01;35m[K&state_vel_[5][m[K;
+      |                                                                                        [01;35m[K^~~~~~~~~~~~~~[m[K
+[01m[K/home/paul/resqbot_dev/control_ws/src/lotti_control/hardware/arm_interface.cpp:148:90:[m[K [01;35m[Kwarning: [m[Kunused parameter ‘[01m[Kperiod[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-parameter-Wunused-parameter]8;;[m[K]
+  148 |   return_type ArmInterface::read(const rclcpp::Time & /*time*/, [01;35m[Kconst rclcpp::Duration & period[m[K){
+      |                                                                 [01;35m[K~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~[m[K

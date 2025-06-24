@@ -1,0 +1,3 @@
+[console_scripts]
+teleop = lotti_teleop.lotti_teleop:main
+

@@ -1,0 +1,1 @@
+/home/paul/resqbot_dev/control_ws/src/lotti_control/description/launch/view_lotti.launch.py

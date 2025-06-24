@@ -1,0 +1,1 @@
+/home/paul/resqbot_dev/control_ws/src/lotti_moveit_config/launch/moveit_rviz.launch.py

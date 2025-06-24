@@ -1,0 +1,206 @@
+[0.142s] DEBUG:colcon:Command line arguments: ['/usr/bin/colcon', 'build', '--symlink-install', '--packages-select', 'lotti_control']
+[0.142s] DEBUG:colcon:Parsed command line arguments: Namespace(log_base=None, log_level=None, verb_name='build', build_base='build', install_base='install', merge_install=False, symlink_install=True, test_result_base=None, continue_on_error=False, executor='parallel', parallel_workers=8, event_handlers=None, ignore_user_meta=False, metas=['./colcon.meta'], base_paths=['.'], packages_ignore=None, packages_ignore_regex=None, paths=None, packages_up_to=None, packages_up_to_regex=None, packages_above=None, packages_above_and_dependencies=None, packages_above_depth=None, packages_select_by_dep=None, packages_skip_by_dep=None, packages_skip_up_to=None, packages_select_build_failed=False, packages_skip_build_finished=False, packages_select_test_failures=False, packages_skip_test_passed=False, packages_select=['lotti_control'], packages_skip=None, packages_select_regex=None, packages_skip_regex=None, packages_start=None, packages_end=None, allow_overriding=[], cmake_args=None, cmake_target=None, cmake_target_skip_unavailable=False, cmake_clean_cache=False, cmake_clean_first=False, cmake_force_configure=False, ament_cmake_args=None, catkin_cmake_args=None, catkin_skip_building_tests=False, mixin_files=None, mixin=None, verb_parser=<colcon_mixin.mixin.mixin_argument.MixinArgumentDecorator object at 0x7ea54b97d120>, verb_extension=<colcon_core.verb.build.BuildVerb object at 0x7ea54b97cbe0>, main=<bound method BuildVerb.main of <colcon_core.verb.build.BuildVerb object at 0x7ea54b97cbe0>>, mixin_verb=('build',))
+[0.355s] Level 1:colcon.colcon_core.package_discovery:discover_packages(colcon_meta) check parameters
+[0.355s] Level 1:colcon.colcon_core.package_discovery:discover_packages(recursive) check parameters
+[0.355s] Level 1:colcon.colcon_core.package_discovery:discover_packages(ignore) check parameters
+[0.355s] Level 1:colcon.colcon_core.package_discovery:discover_packages(path) check parameters
+[0.355s] Level 1:colcon.colcon_core.package_discovery:discover_packages(colcon_meta) discover
+[0.355s] Level 1:colcon.colcon_core.package_discovery:discover_packages(recursive) discover
+[0.355s] INFO:colcon.colcon_core.package_discovery:Crawling recursively for packages in '/home/paul/resqbot_dev/control_ws'
+[0.355s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['ignore', 'ignore_ament_install']
+[0.355s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'ignore'
+[0.355s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'ignore_ament_install'
+[0.355s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['colcon_pkg']
+[0.355s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'colcon_pkg'
+[0.355s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['colcon_meta']
+[0.356s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'colcon_meta'
+[0.356s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['ros']
+[0.356s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'ros'
+[0.367s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['cmake', 'python']
+[0.367s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'cmake'
+[0.367s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'python'
+[0.367s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['python_setup_py']
+[0.367s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'python_setup_py'
+[0.368s] Level 1:colcon.colcon_core.package_identification:_identify(build) by extensions ['ignore', 'ignore_ament_install']
+[0.368s] Level 1:colcon.colcon_core.package_identification:_identify(build) by extension 'ignore'
+[0.368s] Level 1:colcon.colcon_core.package_identification:_identify(build) ignored
+[0.368s] Level 1:colcon.colcon_core.package_identification:_identify(install) by extensions ['ignore', 'ignore_ament_install']
+[0.368s] Level 1:colcon.colcon_core.package_identification:_identify(install) by extension 'ignore'
+[0.368s] Level 1:colcon.colcon_core.package_identification:_identify(install) ignored
+[0.368s] Level 1:colcon.colcon_core.package_identification:_identify(log) by extensions ['ignore', 'ignore_ament_install']
+[0.368s] Level 1:colcon.colcon_core.package_identification:_identify(log) by extension 'ignore'
+[0.368s] Level 1:colcon.colcon_core.package_identification:_identify(log) ignored
+[0.368s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extensions ['ignore', 'ignore_ament_install']
+[0.368s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extension 'ignore'
+[0.369s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extension 'ignore_ament_install'
+[0.369s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extensions ['colcon_pkg']
+[0.369s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extension 'colcon_pkg'
+[0.369s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extensions ['colcon_meta']
+[0.369s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extension 'colcon_meta'
+[0.369s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extensions ['ros']
+[0.369s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extension 'ros'
+[0.369s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extensions ['cmake', 'python']
+[0.369s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extension 'cmake'
+[0.369s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extension 'python'
+[0.369s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extensions ['python_setup_py']
+[0.369s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extension 'python_setup_py'
+[0.369s] Level 1:colcon.colcon_core.package_identification:_identify(src/learning_tf2_py) by extensions ['ignore', 'ignore_ament_install']
+[0.369s] Level 1:colcon.colcon_core.package_identification:_identify(src/learning_tf2_py) by extension 'ignore'
+[0.369s] Level 1:colcon.colcon_core.package_identification:_identify(src/learning_tf2_py) by extension 'ignore_ament_install'
+[0.369s] Level 1:colcon.colcon_core.package_identification:_identify(src/learning_tf2_py) by extensions ['colcon_pkg']
+[0.369s] Level 1:colcon.colcon_core.package_identification:_identify(src/learning_tf2_py) by extension 'colcon_pkg'
+[0.369s] Level 1:colcon.colcon_core.package_identification:_identify(src/learning_tf2_py) by extensions ['colcon_meta']
+[0.370s] Level 1:colcon.colcon_core.package_identification:_identify(src/learning_tf2_py) by extension 'colcon_meta'
+[0.370s] Level 1:colcon.colcon_core.package_identification:_identify(src/learning_tf2_py) by extensions ['ros']
+[0.370s] Level 1:colcon.colcon_core.package_identification:_identify(src/learning_tf2_py) by extension 'ros'
+[0.372s] DEBUG:colcon.colcon_core.package_identification:Package 'src/learning_tf2_py' with type 'ros.ament_python' and name 'learning_tf2_py'
+[0.372s] Level 1:colcon.colcon_core.package_identification:_identify(src/lotti_control) by extensions ['ignore', 'ignore_ament_install']
+[0.372s] Level 1:colcon.colcon_core.package_identification:_identify(src/lotti_control) by extension 'ignore'
+[0.372s] Level 1:colcon.colcon_core.package_identification:_identify(src/lotti_control) by extension 'ignore_ament_install'
+[0.373s] Level 1:colcon.colcon_core.package_identification:_identify(src/lotti_control) by extensions ['colcon_pkg']
+[0.373s] Level 1:colcon.colcon_core.package_identification:_identify(src/lotti_control) by extension 'colcon_pkg'
+[0.373s] Level 1:colcon.colcon_core.package_identification:_identify(src/lotti_control) by extensions ['colcon_meta']
+[0.373s] Level 1:colcon.colcon_core.package_identification:_identify(src/lotti_control) by extension 'colcon_meta'
+[0.373s] Level 1:colcon.colcon_core.package_identification:_identify(src/lotti_control) by extensions ['ros']
+[0.373s] Level 1:colcon.colcon_core.package_identification:_identify(src/lotti_control) by extension 'ros'
+[0.376s] DEBUG:colcon.colcon_core.package_identification:Package 'src/lotti_control' with type 'ros.ament_cmake' and name 'lotti_control'
+[0.376s] Level 1:colcon.colcon_core.package_identification:_identify(src/lotti_flipper_controller) by extensions ['ignore', 'ignore_ament_install']
+[0.376s] Level 1:colcon.colcon_core.package_identification:_identify(src/lotti_flipper_controller) by extension 'ignore'
+[0.376s] Level 1:colcon.colcon_core.package_identification:_identify(src/lotti_flipper_controller) by extension 'ignore_ament_install'
+[0.376s] Level 1:colcon.colcon_core.package_identification:_identify(src/lotti_flipper_controller) by extensions ['colcon_pkg']
+[0.376s] Level 1:colcon.colcon_core.package_identification:_identify(src/lotti_flipper_controller) by extension 'colcon_pkg'
+[0.376s] Level 1:colcon.colcon_core.package_identification:_identify(src/lotti_flipper_controller) by extensions ['colcon_meta']
+[0.377s] Level 1:colcon.colcon_core.package_identification:_identify(src/lotti_flipper_controller) by extension 'colcon_meta'
+[0.377s] Level 1:colcon.colcon_core.package_identification:_identify(src/lotti_flipper_controller) by extensions ['ros']
+[0.377s] Level 1:colcon.colcon_core.package_identification:_identify(src/lotti_flipper_controller) by extension 'ros'
+[0.378s] DEBUG:colcon.colcon_core.package_identification:Package 'src/lotti_flipper_controller' with type 'ros.ament_cmake' and name 'lotti_flipper_controller'
+[0.378s] Level 1:colcon.colcon_core.package_identification:_identify(src/lotti_moveit_config) by extensions ['ignore', 'ignore_ament_install']
+[0.378s] Level 1:colcon.colcon_core.package_identification:_identify(src/lotti_moveit_config) by extension 'ignore'
+[0.378s] Level 1:colcon.colcon_core.package_identification:_identify(src/lotti_moveit_config) by extension 'ignore_ament_install'
+[0.379s] Level 1:colcon.colcon_core.package_identification:_identify(src/lotti_moveit_config) by extensions ['colcon_pkg']
+[0.379s] Level 1:colcon.colcon_core.package_identification:_identify(src/lotti_moveit_config) by extension 'colcon_pkg'
+[0.379s] Level 1:colcon.colcon_core.package_identification:_identify(src/lotti_moveit_config) by extensions ['colcon_meta']
+[0.379s] Level 1:colcon.colcon_core.package_identification:_identify(src/lotti_moveit_config) by extension 'colcon_meta'
+[0.379s] Level 1:colcon.colcon_core.package_identification:_identify(src/lotti_moveit_config) by extensions ['ros']
+[0.379s] Level 1:colcon.colcon_core.package_identification:_identify(src/lotti_moveit_config) by extension 'ros'
+[0.380s] DEBUG:colcon.colcon_core.package_identification:Package 'src/lotti_moveit_config' with type 'ros.ament_cmake' and name 'lotti_moveit_config'
+[0.380s] Level 1:colcon.colcon_core.package_identification:_identify(src/lotti_teleop) by extensions ['ignore', 'ignore_ament_install']
+[0.380s] Level 1:colcon.colcon_core.package_identification:_identify(src/lotti_teleop) by extension 'ignore'
+[0.380s] Level 1:colcon.colcon_core.package_identification:_identify(src/lotti_teleop) by extension 'ignore_ament_install'
+[0.380s] Level 1:colcon.colcon_core.package_identification:_identify(src/lotti_teleop) by extensions ['colcon_pkg']
+[0.380s] Level 1:colcon.colcon_core.package_identification:_identify(src/lotti_teleop) by extension 'colcon_pkg'
+[0.380s] Level 1:colcon.colcon_core.package_identification:_identify(src/lotti_teleop) by extensions ['colcon_meta']
+[0.380s] Level 1:colcon.colcon_core.package_identification:_identify(src/lotti_teleop) by extension 'colcon_meta'
+[0.380s] Level 1:colcon.colcon_core.package_identification:_identify(src/lotti_teleop) by extensions ['ros']
+[0.380s] Level 1:colcon.colcon_core.package_identification:_identify(src/lotti_teleop) by extension 'ros'
+[0.395s] DEBUG:colcon.colcon_core.package_identification:Package 'src/lotti_teleop' with type 'ros.ament_python' and name 'lotti_teleop'
+[0.395s] Level 1:colcon.colcon_core.package_discovery:discover_packages(recursive) using defaults
+[0.395s] Level 1:colcon.colcon_core.package_discovery:discover_packages(ignore) discover
+[0.395s] Level 1:colcon.colcon_core.package_discovery:discover_packages(ignore) using defaults
+[0.395s] Level 1:colcon.colcon_core.package_discovery:discover_packages(path) discover
+[0.395s] Level 1:colcon.colcon_core.package_discovery:discover_packages(path) using defaults
+[0.420s] INFO:colcon.colcon_core.package_selection:Skipping not selected package 'learning_tf2_py' in 'src/learning_tf2_py'
+[0.420s] INFO:colcon.colcon_core.package_selection:Skipping not selected package 'lotti_flipper_controller' in 'src/lotti_flipper_controller'
+[0.420s] INFO:colcon.colcon_core.package_selection:Skipping not selected package 'lotti_teleop' in 'src/lotti_teleop'
+[0.420s] INFO:colcon.colcon_core.package_selection:Skipping not selected package 'lotti_moveit_config' in 'src/lotti_moveit_config'
+[0.420s] Level 1:colcon.colcon_core.package_discovery:discover_packages(prefix_path) check parameters
+[0.420s] Level 1:colcon.colcon_core.package_discovery:discover_packages(prefix_path) discover
+[0.426s] DEBUG:colcon.colcon_installed_package_information.package_discovery:Found 5 installed packages in /home/paul/resqbot_dev/control_ws/install
+[0.426s] DEBUG:colcon.colcon_installed_package_information.package_discovery:Found 1 installed packages in /home/paul/moveit2_ws/install
+[0.428s] DEBUG:colcon.colcon_installed_package_information.package_discovery:Found 55 installed packages in /home/paul/moveit2_ws/src/install
+[0.429s] DEBUG:colcon.colcon_installed_package_information.package_discovery:Found 1 installed packages in /home/paul/ws_livox/install
+[0.430s] DEBUG:colcon.colcon_installed_package_information.package_discovery:Found 17 installed packages in /home/paul/ros2_ws/install
+[0.432s] DEBUG:colcon.colcon_installed_package_information.package_discovery:Found 410 installed packages in /opt/ros/humble
+[0.437s] Level 1:colcon.colcon_core.package_discovery:discover_packages(prefix_path) using defaults
+[0.501s] WARNING:colcon.colcon_core.package_selection:Some selected packages are already built in one or more underlay workspaces:
+	'lotti_control' is in: /home/paul/resqbot_dev/control_ws/install/lotti_control
+If a package in a merged underlay workspace is overridden and it installs headers, then all packages in the overlay must sort their include directories by workspace order. Failure to do so may result in build failures or undefined behavior at run time.
+If the overridden package is used by another package in any underlay, then the overriding package in the overlay must be API and ABI compatible or undefined behavior at run time may occur.
+
+If you understand the risks and want to override a package anyways, add the following to the command line:
+	--allow-overriding lotti_control
+
+This may be promoted to an error in a future release of colcon-override-check.
+[0.503s] Level 5:colcon.colcon_core.verb:set package 'lotti_control' build argument 'cmake_args' from command line to 'None'
+[0.503s] Level 5:colcon.colcon_core.verb:set package 'lotti_control' build argument 'cmake_target' from command line to 'None'
+[0.503s] Level 5:colcon.colcon_core.verb:set package 'lotti_control' build argument 'cmake_target_skip_unavailable' from command line to 'False'
+[0.503s] Level 5:colcon.colcon_core.verb:set package 'lotti_control' build argument 'cmake_clean_cache' from command line to 'False'
+[0.503s] Level 5:colcon.colcon_core.verb:set package 'lotti_control' build argument 'cmake_clean_first' from command line to 'False'
+[0.503s] Level 5:colcon.colcon_core.verb:set package 'lotti_control' build argument 'cmake_force_configure' from command line to 'False'
+[0.503s] Level 5:colcon.colcon_core.verb:set package 'lotti_control' build argument 'ament_cmake_args' from command line to 'None'
+[0.503s] Level 5:colcon.colcon_core.verb:set package 'lotti_control' build argument 'catkin_cmake_args' from command line to 'None'
+[0.503s] Level 5:colcon.colcon_core.verb:set package 'lotti_control' build argument 'catkin_skip_building_tests' from command line to 'False'
+[0.503s] DEBUG:colcon.colcon_core.verb:Building package 'lotti_control' with the following arguments: {'ament_cmake_args': None, 'build_base': '/home/paul/resqbot_dev/control_ws/build/lotti_control', 'catkin_cmake_args': None, 'catkin_skip_building_tests': False, 'cmake_args': None, 'cmake_clean_cache': False, 'cmake_clean_first': False, 'cmake_force_configure': False, 'cmake_target': None, 'cmake_target_skip_unavailable': False, 'install_base': '/home/paul/resqbot_dev/control_ws/install/lotti_control', 'merge_install': False, 'path': '/home/paul/resqbot_dev/control_ws/src/lotti_control', 'symlink_install': True, 'test_result_base': None}
+[0.503s] INFO:colcon.colcon_core.executor:Executing jobs using 'parallel' executor
+[0.504s] DEBUG:colcon.colcon_parallel_executor.executor.parallel:run_until_complete
+[0.505s] INFO:colcon.colcon_ros.task.ament_cmake.build:Building ROS package in '/home/paul/resqbot_dev/control_ws/src/lotti_control' with build type 'ament_cmake'
+[0.505s] INFO:colcon.colcon_cmake.task.cmake.build:Building CMake package in '/home/paul/resqbot_dev/control_ws/src/lotti_control'
+[0.508s] INFO:colcon.colcon_core.plugin_system:Skipping extension 'colcon_core.shell.bat': Not used on non-Windows systems
+[0.508s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[0.508s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[0.546s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/paul/resqbot_dev/control_ws/build/lotti_control': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/paul/resqbot_dev/control_ws/install/lotti_teleop:/home/paul/resqbot_dev/control_ws/install/learning_tf2_py:/home/paul/moveit2_ws/src/install/moveit_configs_utils:/home/paul/moveit2_ws/src/install/launch_param_builder:/opt/ros/humble /usr/bin/cmake --build /home/paul/resqbot_dev/control_ws/build/lotti_control -- -j8 -l8
+[5.230s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/paul/resqbot_dev/control_ws/build/lotti_control' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/paul/resqbot_dev/control_ws/install/lotti_teleop:/home/paul/resqbot_dev/control_ws/install/learning_tf2_py:/home/paul/moveit2_ws/src/install/moveit_configs_utils:/home/paul/moveit2_ws/src/install/launch_param_builder:/opt/ros/humble /usr/bin/cmake --build /home/paul/resqbot_dev/control_ws/build/lotti_control -- -j8 -l8
+[5.256s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/paul/resqbot_dev/control_ws/build/lotti_control': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/paul/resqbot_dev/control_ws/install/lotti_teleop:/home/paul/resqbot_dev/control_ws/install/learning_tf2_py:/home/paul/moveit2_ws/src/install/moveit_configs_utils:/home/paul/moveit2_ws/src/install/launch_param_builder:/opt/ros/humble /usr/bin/cmake --install /home/paul/resqbot_dev/control_ws/build/lotti_control
+[5.316s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(lotti_control)
+[5.317s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/paul/resqbot_dev/control_ws/build/lotti_control' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/paul/resqbot_dev/control_ws/install/lotti_teleop:/home/paul/resqbot_dev/control_ws/install/learning_tf2_py:/home/paul/moveit2_ws/src/install/moveit_configs_utils:/home/paul/moveit2_ws/src/install/launch_param_builder:/opt/ros/humble /usr/bin/cmake --install /home/paul/resqbot_dev/control_ws/build/lotti_control
+[5.323s] Level 1:colcon.colcon_core.environment:checking '/home/paul/resqbot_dev/control_ws/install/lotti_control' for CMake module files
+[5.325s] Level 1:colcon.colcon_core.environment:checking '/home/paul/resqbot_dev/control_ws/install/lotti_control' for CMake config files
+[5.327s] Level 1:colcon.colcon_core.shell:create_environment_hook('lotti_control', 'cmake_prefix_path')
+[5.328s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/paul/resqbot_dev/control_ws/install/lotti_control/share/lotti_control/hook/cmake_prefix_path.ps1'
+[5.330s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/paul/resqbot_dev/control_ws/install/lotti_control/share/lotti_control/hook/cmake_prefix_path.dsv'
+[5.331s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/paul/resqbot_dev/control_ws/install/lotti_control/share/lotti_control/hook/cmake_prefix_path.sh'
+[5.333s] Level 1:colcon.colcon_core.environment:checking '/home/paul/resqbot_dev/control_ws/install/lotti_control/lib'
+[5.334s] Level 1:colcon.colcon_core.shell:create_environment_hook('lotti_control', 'ld_library_path_lib')
+[5.335s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/paul/resqbot_dev/control_ws/install/lotti_control/share/lotti_control/hook/ld_library_path_lib.ps1'
+[5.336s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/paul/resqbot_dev/control_ws/install/lotti_control/share/lotti_control/hook/ld_library_path_lib.dsv'
+[5.337s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/paul/resqbot_dev/control_ws/install/lotti_control/share/lotti_control/hook/ld_library_path_lib.sh'
+[5.338s] Level 1:colcon.colcon_core.environment:checking '/home/paul/resqbot_dev/control_ws/install/lotti_control/bin'
+[5.338s] Level 1:colcon.colcon_core.environment:checking '/home/paul/resqbot_dev/control_ws/install/lotti_control/lib/pkgconfig/lotti_control.pc'
+[5.339s] Level 1:colcon.colcon_core.environment:checking '/home/paul/resqbot_dev/control_ws/install/lotti_control/lib/python3.10/site-packages'
+[5.339s] Level 1:colcon.colcon_core.environment:checking '/home/paul/resqbot_dev/control_ws/install/lotti_control/bin'
+[5.340s] INFO:colcon.colcon_core.shell:Creating package script '/home/paul/resqbot_dev/control_ws/install/lotti_control/share/lotti_control/package.ps1'
+[5.343s] INFO:colcon.colcon_core.shell:Creating package descriptor '/home/paul/resqbot_dev/control_ws/install/lotti_control/share/lotti_control/package.dsv'
+[5.344s] INFO:colcon.colcon_core.shell:Creating package script '/home/paul/resqbot_dev/control_ws/install/lotti_control/share/lotti_control/package.sh'
+[5.347s] INFO:colcon.colcon_core.shell:Creating package script '/home/paul/resqbot_dev/control_ws/install/lotti_control/share/lotti_control/package.bash'
+[5.349s] INFO:colcon.colcon_core.shell:Creating package script '/home/paul/resqbot_dev/control_ws/install/lotti_control/share/lotti_control/package.zsh'
+[5.350s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/home/paul/resqbot_dev/control_ws/install/lotti_control/share/colcon-core/packages/lotti_control)
+[5.352s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(lotti_control)
+[5.353s] Level 1:colcon.colcon_core.environment:checking '/home/paul/resqbot_dev/control_ws/install/lotti_control' for CMake module files
+[5.354s] Level 1:colcon.colcon_core.environment:checking '/home/paul/resqbot_dev/control_ws/install/lotti_control' for CMake config files
+[5.357s] Level 1:colcon.colcon_core.shell:create_environment_hook('lotti_control', 'cmake_prefix_path')
+[5.357s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/paul/resqbot_dev/control_ws/install/lotti_control/share/lotti_control/hook/cmake_prefix_path.ps1'
+[5.359s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/paul/resqbot_dev/control_ws/install/lotti_control/share/lotti_control/hook/cmake_prefix_path.dsv'
+[5.361s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/paul/resqbot_dev/control_ws/install/lotti_control/share/lotti_control/hook/cmake_prefix_path.sh'
+[5.362s] Level 1:colcon.colcon_core.environment:checking '/home/paul/resqbot_dev/control_ws/install/lotti_control/lib'
+[5.363s] Level 1:colcon.colcon_core.shell:create_environment_hook('lotti_control', 'ld_library_path_lib')
+[5.363s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/paul/resqbot_dev/control_ws/install/lotti_control/share/lotti_control/hook/ld_library_path_lib.ps1'
+[5.364s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/paul/resqbot_dev/control_ws/install/lotti_control/share/lotti_control/hook/ld_library_path_lib.dsv'
+[5.365s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/paul/resqbot_dev/control_ws/install/lotti_control/share/lotti_control/hook/ld_library_path_lib.sh'
+[5.367s] Level 1:colcon.colcon_core.environment:checking '/home/paul/resqbot_dev/control_ws/install/lotti_control/bin'
+[5.367s] Level 1:colcon.colcon_core.environment:checking '/home/paul/resqbot_dev/control_ws/install/lotti_control/lib/pkgconfig/lotti_control.pc'
+[5.367s] Level 1:colcon.colcon_core.environment:checking '/home/paul/resqbot_dev/control_ws/install/lotti_control/lib/python3.10/site-packages'
+[5.368s] Level 1:colcon.colcon_core.environment:checking '/home/paul/resqbot_dev/control_ws/install/lotti_control/bin'
+[5.369s] INFO:colcon.colcon_core.shell:Creating package script '/home/paul/resqbot_dev/control_ws/install/lotti_control/share/lotti_control/package.ps1'
+[5.370s] INFO:colcon.colcon_core.shell:Creating package descriptor '/home/paul/resqbot_dev/control_ws/install/lotti_control/share/lotti_control/package.dsv'
+[5.370s] INFO:colcon.colcon_core.shell:Creating package script '/home/paul/resqbot_dev/control_ws/install/lotti_control/share/lotti_control/package.sh'
+[5.371s] INFO:colcon.colcon_core.shell:Creating package script '/home/paul/resqbot_dev/control_ws/install/lotti_control/share/lotti_control/package.bash'
+[5.371s] INFO:colcon.colcon_core.shell:Creating package script '/home/paul/resqbot_dev/control_ws/install/lotti_control/share/lotti_control/package.zsh'
+[5.372s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/home/paul/resqbot_dev/control_ws/install/lotti_control/share/colcon-core/packages/lotti_control)
+[5.372s] DEBUG:colcon.colcon_parallel_executor.executor.parallel:closing loop
+[5.372s] DEBUG:colcon.colcon_parallel_executor.executor.parallel:loop closed
+[5.373s] DEBUG:colcon.colcon_parallel_executor.executor.parallel:run_until_complete finished with '0'
+[5.373s] DEBUG:colcon.colcon_core.event_reactor:joining thread
+[5.389s] INFO:colcon.colcon_core.plugin_system:Skipping extension 'colcon_notification.desktop_notification.terminal_notifier': Not used on non-Darwin systems
+[5.390s] INFO:colcon.colcon_core.plugin_system:Skipping extension 'colcon_notification.desktop_notification.win32': Not used on non-Windows systems
+[5.390s] INFO:colcon.colcon_notification.desktop_notification:Sending desktop notification using 'notify2'
+[5.414s] DEBUG:colcon.colcon_core.event_reactor:joined thread
+[5.416s] INFO:colcon.colcon_core.shell:Creating prefix script '/home/paul/resqbot_dev/control_ws/install/local_setup.ps1'
+[5.418s] INFO:colcon.colcon_core.shell:Creating prefix util module '/home/paul/resqbot_dev/control_ws/install/_local_setup_util_ps1.py'
+[5.420s] INFO:colcon.colcon_core.shell:Creating prefix chain script '/home/paul/resqbot_dev/control_ws/install/setup.ps1'
+[5.426s] INFO:colcon.colcon_core.shell:Creating prefix script '/home/paul/resqbot_dev/control_ws/install/local_setup.sh'
+[5.427s] INFO:colcon.colcon_core.shell:Creating prefix util module '/home/paul/resqbot_dev/control_ws/install/_local_setup_util_sh.py'
+[5.428s] INFO:colcon.colcon_core.shell:Creating prefix chain script '/home/paul/resqbot_dev/control_ws/install/setup.sh'
+[5.433s] INFO:colcon.colcon_core.shell:Creating prefix script '/home/paul/resqbot_dev/control_ws/install/local_setup.bash'
+[5.433s] INFO:colcon.colcon_core.shell:Creating prefix chain script '/home/paul/resqbot_dev/control_ws/install/setup.bash'
+[5.439s] INFO:colcon.colcon_core.shell:Creating prefix script '/home/paul/resqbot_dev/control_ws/install/local_setup.zsh'
+[5.440s] INFO:colcon.colcon_core.shell:Creating prefix chain script '/home/paul/resqbot_dev/control_ws/install/setup.zsh'

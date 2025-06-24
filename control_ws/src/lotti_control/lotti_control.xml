@@ -15,6 +15,14 @@
       Interface to drive Lotti's flippers
     </description>
   </class>
+
+  <class name="drive_interface/DriveInterface"
+         type="drive_interface::DriveInterface"
+         base_class_type="hardware_interface::SystemInterface">
+    <description>
+      Interface to drive Lotti's tracks
+    </description>
+  </class>
   
   <class name="diffdrive_lotti/DiffDriveLotti"
          type="diffdrive_lotti::DiffDriveLotti"

@@ -201,17 +201,15 @@ def generate_launch_description():
 
     nodes = [
         #controller_manager,
-        #robot_state_pub_node,
-        #arm_controller_spawner,
-        #delay_chain_controller_spawner,
-        #flipper_controller_spawner,
-        rviz_node,
-        #delay_rviz_after_joint_state_broadcaster_spawner,
-        #delay_joint_state_broadcaster_after_robot_controller_spawner,
-        #delay_servo_node,
+        robot_state_pub_node,
+        arm_controller_spawner,
+        delay_chain_controller_spawner,
+        delay_flipper_controller_spawner,
+        delay_rviz_after_joint_state_broadcaster_spawner,
+        delay_joint_state_broadcaster_after_robot_controller_spawner,
+        delay_servo_node,
         joy_node,
-        #delay_teleop,
-        teleop_node,
+        delay_teleop,
     ]
 
     return LaunchDescription(declared_arguments + nodes)

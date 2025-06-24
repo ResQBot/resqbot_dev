@@ -1,0 +1,1 @@
+/home/paul/resqbot_dev/control_ws/build/lotti_flipper_controller/ament_cmake_environment_hooks/local_setup.zsh
