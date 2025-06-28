@@ -40,7 +40,6 @@ add_library(
   SHARED
   hardware/arm_interface.cpp
   hardware/flipper_interface.cpp
-  hardware/diffbot_system.cpp
   hardware/drive_interface.cpp
 )
 
@@ -81,7 +80,7 @@ install(
 )
 install(
   DIRECTORY lib
-  DESTINATION lib
+  DESTINATION 
 )
 
 install(TARGETS lotti_control

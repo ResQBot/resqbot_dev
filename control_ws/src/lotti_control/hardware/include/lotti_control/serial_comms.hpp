@@ -77,9 +77,9 @@ class SerialComms{
       send_msg(ss.str());
     } */
 
-    void set_flipper_values(int FR, int FL, int RR, int RL){
+    void set_flipper_values(int FL, int FR, int RL, int RR){
       std::stringstream ss;
-      ss << "FL" << FL << "FR" << FR <<  "RL" << RL << "RR" << RR << "\n";
+      ss << "FL" << RR << "FR" << FR <<  "RL" << RL << "RR" << FL << "\n";
       send_msg(ss.str());
     }
 

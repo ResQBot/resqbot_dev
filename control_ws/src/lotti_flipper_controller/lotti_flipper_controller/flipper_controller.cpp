@@ -120,10 +120,10 @@ namespace flipper_controller{
   controller_interface::return_type FlipperController::update(
     const rclcpp::Time & time, const rclcpp::Duration & /*period*/){
 
-    joint_velocity_command_interface_[0].get().set_value(fr_flipper_cmd);
-    joint_velocity_command_interface_[1].get().set_value(fl_flipper_cmd);
-    joint_velocity_command_interface_[2].get().set_value(rr_flipper_cmd);
-    joint_velocity_command_interface_[3].get().set_value(rl_flipper_cmd);
+    joint_velocity_command_interface_[0].get().set_value(fl_flipper_cmd);
+    joint_velocity_command_interface_[1].get().set_value(fr_flipper_cmd);
+    joint_velocity_command_interface_[2].get().set_value(rl_flipper_cmd);
+    joint_velocity_command_interface_[3].get().set_value(rr_flipper_cmd);
 
     //std::cout << std::to_string(fr_flipper_cmd) << "\n";
     return controller_interface::return_type::OK;

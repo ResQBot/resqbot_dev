@@ -24,7 +24,7 @@ namespace flipper_interface{
     }
 
     //get the Arduino ID from the ros2_control file
-    //device_ = info_.hardware_parameters["device"];
+    device_ = info_.hardware_parameters["device"];
 
     // robot has 4 joints, 2 interfaces
     joint_positions_.assign(4, 0);
@@ -60,10 +60,10 @@ namespace flipper_interface{
   hardware_interface::CallbackReturn FlipperInterface::on_configure(const rclcpp_lifecycle::State &previous_state){
     RCLCPP_INFO(rclcpp::get_logger("FlipperInterface"), "Configuring ...please wait...");
 
-    if (flipper_comms_.connected()){
-      flipper_comms_.disconnect();
-    }
-    flipper_comms_.connect(device_); 
+//-    if (flipper_comms_.connected()){
+//-      flipper_comms_.disconnect();
+//-    }
+//-    flipper_comms_.connect(device_); 
 
     RCLCPP_INFO(rclcpp::get_logger("FlipperInterface"), "Successfully configured");
     return hardware_interface::CallbackReturn::SUCCESS;
@@ -72,9 +72,9 @@ namespace flipper_interface{
   hardware_interface::CallbackReturn FlipperInterface::on_cleanup(const rclcpp_lifecycle::State &previous_state){
     RCLCPP_INFO(rclcpp::get_logger("FlipperInterface"), "Cleaning up ...please wait...");
 
-    if (flipper_comms_.connected()){
-      flipper_comms_.disconnect();
-    }
+//-    if (flipper_comms_.connected()){
+//-      flipper_comms_.disconnect();
+//-    }
 
     RCLCPP_INFO(rclcpp::get_logger("FlipperInterface"), "Successfully cleaned up!");
     return hardware_interface::CallbackReturn::SUCCESS;
@@ -83,11 +83,11 @@ namespace flipper_interface{
   hardware_interface::CallbackReturn FlipperInterface::on_activate(const rclcpp_lifecycle::State &previous_state){
     RCLCPP_INFO(rclcpp::get_logger("FlipperInterface"), "Configuring ...please wait...");
 
-    if (!flipper_comms_.connected()){
-      RCLCPP_ERROR(rclcpp::get_logger("FlipperInterface"), "Arduino not connected");
-      return hardware_interface::CallbackReturn::ERROR;
-    }
-    flipper_comms_.calibrate_flippers();
+//-    if (!flipper_comms_.connected()){
+//-      RCLCPP_ERROR(rclcpp::get_logger("FlipperInterface"), "Arduino not connected");
+//-      return hardware_interface::CallbackReturn::ERROR;
+//-    }
+//-    flipper_comms_.calibrate_flippers();
 
     RCLCPP_INFO(rclcpp::get_logger("FlipperInterface"), "Successfully activated");
     return hardware_interface::CallbackReturn::SUCCESS;
@@ -101,33 +101,42 @@ namespace flipper_interface{
   }
 
   return_type FlipperInterface::read(const rclcpp::Time & /*time*/, const rclcpp::Duration & period){    
-    if (!flipper_comms_.connected()){
-      return hardware_interface::return_type::ERROR;
-    }
+//-    if (!flipper_comms_.connected()){
+//-      return hardware_interface::return_type::ERROR;
+//-    }
 
-    std::string flipper_answer_ = flipper_comms_.read_msg();
+//-    std::string flipper_answer_ = flipper_comms_.read_msg();
 
 
-    // fl_cmd_ = fl_cmd_ + joint_velocities_command_[1] * period.seconds() * 360/12;
-    // fr_cmd_ = fr_cmd_ + joint_velocities_command_[0] * period.seconds() * 360/12;
-    // rl_cmd_ = rl_cmd_ + joint_velocities_command_[3] * period.seconds() * 360/12;
-    // rr_cmd_ = rr_cmd_ + joint_velocities_command_[2] * period.seconds() * 360/12;
+//+
+    fl_cmd_ = fl_cmd_ + joint_velocities_command_[0] * period.seconds() * 360/12;
+//+
+    fr_cmd_ = fr_cmd_ + joint_velocities_command_[1] * period.seconds() * 360/12;
+//+
+    rl_cmd_ = rl_cmd_ + joint_velocities_command_[2] * period.seconds() * 360/12;
+//+
+    rr_cmd_ = rr_cmd_ + joint_velocities_command_[3] * period.seconds() * 360/12;
     
     
-    // std::string flipper_answer_ =
-    //   "FL" + std::to_string(fl_cmd_) +
-    //   "FR" + std::to_string(fr_cmd_) +
-    //   "RL" + std::to_string(rl_cmd_) +
-    //   "RR" + std::to_string(rr_cmd_);
+//+
+    std::string flipper_answer_ =
+//+
+      "FL" + std::to_string(rr_cmd_) +
+//+
+      "FR" + std::to_string(fr_cmd_) +
+//+
+      "RL" + std::to_string(rl_cmd_) +
+//+
+      "RR" + std::to_string(fl_cmd_);
 
-      //std::cout << flipper_answer_ << "\n";
+    //std::cout << flipper_answer_ << "\n";
 
-    sscanf(flipper_answer_.c_str(), "FL%fFR%fRL%fRR%f", &fl_state_, &fr_state_, &rl_state_, &rr_state_);
+    sscanf(flipper_answer_.c_str(), "FL%fFR%fRL%fRR%f", &rr_state_, &fr_state_, &rl_state_, &fl_state_);
 
-    joint_positions_[0] = (fr_state_ /180) * 3.1416;
-    joint_positions_[1] = (fl_state_ /180) * 3.1416;
-    joint_positions_[2] = (rr_state_ /180) * 3.1416;
-    joint_positions_[3] = (rl_state_ /180) * 3.1416;
+    joint_positions_[0] = (fl_state_ /180) * 3.1416;
+    joint_positions_[1] = (fr_state_ /180) * 3.1416;
+    joint_positions_[2] = (rl_state_ /180) * 3.1416;
+    joint_positions_[3] = (rr_state_ /180) * 3.1416;
      
     return return_type::OK;
   }
@@ -136,12 +145,12 @@ namespace flipper_interface{
 
     //std::cout << std::to_string(joint_velocities_command_[0]) << "\n";
 
-     flipper_comms_.set_flipper_values(
-      joint_velocities_command_[0],
-      joint_velocities_command_[1],
-      joint_velocities_command_[2],
-      joint_velocities_command_[3]
-    ); 
+//-     flipper_comms_.set_flipper_values(
+//-      joint_velocities_command_[0],
+//-      joint_velocities_command_[1],
+//-      joint_velocities_command_[2],
+//-      joint_velocities_command_[3]
+//-    ); 
 
     return return_type::OK;
   }

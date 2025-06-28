@@ -1,7 +1,0 @@
-[0.000000] (-) TimerEvent: {}
-[0.000521] (-) JobUnselected: {'identifier': 'learning_tf2_py'}
-[0.000603] (-) JobUnselected: {'identifier': 'lotti_control'}
-[0.000812] (-) JobUnselected: {'identifier': 'lotti_flipper_controller'}
-[0.000861] (-) JobUnselected: {'identifier': 'lotti_moveit_config'}
-[0.000905] (-) JobUnselected: {'identifier': 'lotti_teleop'}
-[0.000978] (-) EventReactorShutdown: {}

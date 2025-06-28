@@ -23,13 +23,5 @@
       Interface to drive Lotti's tracks
     </description>
   </class>
-  
-  <class name="diffdrive_lotti/DiffDriveLotti"
-         type="diffdrive_lotti::DiffDriveLotti"
-         base_class_type="hardware_interface::SystemInterface">
-    <description>
-      Interface to drive Lotti's chains
-    </description>
-  </class>  
 
   </library>

@@ -15,17 +15,14 @@
 #include "hardware_interface/types/hardware_interface_type_values.hpp"
 #include "rclcpp/rclcpp.hpp"
 
-namespace arm_interface
-{
-  CallbackReturn ArmInterface::on_init(const hardware_interface::HardwareInfo & info)
-  {
-    if (hardware_interface::SystemInterface::on_init(info) != CallbackReturn::SUCCESS)
-    {
+namespace arm_interface{
+  CallbackReturn ArmInterface::on_init(const hardware_interface::HardwareInfo & info){
+    if (hardware_interface::SystemInterface::on_init(info) != CallbackReturn::SUCCESS){
       return CallbackReturn::ERROR;
     }
     
     //get the Arduino ID from the ros2_control file
-//-    device_ = info_.hardware_parameters["device"];
+    device_ = info_.hardware_parameters["device"];
     max_speed_ = std::stoi(info_.hardware_parameters["maxSpeed"]);
 
     // robot has 6 joints, 4 interfaces
@@ -36,12 +33,12 @@ namespace arm_interface
     joint_positions_command_.assign(6, 0);
     joint_velocities_command_.assign(6, 0);
 
+    joint_positions_command_[3] = 1.5;
+    joint_positions_command_[4] = 1.5;
 
 
-    for (const auto & joint : info_.joints)
-    {
-      for (const auto & interface : joint.state_interfaces)
-      {
+    for (const auto & joint : info_.joints){
+      for (const auto & interface : joint.state_interfaces){
         joint_interfaces[interface.name].push_back(joint.name);
       }
     }
@@ -122,16 +119,16 @@ namespace arm_interface
 //-      return hardware_interface::CallbackReturn::ERROR;
 //-    }
 
-    std::string arm_answer_ = arm_comms_.read_msg();
-
-    sscanf(arm_answer_.c_str(), "%lf:%lf/%lf:%lf/%lf:%lf/%lf:%lf/%lf:%lf/%lf:%lf", 
-      &state_pos_[0], &state_vel_[0], &state_pos_[1], &state_vel_[1], &state_pos_[2], &state_vel_[2], 
-      &state_pos_[3], &state_vel_[3], &state_pos_[4], &state_vel_[4], &state_pos_[5], &state_vel_[5]); 
-
-    for (auto i = 0ul; i < joint_positions_.size(); i++){
-      joint_positions_[i] = (state_pos_[i] * 3.1416) / 2048;
-      joint_velocities_[i] = state_vel_[i] / 2000;
-    }
+//-    std::string arm_answer_ = arm_comms_.read_msg();
+//-
+//-    sscanf(arm_answer_.c_str(), "%lf:%lf/%lf:%lf/%lf:%lf/%lf:%lf/%lf:%lf/%lf:%lf", 
+//-      &state_pos_[0], &state_vel_[0], &state_pos_[1], &state_vel_[1], &state_pos_[2], &state_vel_[2], 
+//-      &state_pos_[3], &state_vel_[3], &state_pos_[4], &state_vel_[4], &state_pos_[5], &state_vel_[5]); 
+//-
+//-    for (auto i = 0ul; i < joint_positions_.size(); i++){
+//-      joint_positions_[i] = (state_pos_[i] * 3.1416) / 2048;
+//-      joint_velocities_[i] = state_vel_[i] / 2000;
+//-    }
 
     RCLCPP_INFO(rclcpp::get_logger("ArmInterface"), "Successfully activated!");
     return hardware_interface::CallbackReturn::SUCCESS;
@@ -139,6 +136,11 @@ namespace arm_interface
 
   hardware_interface::CallbackReturn ArmInterface::on_deactivate(const rclcpp_lifecycle::State & previous_state){
     RCLCPP_INFO(rclcpp::get_logger("ArmInterface"), "Deactivating ...please wait...");
+
+    for(int i=0; i<5; i++){
+//-      arm_comms_.set_arm_values(pos_null, vel_null);
+      sleep(0.02); 
+    }
 
     RCLCPP_INFO(rclcpp::get_logger("ArmInterface"), "Successfully deactivated!");
     return hardware_interface::CallbackReturn::SUCCESS;
@@ -157,23 +159,11 @@ namespace arm_interface
 //-      &state_pos_[0], &state_vel_[0], &state_pos_[1], &state_vel_[1], &state_pos_[2], &state_vel_[2], 
 //-      &state_pos_[3], &state_vel_[3], &state_pos_[4], &state_vel_[4], &state_pos_[5], &state_vel_[5]); 
 
-    std::stringstream arm_states_;
-    std::stringstream arm_stat;
 //-    for (auto i = 0ul; i < joint_positions_.size(); i++){
 //-      joint_positions_[i] = (state_pos_[i] * 3.1416) / 2048;
 //-      joint_velocities_[i] = state_vel_[i] / 2000;
   
-      //arm_states_ << joint_positions_[i] << ":" << joint_velocities_[i] << "/";
-      //arm_stat << joint_positions_command_[i] << ":" << joint_velocities_command_[i] << "/";
-      //arm_stat << state_pos_[i] << ":" << state_vel_[i] <<"/";
 //-    }
-
-    std::string log1 = arm_states_.str();
-    //std::string log2 = arm_stat.str();
-    //RCLCPP_INFO(rclcpp::get_logger("ArmStats"), log2.c_str());
-    //RCLCPP_INFO(rclcpp::get_logger("ArmInterface"), log1.c_str());
-
-
 
 //+
     for (auto i = 0ul; i < joint_positions_.size(); i++){
@@ -194,18 +184,15 @@ namespace arm_interface
 
   return_type ArmInterface::write(const rclcpp::Time &, const rclcpp::Duration &){
 
-    std::stringstream arm_coms;
-
+    com_pos[0] = int((joint_positions_command_[0] * 100 * 55) / (20 * 3.1416));
+    com_vel[0] = int (joint_velocities_command_[0]);
     for (auto i = 0ul; i < joint_positions_command_.size(); i++){
       com_pos[i] = int((joint_positions_command_[i] * 2048) / 3.1416);
       com_vel[i] = int(abs(joint_velocities_command_[i] * 2000));
     
-      arm_coms << com_pos[i] << ":" << com_vel[i] << "/";
     }
 //-    arm_comms_.set_arm_values(com_pos, com_vel);  
 
-    std::string com_log = arm_coms.str();
-    //RCLCPP_INFO(rclcpp::get_logger("Commands"), com_log.c_str());
     return return_type::OK;
   }
 

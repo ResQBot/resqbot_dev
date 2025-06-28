@@ -36,7 +36,8 @@
         </xacro:inertial_box> -->
     </link>
 
-<!-- Chains (represented by three wheels each, only the middle one beeing motorized) -->
+
+<!-- Chains (represented by wheels) -->
 <!-- wheel macro-->
     <xacro:property name="wheel_length" value="0.15"/>
     <xacro:property name="wheel_radius" value="${0.19/2}"/>
@@ -76,26 +77,6 @@
 
     <xacro:wheel_link position="left_main"/>
 
-<!-- Support Wheels-->
-<!--     <joint name="left_chain_support1_joint" type="continuous">
-        <origin xyz="${(body_length/2) - wheel_radius} ${wheel_seperation/2} ${wheel_radius}" rpy="0 0 0"/>
-        <parent link="body_link"/>
-        <child link="left_support1_wheel_link"/>
-        <axis xyz="0 1 0"/>
-    </joint>    
-
-    <xacro:wheel_link position="left_support1"/>
-
-    <joint name="left_chain_support2_joint" type="continuous">
-        <origin xyz="${-(body_length/2) + wheel_radius} ${wheel_seperation/2} ${wheel_radius}" rpy="0 0 0"/>
-        <parent link="body_link"/>
-        <child link="left_support2_wheel_link"/>
-        <axis xyz="0 1 0"/>
-    </joint>    
-
-    <xacro:wheel_link position="left_support2"/> -->
-
-
 <!-- Right Chain-->
 <!-- Main Wheel-->
     <joint name="right_chain_joint" type="continuous">
@@ -107,31 +88,12 @@
 
     <xacro:wheel_link position="right_main"/>
 
-<!-- Support Wheels-->
-<!--     <joint name="right_chain_support1_joint" type="continuous">
-        <origin xyz="${(body_length/2) - wheel_radius} ${-wheel_seperation/2} ${wheel_radius}" rpy="0 0 0"/>
-        <parent link="body_link"/>
-        <child link="right_support1_wheel_link"/>
-        <axis xyz="0 -1 0"/>
-    </joint>    
-
-    <xacro:wheel_link position="right_support1"/>
-
-    <joint name="right_chain_support2_joint" type="continuous">
-        <origin xyz="${-(body_length/2) + wheel_radius} ${-wheel_seperation/2} ${wheel_radius}" rpy="0 0 0"/>
-        <parent link="body_link"/>
-        <child link="right_support2_wheel_link"/>
-        <axis xyz="0 -1 0"/>
-    </joint>    
-
-    <xacro:wheel_link position="right_support2"/>
- -->
 
 <!-- Flipper -->
     <xacro:property name="flipper_length" value="0.4"/>
     <xacro:property name="flipper_width" value="0.05"/>
     <xacro:property name="flipper_height" value="0.2"/>
-    <xacro:property name="flipper_mass" value="3.0"/>
+    <xacro:property name="flipper_mass" value="2.0"/>
 
 <!-- Flipper link macro -->
     <xacro:macro name="flipper_link" params="position">
@@ -155,7 +117,6 @@
         </link>
     </xacro:macro>
 
-
 <!-- Front Left Flipper-->
     <joint name="flipper_fr_joint" type="continuous">
         <origin xyz="${body_length/2 - flipper_height/2} ${(body_width/2) + (flipper_width/2)} ${flipper_height/2}" rpy="0 ${pi} 0"/>
@@ -167,7 +128,6 @@
     </joint>
 
     <xacro:flipper_link position="fr"/>
-
 
 <!-- Front Right Flipper-->
     <joint name="flipper_fl_joint" type="continuous">
@@ -181,7 +141,6 @@
 
     <xacro:flipper_link position="fl"/>
 
-
 <!-- Rear Left Flipper-->
     <joint name="flipper_rr_joint" type="continuous">
         <origin xyz="${-(body_length/2) + (flipper_height/2)} ${(body_width/2) + (flipper_width/2)} ${flipper_height/2}" rpy="0 0 0"/>
@@ -193,7 +152,6 @@
     </joint>
 
     <xacro:flipper_link position="rr"/>
-
 
 <!-- Rear Right Flipper-->
     <joint name="flipper_rl_joint" type="continuous">
@@ -207,5 +165,30 @@
 
     <xacro:flipper_link position="rl"/>
 
+
+<!-- Sensors -->
+    <!-- LiDAR -->
+    <joint name="lidar_joint" type="fixed">
+        <origin xyz="-0.3 0 0.25" rpy="0 ${-30*pi/180} 0"/>
+        <parent link="body_link"/>
+        <child link="lidar_link"/>
+    </joint>
+
+    <link name="lidar_link">
+        <visual>
+            <origin rpy="0 0 0" xyz="0 0 0"/>
+            <geometry>
+                <box size="0.06 0.06 0.06"/>
+            </geometry>
+            <material name="orange"/>
+        </visual>
+        <collision>
+            <origin rpy="0 0 0" xyz="0 0 0"/>
+            <geometry>
+                <box size="0.06 0.06 0.06"/>
+            </geometry>
+        </collision>
+        <innertial></innertial>
+    </link>
 
 </robot>

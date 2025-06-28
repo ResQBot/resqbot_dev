@@ -1,4 +1,0 @@
-[01m[K/home/paul/resqbot_dev/control_ws/src/lotti_flipper_controller/lotti_flipper_controller/flipper_controller.cpp:[m[K In member function ‘[01m[Kvirtual controller_interface::return_type flipper_controller::FlipperController::update(const rclcpp::Time&, const rclcpp::Duration&)[m[K’:
-[01m[K/home/paul/resqbot_dev/control_ws/src/lotti_flipper_controller/lotti_flipper_controller/flipper_controller.cpp:121:26:[m[K [01;35m[Kwarning: [m[Kunused parameter ‘[01m[Ktime[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-parameter-Wunused-parameter]8;;[m[K]
-  121 |     [01;35m[Kconst rclcpp::Time & time[m[K, const rclcpp::Duration & /*period*/){
-      |     [01;35m[K~~~~~~~~~~~~~~~~~~~~~^~~~[m[K

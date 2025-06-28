@@ -71,6 +71,8 @@ namespace drive_interface{
   hardware_interface::CallbackReturn DriveInterface::on_configure(const rclcpp_lifecycle::State &previous_state){
     RCLCPP_INFO(rclcpp::get_logger("DriveInterface"), "Configuring ...please wait...");
 
+//-    serial_ = std::make_unique<SerialPort>(device_);
+
     RCLCPP_INFO(rclcpp::get_logger("DriveInterface"), "Successfully configured");
     return hardware_interface::CallbackReturn::SUCCESS;
   }
@@ -84,8 +86,6 @@ namespace drive_interface{
 
   hardware_interface::CallbackReturn DriveInterface::on_activate(const rclcpp_lifecycle::State &previous_state){
     RCLCPP_INFO(rclcpp::get_logger("DriveInterface"), "Configuring ...please wait...");
-
-//-    serial_ = std::make_unique<SerialPort>(device_);
 
     RCLCPP_INFO(rclcpp::get_logger("DriveInterface"), "Successfully activated");
     return hardware_interface::CallbackReturn::SUCCESS;

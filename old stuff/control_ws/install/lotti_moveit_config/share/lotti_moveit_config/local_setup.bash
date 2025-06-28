@@ -1,1 +1,0 @@
-/home/paul/resqbot_dev/control_ws/build/lotti_moveit_config/ament_cmake_environment_hooks/local_setup.bash

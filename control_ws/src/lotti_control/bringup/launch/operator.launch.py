@@ -63,14 +63,17 @@ def generate_launch_description():
     robot_description = {"robot_description": robot_description_content}
 
     robot_controllers = PathJoinSubstitution([
-        FindPackageShare("lotti_control"), "config", "Lotti_controllers.yaml"]
+        FindPackageShare("lotti_control"),
+            "config",
+            "Lotti_controllers.yaml",
+        ]
     ) 
 
     rviz_config_file = PathJoinSubstitution([
         FindPackageShare("lotti_control"), "config", "view_lotti.rviz"]
     )
 
-    controller_manager = Node(
+    control_node = Node(
         package="controller_manager",
         executable="ros2_control_node",
         parameters=[robot_controllers],
@@ -112,7 +115,7 @@ def generate_launch_description():
     chain_controller_spawner = Node(
         package="controller_manager",
         executable="spawner",
-        arguments=["chain_controller", "-c", "/controller_manager"],
+        arguments=["drive_controller", "-c", "/controller_manager"],
     )
 
     flipper_controller_spawner = Node(
@@ -200,16 +203,16 @@ def generate_launch_description():
     )
 
     nodes = [
-        #controller_manager,
-        robot_state_pub_node,
-        arm_controller_spawner,
-        delay_chain_controller_spawner,
-        delay_flipper_controller_spawner,
-        delay_rviz_after_joint_state_broadcaster_spawner,
-        delay_joint_state_broadcaster_after_robot_controller_spawner,
-        delay_servo_node,
+        #control_node,
+        #robot_state_pub_node,
+        #arm_controller_spawner,
+        #delay_chain_controller_spawner,
+        #delay_flipper_controller_spawner,
+        rviz_node,
+        #delay_joint_state_broadcaster_after_robot_controller_spawner,
+        #delay_servo_node,
         joy_node,
-        delay_teleop,
+        teleop_node,
     ]
 
     return LaunchDescription(declared_arguments + nodes)

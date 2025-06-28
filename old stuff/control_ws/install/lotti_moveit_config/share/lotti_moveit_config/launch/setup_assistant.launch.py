@@ -1,1 +1,0 @@
-/home/paul/resqbot_dev/control_ws/src/lotti_moveit_config/launch/setup_assistant.launch.py
