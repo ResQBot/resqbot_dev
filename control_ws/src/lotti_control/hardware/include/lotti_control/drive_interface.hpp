@@ -53,19 +53,27 @@ namespace drive_interface{
       std::vector<double> joint_velocities_command_;
       std::vector<double> joint_velocities_;
       std::vector<double> joint_positions_;
+      std::vector<double> joint_torques_;
+      std::vector<double> joint_temps_;
 
       std::string device_ = "";
       float max_speed_ = 0.0;
+      float max_torque_ = 0.0;
       float gearRatio = 6.33;
 
       float speed_l = 0.0;
       float speed_r = 0.0;
+      int direction_l = 0;
+      int direction_r = 0;     
+      float torque_l = 0.0;
+      float torque_r = 0.0;
+
 
       float pos_prev_l = 0.0;
       float pos_prev_r = 0.0;
 
       std::unordered_map<std::string, std::vector<std::string>> joint_interfaces = {
-        {"position", {}}, {"velocity", {}}};
+        {"position", {}}, {"velocity", {}}, {"torque", {}}, {"temp", {}}};
 
       // --- Add Unitree SDK members here ---
       std::unique_ptr<SerialPort> serial_;

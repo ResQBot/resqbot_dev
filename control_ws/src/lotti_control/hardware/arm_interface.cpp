@@ -119,17 +119,6 @@ namespace arm_interface{
 //-      return hardware_interface::CallbackReturn::ERROR;
 //-    }
 
-//-    std::string arm_answer_ = arm_comms_.read_msg();
-//-
-//-    sscanf(arm_answer_.c_str(), "%lf:%lf/%lf:%lf/%lf:%lf/%lf:%lf/%lf:%lf/%lf:%lf", 
-//-      &state_pos_[0], &state_vel_[0], &state_pos_[1], &state_vel_[1], &state_pos_[2], &state_vel_[2], 
-//-      &state_pos_[3], &state_vel_[3], &state_pos_[4], &state_vel_[4], &state_pos_[5], &state_vel_[5]); 
-//-
-//-    for (auto i = 0ul; i < joint_positions_.size(); i++){
-//-      joint_positions_[i] = (state_pos_[i] * 3.1416) / 2048;
-//-      joint_velocities_[i] = state_vel_[i] / 2000;
-//-    }
-
     RCLCPP_INFO(rclcpp::get_logger("ArmInterface"), "Successfully activated!");
     return hardware_interface::CallbackReturn::SUCCESS;
   }
@@ -137,10 +126,10 @@ namespace arm_interface{
   hardware_interface::CallbackReturn ArmInterface::on_deactivate(const rclcpp_lifecycle::State & previous_state){
     RCLCPP_INFO(rclcpp::get_logger("ArmInterface"), "Deactivating ...please wait...");
 
-    for(int i=0; i<5; i++){
+//-    for(int i=0; i<5; i++){
 //-      arm_comms_.set_arm_values(pos_null, vel_null);
-      sleep(0.02); 
-    }
+//-      sleep(0.02); 
+//-    }
 
     RCLCPP_INFO(rclcpp::get_logger("ArmInterface"), "Successfully deactivated!");
     return hardware_interface::CallbackReturn::SUCCESS;

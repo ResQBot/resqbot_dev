@@ -29,11 +29,14 @@ namespace drive_interface{
     //get the Arduino ID from the ros2_control file
     device_ = info_.hardware_parameters["device"];
     max_speed_ = std::stof(info_.hardware_parameters["max_speed"]);
+    max_torque_ = std::stof(info_.hardware_parameters["max_torque"]);
     
     // robot has 2 joints, 1 interface
     joint_velocities_command_.assign(2, 0);
     joint_velocities_.assign(2, 0);
     joint_positions_.assign(2, 0);
+    joint_torques_.assign(2, 0);
+    joint_temps_.assign(2, 0);
 
     for (const auto &joint : info_.joints){
       for (const auto &interface : joint.state_interfaces){
@@ -56,6 +59,16 @@ namespace drive_interface{
       state_interfaces.emplace_back(joint_name, "position", &joint_positions_[ind++]);
     }
 
+    ind = 0;
+    for (const auto &joint_name : joint_interfaces["torque"]){
+      state_interfaces.emplace_back(joint_name, "torque", &joint_torques_[ind++]);
+    }
+
+    ind = 0;
+    for (const auto &joint_name : joint_interfaces["temp"]){
+      state_interfaces.emplace_back(joint_name, "temp", &joint_temps_[ind++]);
+    }
+
     return state_interfaces;
   }
 
@@ -71,7 +84,8 @@ namespace drive_interface{
   hardware_interface::CallbackReturn DriveInterface::on_configure(const rclcpp_lifecycle::State &previous_state){
     RCLCPP_INFO(rclcpp::get_logger("DriveInterface"), "Configuring ...please wait...");
 
-//-    serial_ = std::make_unique<SerialPort>(device_);
+//-
+    serial_ = std::make_unique<SerialPort>(device_);
 
     RCLCPP_INFO(rclcpp::get_logger("DriveInterface"), "Successfully configured");
     return hardware_interface::CallbackReturn::SUCCESS;
@@ -98,8 +112,29 @@ namespace drive_interface{
     return hardware_interface::CallbackReturn::SUCCESS;
   }
 
-  return_type DriveInterface::read(const rclcpp::Time & /*time*/, const rclcpp::Duration & period){    
+  return_type DriveInterface::read(const rclcpp::Time & /*time*/, const rclcpp::Duration & period){     
+    
+    joint_positions_[0] = data_l_.q;     //Rads
+    joint_velocities_[0] = data_l_.dq / gearRatio;   //Rads/s 
+    joint_torques_[0] = data_l_.tau;     //Nm
+    joint_temps_[0] = data_l_.temp;      //°C
 
+    if      (data_l_.merror == 1){RCLCPP_ERROR(rclcpp::get_logger("DriveInterface"), "LEFT MÓTOR OVERHEATING");}
+    else if (data_l_.merror == 2){RCLCPP_ERROR(rclcpp::get_logger("DriveInterface"), "LEFT MÓTOR OVERHEATING");}
+    else if (data_l_.merror == 3){RCLCPP_ERROR(rclcpp::get_logger("DriveInterface"), "LEFT MÓTOR OVERVOLTAGE");}
+    else if (data_l_.merror == 4){RCLCPP_ERROR(rclcpp::get_logger("DriveInterface"), "LEFT MÓTOR ENCODER ERROR");}
+
+    joint_positions_[1] = data_r_.q;     //Rads
+    joint_velocities_[1] = data_r_.dq / gearRatio;   //Rads/s 
+    joint_torques_[1] = data_r_.tau;     //Nm
+    joint_temps_[1] = data_r_.temp;      //°C
+    
+    if      (data_r_.merror == 1){RCLCPP_ERROR(rclcpp::get_logger("DriveInterface"), "RIGHT MÓTOR OVERHEATING");}
+    else if (data_r_.merror == 2){RCLCPP_ERROR(rclcpp::get_logger("DriveInterface"), "RIGHT MÓTOR OVERHEATING");}
+    else if (data_r_.merror == 3){RCLCPP_ERROR(rclcpp::get_logger("DriveInterface"), "RIGHT MÓTOR OVERVOLTAGE");}
+    else if (data_r_.merror == 4){RCLCPP_ERROR(rclcpp::get_logger("DriveInterface"), "RIGHT MÓTOR ENCODER ERROR");}
+    
+    /*
     joint_velocities_[0] = speed_l;
     joint_velocities_[1] = speed_r;
     
@@ -108,7 +143,7 @@ namespace drive_interface{
 
     pos_prev_r = joint_positions_[1]; 
     joint_positions_[1] = pos_prev_r + (speed_r * period.seconds());
-    
+    */
      
     // char str2[100];
     // sprintf(str2, "%f", joint_positions_[0]);
@@ -120,7 +155,13 @@ namespace drive_interface{
   return_type DriveInterface::write(const rclcpp::Time & /*time*/, const rclcpp::Duration &){
 
     speed_l = joint_velocities_command_[0] * max_speed_ * gearRatio;  // directly from command interface
-    speed_r = joint_velocities_command_[1] * max_speed_ * gearRatio;
+    speed_r = -joint_velocities_command_[1] * max_speed_ * gearRatio;
+
+    direction_l = (speed_l > 0) ? 1 : ((speed_l < 0) ? -1 : 0);
+    direction_r = (speed_r > 0) ? 1 : ((speed_r < 0) ? -1 : 0);
+
+    torque_l = max_torque_ *  direction_l;
+    torque_r = max_torque_ *  direction_r;
 
     // char str[100];
     // sprintf(str, "%f", speed_l);
@@ -131,12 +172,12 @@ namespace drive_interface{
     cmd_l_.motorType = MotorType::GO_M8010_6;
     data_l_.motorType = MotorType::GO_M8010_6;
     cmd_l_.mode = queryMotorMode(MotorType::GO_M8010_6, MotorMode::FOC);
-    cmd_l_.id   = 2;
-    cmd_l_.kp   = 0.0;
-    cmd_l_.kd   = 0.05;
-    cmd_l_.q    = 0.0;
-    cmd_l_.dq   = speed_l;
-    cmd_l_.tau  = 0.0;
+    cmd_l_.id   = 2;           //motor ID
+    cmd_l_.kp   = 0.0;         //positional stiffness  
+    cmd_l_.kd   = 0.05;        //velocity stiffness   
+    cmd_l_.q    = 0.0;         //position []   
+    cmd_l_.dq   = speed_l;     //speed    [Rads/s]
+    cmd_l_.tau  = 0.0;    //torrque  [Nm]
 
     cmd_r_.motorType = MotorType::GO_M8010_6;
     data_r_.motorType = MotorType::GO_M8010_6;
@@ -148,8 +189,6 @@ namespace drive_interface{
     cmd_r_.dq   = speed_r;
     cmd_r_.tau  = 0.0;
  
-
-
     // Set other command parameters if necessary
     //cmd_l_.kp = 0.0;
     //cmd_l_.kd = 0.05;
@@ -162,10 +201,15 @@ namespace drive_interface{
     //cmd_r_.tau = 0.0;
 
     // Send commands and receive data over serial port
-//-    if (serial_) {
-//-      serial_->sendRecv(&cmd_l_, &data_l_);
-//-      serial_->sendRecv(&cmd_r_, &data_r_);
-//-    }
+//-
+    if (serial_) {
+//-
+      serial_->sendRecv(&cmd_l_, &data_l_);
+//-
+      serial_->sendRecv(&cmd_r_, &data_r_);
+//-
+    }
+
 
     return return_type::OK;
   }

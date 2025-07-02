@@ -57,6 +57,10 @@ namespace drive_controller{
         joint_velocity_state_interface_;
       std::vector<std::reference_wrapper<hardware_interface::LoanedStateInterface>>
         joint_position_state_interface_;
+      std::vector<std::reference_wrapper<hardware_interface::LoanedStateInterface>>
+        joint_torque_state_interface_;
+      std::vector<std::reference_wrapper<hardware_interface::LoanedStateInterface>>
+        joint_temp_state_interface_;
 
       std::unordered_map<
         std::string, std::vector<std::reference_wrapper<hardware_interface::LoanedCommandInterface>> *>
@@ -67,7 +71,9 @@ namespace drive_controller{
         std::string, std::vector<std::reference_wrapper<hardware_interface::LoanedStateInterface>> *>
         state_interface_map_ = {
           {"velocity", &joint_velocity_state_interface_},
-          {"position", &joint_position_state_interface_}
+          {"position", &joint_position_state_interface_},
+          {"torque", &joint_torque_state_interface_},
+          {"temp", &joint_temp_state_interface_},
         }; 
   };
 

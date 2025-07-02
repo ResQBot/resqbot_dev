@@ -101,6 +101,8 @@ drive_controller:
     state_interfaces:
     - velocity
     - position
+    - torque
+    - temp
 
 #chain_controller:
 #  ros__parameters:
