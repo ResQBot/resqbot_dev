@@ -114,26 +114,34 @@ namespace drive_interface{
 
   return_type DriveInterface::read(const rclcpp::Time & /*time*/, const rclcpp::Duration & period){     
     
-    joint_positions_[0] = data_l_.q;     //Rads
-    joint_velocities_[0] = data_l_.dq / gearRatio;   //Rads/s 
-    joint_torques_[0] = data_l_.tau;     //Nm
-    joint_temps_[0] = data_l_.temp;      //°C
+    if (!data_l_.correct){RCLCPP_ERROR(rclcpp::get_logger("DriveInterface"), "LEFT MOTOR DATA ERROR");}
+    else {
+      joint_positions_[0] = data_l_.q;     //Rads
+      joint_velocities_[0] = data_l_.dq / gearRatio;   //Rads/s 
+      joint_torques_[0] = data_l_.tau;     //Nm
+      joint_temps_[0] = data_l_.temp;      //°C
 
-    if      (data_l_.merror == 1){RCLCPP_ERROR(rclcpp::get_logger("DriveInterface"), "LEFT MÓTOR OVERHEATING");}
-    else if (data_l_.merror == 2){RCLCPP_ERROR(rclcpp::get_logger("DriveInterface"), "LEFT MÓTOR OVERHEATING");}
-    else if (data_l_.merror == 3){RCLCPP_ERROR(rclcpp::get_logger("DriveInterface"), "LEFT MÓTOR OVERVOLTAGE");}
-    else if (data_l_.merror == 4){RCLCPP_ERROR(rclcpp::get_logger("DriveInterface"), "LEFT MÓTOR ENCODER ERROR");}
+      if (joint_temps_[0] >= 60) {RCLCPP_ERROR(rclcpp::get_logger("DriveInterface"), "LEFT MOTOR OVER 60 DEGREES");}
+      if      (data_l_.merror == 1){RCLCPP_ERROR(rclcpp::get_logger("DriveInterface"), "LEFT MOTOR OVERHEATING");}
+      else if (data_l_.merror == 2){RCLCPP_ERROR(rclcpp::get_logger("DriveInterface"), "LEFT MOTOR OVERCURRENT");}
+      else if (data_l_.merror == 3){RCLCPP_ERROR(rclcpp::get_logger("DriveInterface"), "LEFT MOTOR OVERVOLTAGE");}
+      else if (data_l_.merror == 4){RCLCPP_ERROR(rclcpp::get_logger("DriveInterface"), "LEFT MOTOR ENCODER ERROR");}
+    }
 
-    joint_positions_[1] = data_r_.q;     //Rads
-    joint_velocities_[1] = data_r_.dq / gearRatio;   //Rads/s 
-    joint_torques_[1] = data_r_.tau;     //Nm
-    joint_temps_[1] = data_r_.temp;      //°C
-    
-    if      (data_r_.merror == 1){RCLCPP_ERROR(rclcpp::get_logger("DriveInterface"), "RIGHT MÓTOR OVERHEATING");}
-    else if (data_r_.merror == 2){RCLCPP_ERROR(rclcpp::get_logger("DriveInterface"), "RIGHT MÓTOR OVERHEATING");}
-    else if (data_r_.merror == 3){RCLCPP_ERROR(rclcpp::get_logger("DriveInterface"), "RIGHT MÓTOR OVERVOLTAGE");}
-    else if (data_r_.merror == 4){RCLCPP_ERROR(rclcpp::get_logger("DriveInterface"), "RIGHT MÓTOR ENCODER ERROR");}
-    
+    if (!data_r_.correct){RCLCPP_ERROR(rclcpp::get_logger("DriveInterface"), "RIGHT MOTOR DATA ERROR");}
+    else {
+      joint_positions_[1] = data_r_.q;     //Rads
+      joint_velocities_[1] = data_r_.dq / gearRatio;   //Rads/s 
+      joint_torques_[1] = data_r_.tau;     //Nm
+      joint_temps_[1] = data_r_.temp;      //°C
+      
+      if (joint_temps_[1] >= 60) {RCLCPP_ERROR(rclcpp::get_logger("DriveInterface"), "RIGHT MOTOR OVER 60 DEGREES");}
+      if      (data_r_.merror == 1){RCLCPP_ERROR(rclcpp::get_logger("DriveInterface"), "RIGHT MOTOR OVERHEATING");}
+      else if (data_r_.merror == 2){RCLCPP_ERROR(rclcpp::get_logger("DriveInterface"), "RIGHT MOTOR OVERCURRENT");}
+      else if (data_r_.merror == 3){RCLCPP_ERROR(rclcpp::get_logger("DriveInterface"), "RIGHT MOTOR OVERVOLTAGE");}
+      else if (data_r_.merror == 4){RCLCPP_ERROR(rclcpp::get_logger("DriveInterface"), "RIGHT MOTOR ENCODER ERROR");}
+    }
+
     /*
     joint_velocities_[0] = speed_l;
     joint_velocities_[1] = speed_r;
@@ -153,15 +161,25 @@ namespace drive_interface{
   }
 
   return_type DriveInterface::write(const rclcpp::Time & /*time*/, const rclcpp::Duration &){
+   
+    if (joint_temps_[0] <= 70 && joint_temps_[1] <= 70){
+      speed_l = joint_velocities_command_[0] * max_speed_ * gearRatio;
+      speed_r = -joint_velocities_command_[1] * max_speed_ * gearRatio;
+    }
+    else {
+      speed_l = 0.0;
+      speed_r = 0.0;
+      {RCLCPP_ERROR(rclcpp::get_logger("DriveInterface"), "MOTORS OVERHEATING");}
+    }
 
-    speed_l = joint_velocities_command_[0] * max_speed_ * gearRatio;  // directly from command interface
-    speed_r = -joint_velocities_command_[1] * max_speed_ * gearRatio;
-
-    direction_l = (speed_l > 0) ? 1 : ((speed_l < 0) ? -1 : 0);
-    direction_r = (speed_r > 0) ? 1 : ((speed_r < 0) ? -1 : 0);
-
-    torque_l = max_torque_ *  direction_l;
-    torque_r = max_torque_ *  direction_r;
+    for (int i = 0; i < 2; i++){
+      if (abs(joint_torques_[0]) > max_torque_){
+        torque_cmd_[i] = std::clamp(joint_torques_[0], -max_torque_, max_torque_);
+      }
+      else {
+        torque_cmd_[i] = 0.0;
+      }
+    }
 
     // char str[100];
     // sprintf(str, "%f", speed_l);
@@ -177,7 +195,7 @@ namespace drive_interface{
     cmd_l_.kd   = 0.05;        //velocity stiffness   
     cmd_l_.q    = 0.0;         //position []   
     cmd_l_.dq   = speed_l;     //speed    [Rads/s]
-    cmd_l_.tau  = 0.0;    //torrque  [Nm]
+    cmd_l_.tau  = torque_cmd_[0];    //torrque  [Nm]
 
     cmd_r_.motorType = MotorType::GO_M8010_6;
     data_r_.motorType = MotorType::GO_M8010_6;
@@ -187,7 +205,7 @@ namespace drive_interface{
     cmd_r_.kd   = 0.05;
     cmd_r_.q    = 0.0;
     cmd_r_.dq   = speed_r;
-    cmd_r_.tau  = 0.0;
+    cmd_r_.tau  = torque_cmd_[1];
  
     // Set other command parameters if necessary
     //cmd_l_.kp = 0.0;

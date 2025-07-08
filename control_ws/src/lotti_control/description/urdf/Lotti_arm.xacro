@@ -70,7 +70,7 @@
       lower="-3"
       upper="3"
       effort="3"
-      velocity="1" />
+      velocity="0.5" />
   </joint>
 
   <link name="arm_link2_link">

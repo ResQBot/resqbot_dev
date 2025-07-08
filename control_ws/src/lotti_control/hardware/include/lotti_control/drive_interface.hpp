@@ -5,6 +5,7 @@
 #include "string"
 #include "unordered_map"
 #include "vector"
+#include <bits/stdc++.h>
 
 #include "hardware_interface/handle.hpp"
 #include "hardware_interface/hardware_info.hpp"
@@ -58,15 +59,12 @@ namespace drive_interface{
 
       std::string device_ = "";
       float max_speed_ = 0.0;
-      float max_torque_ = 0.0;
+      double max_torque_ = 0.0;
       float gearRatio = 6.33;
 
       float speed_l = 0.0;
       float speed_r = 0.0;
-      int direction_l = 0;
-      int direction_r = 0;     
-      float torque_l = 0.0;
-      float torque_r = 0.0;
+      double torque_cmd_[2] = {0.0, 0.0};
 
 
       float pos_prev_l = 0.0;

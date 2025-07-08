@@ -727,7 +727,7 @@ Für die Steuerung des Roboters verwenden wir ```ros2_control```. Für die inver
 
 ```ros2_control``` ist ein Standard-Package in ROS2 und somit einfach zu installieren:
 
-	sudo apt install ros-humble-ros2-control ros-humble-ros2-controller
+	sudo apt install ros-humble-ros2-control ros-humble-ros2-controllers
 
 ```moveit2``` ist etwas aufwändiger:  
 Vorbereitung:
@@ -760,7 +760,7 @@ Nun den Tutorial-Ordner aus dem GitHub Repo installieren:
 
 Das Kompilieren von MoveIt2 dauer extrem lang und ist absurd Resourcenaufwendig. Vor dem Start alle anderen Anwendungen und Prozesse schließen und externe Bildschirme abstecken. Der Prozess wird ca. 30 Minuten dauern, wenn alles gut geht. Evtl. hängt sich der Computer zwischendurch auf, in dem Fall einfach neu Starten und den ```colcon``` Befehl wiederholen. Der Fortschritt bis zum Aufhängen bleibt bestehen. Man kann das also einfach so oft wiederholen, bis das Package fertig kompiliert ist.
 
-	colcon build --mixin-release --symlink-install --executor sequential
+	colcon build --mixin release --symlink-install --executor sequential
 
 Wenn der Prozess erfolgreich beendet wurde, das Package sourcen und in der ```.bashrc``` integrieren.
 
