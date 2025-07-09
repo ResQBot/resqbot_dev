@@ -164,6 +164,7 @@ class TeleOp(Node):
             self.get_logger().info('service not available, waiting again...')
         self.__future = self.__cli.call_async(Trigger.Request())
         rclpy.spin_until_future_complete(self, self.__future)
+        self.get_logger().info('arm server initiated')
         return self.__future.result()
 
 

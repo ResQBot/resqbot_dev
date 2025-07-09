@@ -57,7 +57,8 @@ namespace arm_interface{
       int com_pos[6] = {0, 0, 0, 0, 0, 0};
       int com_vel[6] = {0, 0, 0, 0, 0, 0};
 
-      int pos_null[6] = {0, 3, 3, 1024, 1024, 0};
+      int rot_null[6] = {1024, -50, 50, 1024, 1024, 0};
+      int pos_null[6] = {1024, 5, 5, 1024, 1024, 0};
       int vel_null[6] = {0, 0, 0, 0, 0, 0};
 
       double state_pos_[6] = {0, 0, 0, 0, 0, 0};

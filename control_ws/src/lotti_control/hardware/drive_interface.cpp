@@ -84,8 +84,7 @@ namespace drive_interface{
   hardware_interface::CallbackReturn DriveInterface::on_configure(const rclcpp_lifecycle::State &previous_state){
     RCLCPP_INFO(rclcpp::get_logger("DriveInterface"), "Configuring ...please wait...");
 
-//-
-    serial_ = std::make_unique<SerialPort>(device_);
+//-    serial_ = std::make_unique<SerialPort>(device_);
 
     RCLCPP_INFO(rclcpp::get_logger("DriveInterface"), "Successfully configured");
     return hardware_interface::CallbackReturn::SUCCESS;
@@ -114,7 +113,7 @@ namespace drive_interface{
 
   return_type DriveInterface::read(const rclcpp::Time & /*time*/, const rclcpp::Duration & period){     
     
-    if (!data_l_.correct){RCLCPP_ERROR(rclcpp::get_logger("DriveInterface"), "LEFT MOTOR DATA ERROR");}
+    /*if (!data_l_.correct){RCLCPP_ERROR(rclcpp::get_logger("DriveInterface"), "LEFT MOTOR DATA ERROR");}
     else {
       joint_positions_[0] = data_l_.q;     //Rads
       joint_velocities_[0] = data_l_.dq / gearRatio;   //Rads/s 
@@ -141,18 +140,7 @@ namespace drive_interface{
       else if (data_r_.merror == 3){RCLCPP_ERROR(rclcpp::get_logger("DriveInterface"), "RIGHT MOTOR OVERVOLTAGE");}
       else if (data_r_.merror == 4){RCLCPP_ERROR(rclcpp::get_logger("DriveInterface"), "RIGHT MOTOR ENCODER ERROR");}
     }
-
-    /*
-    joint_velocities_[0] = speed_l;
-    joint_velocities_[1] = speed_r;
-    
-    pos_prev_l = joint_positions_[0]; 
-    joint_positions_[0] = pos_prev_l + (speed_l * period.seconds());
-
-    pos_prev_r = joint_positions_[1]; 
-    joint_positions_[1] = pos_prev_r + (speed_r * period.seconds());
-    */
-     
+     */
     // char str2[100];
     // sprintf(str2, "%f", joint_positions_[0]);
     // RCLCPP_INFO(rclcpp::get_logger("DriveInterface"), str2); 
@@ -219,14 +207,10 @@ namespace drive_interface{
     //cmd_r_.tau = 0.0;
 
     // Send commands and receive data over serial port
-//-
-    if (serial_) {
-//-
-      serial_->sendRecv(&cmd_l_, &data_l_);
-//-
-      serial_->sendRecv(&cmd_r_, &data_r_);
-//-
-    }
+//-    if (serial_) {
+//-      serial_->sendRecv(&cmd_l_, &data_l_);
+//-      serial_->sendRecv(&cmd_r_, &data_r_);
+//-    }
 
 
     return return_type::OK;

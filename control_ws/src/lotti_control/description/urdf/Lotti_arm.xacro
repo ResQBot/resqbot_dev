@@ -62,15 +62,15 @@
   </link>
 
   <joint name="arm_link1_joint" type="revolute">
-    <origin xyz="0 0 0.0813" rpy="0 0 1.5708" />
+    <origin xyz="0 0 0.0813" rpy="0 0 3.1416" /> 
     <parent link="arm_base_link" />
     <child link="arm_link1_link" />
     <axis xyz="0 0 -1" />
     <limit
-      lower="-3"
-      upper="3"
+      lower="0"
+      upper="3.2"
       effort="3"
-      velocity="0.5" />
+      velocity="1" />
   </joint>
 
   <link name="arm_link2_link">
@@ -212,7 +212,7 @@
       lower="0"
       upper="3"
       effort="3"
-      velocity="1" />
+      velocity="2" />
   </joint>
 
   <link name="arm_link6_link">

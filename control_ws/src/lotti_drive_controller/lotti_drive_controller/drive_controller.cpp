@@ -5,6 +5,7 @@
 #include <memory>
 #include <string>
 #include <vector>
+#include <cmath>
 #include "rclcpp/qos.hpp"
 #include "rclcpp/time.hpp"
 #include "rclcpp_lifecycle/node_interfaces/lifecycle_node_interface.hpp"
@@ -88,7 +89,18 @@ namespace drive_controller{
 
   controller_interface::return_type DriveController::update(
     const rclcpp::Time & time, const rclcpp::Duration & /*period*/){
-      
+    
+    // float phi = std::atan(cmd_x_ / cmd_y_);
+    // float vel = std::sqrt(cmd_x_ * cmd_x_ + cmd_y_ * cmd_y_)
+    // if (cdm_y_ >= 0) {
+    //   left_wheel_cmd  = vel - (3.1416 * bot_width_) / (phi * 0.2);
+    //   right_wheel_cmd = vel + (3.1416 * bot_width_) / (phi * 0.2);
+    // }
+    // else {
+    //   left_wheel_cmd  = -(vel - (3.1416 * bot_width_) / (phi * 0.2));
+    //   right_wheel_cmd = -(vel + (3.1416 * bot_width_) / (phi * 0.2));
+    // }
+
     left_wheel_cmd = std::max(-1.0f, std::min((cmd_speed_ - cmd_angle_), 1.0f));
     right_wheel_cmd = std::max(-1.0f, std::min((cmd_speed_ + cmd_angle_), 1.0f));
 

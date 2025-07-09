@@ -33,6 +33,7 @@ namespace arm_interface{
     joint_positions_command_.assign(6, 0);
     joint_velocities_command_.assign(6, 0);
 
+    joint_positions_command_[0] = 1.57;
     joint_positions_command_[3] = 1.5;
     joint_positions_command_[4] = 1.5;
 
@@ -91,10 +92,14 @@ namespace arm_interface{
   hardware_interface::CallbackReturn ArmInterface::on_configure(const rclcpp_lifecycle::State & previous_state){
     RCLCPP_INFO(rclcpp::get_logger("ArmInterface"), "Configuring ...please wait...");
 
-//-    if (arm_comms_.connected()){
-//-      arm_comms_.disconnect();
-//-    }
-//-    arm_comms_.connect(device_); 
+//-
+    if (arm_comms_.connected()){
+//-
+      arm_comms_.disconnect();
+//-
+    }
+//-
+    arm_comms_.connect(device_); 
 
     RCLCPP_INFO(rclcpp::get_logger("ArmInterface"), "Successfully configured!");
     return hardware_interface::CallbackReturn::SUCCESS;
@@ -103,9 +108,12 @@ namespace arm_interface{
    hardware_interface::CallbackReturn ArmInterface::on_cleanup(const rclcpp_lifecycle::State & previous_state){
     RCLCPP_INFO(rclcpp::get_logger("ArmInterface"), "Cleaning up ...please wait...");
 
-//-    if (arm_comms_.connected()){
-//-      arm_comms_.disconnect();
-//-    } 
+//-
+    if (arm_comms_.connected()){
+//-
+      arm_comms_.disconnect();
+//-
+    } 
 
     RCLCPP_INFO(rclcpp::get_logger("ArmInterface"), "Successfully cleaned up!");
     return hardware_interface::CallbackReturn::SUCCESS;
@@ -114,10 +122,14 @@ namespace arm_interface{
   hardware_interface::CallbackReturn ArmInterface::on_activate(const rclcpp_lifecycle::State & previous_state){
     RCLCPP_INFO(rclcpp::get_logger("ArmInterface"), "Activating ...please wait...");
 
-//-    if (!arm_comms_.connected()){
-//-      RCLCPP_ERROR(rclcpp::get_logger("ArmInterface"), "Arduino not connected");
-//-      return hardware_interface::CallbackReturn::ERROR;
-//-    }
+//-
+    if (!arm_comms_.connected()){
+//-
+      RCLCPP_ERROR(rclcpp::get_logger("ArmInterface"), "Arduino not connected");
+//-
+      return hardware_interface::CallbackReturn::ERROR;
+//-
+    }
 
     RCLCPP_INFO(rclcpp::get_logger("ArmInterface"), "Successfully activated!");
     return hardware_interface::CallbackReturn::SUCCESS;
@@ -125,6 +137,15 @@ namespace arm_interface{
 
   hardware_interface::CallbackReturn ArmInterface::on_deactivate(const rclcpp_lifecycle::State & previous_state){
     RCLCPP_INFO(rclcpp::get_logger("ArmInterface"), "Deactivating ...please wait...");
+
+//-
+    for(int i=0; i<5; i++){
+//-
+      arm_comms_.set_arm_values(rot_null, vel_null);
+//-
+      sleep(0.02); 
+//-
+    }
 
 //-    for(int i=0; i<5; i++){
 //-      arm_comms_.set_arm_values(pos_null, vel_null);
@@ -136,51 +157,60 @@ namespace arm_interface{
   }
 
   return_type ArmInterface::read(const rclcpp::Time & /*time*/, const rclcpp::Duration & period){
-//-    if (!arm_comms_.connected()){
-//-      return hardware_interface::return_type::ERROR;
-//-    }
+//-
+    if (!arm_comms_.connected()){
+//-
+      return hardware_interface::return_type::ERROR;
+//-
+    }
 
-//-    std::string arm_answer_ = arm_comms_.read_msg();
+//-
+    std::string arm_answer_ = arm_comms_.read_msg();
     //RCLCPP_INFO(rclcpp::get_logger("ArmAnswer"), arm_answer_.c_str());
 
 
-//-    sscanf(arm_answer_.c_str(), "%lf:%lf/%lf:%lf/%lf:%lf/%lf:%lf/%lf:%lf/%lf:%lf", 
-//-      &state_pos_[0], &state_vel_[0], &state_pos_[1], &state_vel_[1], &state_pos_[2], &state_vel_[2], 
-//-      &state_pos_[3], &state_vel_[3], &state_pos_[4], &state_vel_[4], &state_pos_[5], &state_vel_[5]); 
+//-
+    sscanf(arm_answer_.c_str(), "%lf:%lf/%lf:%lf/%lf:%lf/%lf:%lf/%lf:%lf/%lf:%lf", 
+//-
+      &state_pos_[0], &state_vel_[0], &state_pos_[1], &state_vel_[1], &state_pos_[2], &state_vel_[2], 
+//-
+      &state_pos_[3], &state_vel_[3], &state_pos_[4], &state_vel_[4], &state_pos_[5], &state_vel_[5]); 
 
-//-    for (auto i = 0ul; i < joint_positions_.size(); i++){
-//-      joint_positions_[i] = (state_pos_[i] * 3.1416) / 2048;
-//-      joint_velocities_[i] = state_vel_[i] / 2000;
-  
-//-    }
-
-//+
+//-
     for (auto i = 0ul; i < joint_positions_.size(); i++){
-//+
-      joint_positions_[i] = joint_positions_command_[i];
-//+
+//-
+      joint_positions_[i] = (state_pos_[i] * 3.1416) / 2048;
+//-
+      joint_velocities_[i] = state_vel_[i] / 2000;
+//-
     }
 
-//+
-    for (auto i = 0ul; i < joint_velocities_command_.size(); i++){
-//+
-      joint_velocities_[i] = joint_velocities_command_[i];
-//+
-    }
+
+//+    for (auto i = 0ul; i < joint_positions_.size(); i++){
+//+      joint_positions_[i] = joint_positions_command_[i];
+//+    }
+
+//+    for (auto i = 0ul; i < joint_velocities_command_.size(); i++){
+//+      joint_velocities_[i] = joint_velocities_command_[i];
+//+    }
 
     return return_type::OK;
   }
 
   return_type ArmInterface::write(const rclcpp::Time &, const rclcpp::Duration &){
 
-    com_pos[0] = int((joint_positions_command_[0] * 100 * 55) / (20 * 3.1416));
-    com_vel[0] = int (joint_velocities_command_[0]);
+    //com_pos[0] = int((joint_positions_command_[0] * 100 * 55) / (20 * 3.1416));
+    //com_vel[0] = int (joint_velocities_command_[0]);
     for (auto i = 0ul; i < joint_positions_command_.size(); i++){
       com_pos[i] = int((joint_positions_command_[i] * 2048) / 3.1416);
       com_vel[i] = int(abs(joint_velocities_command_[i] * 2000));
     
     }
-//-    arm_comms_.set_arm_values(com_pos, com_vel);  
+    std::string position = std::to_string(com_pos[1]);
+    RCLCPP_INFO(rclcpp::get_logger("ArmInterface"), position.c_str());
+
+//-
+    arm_comms_.set_arm_values(com_pos, com_vel);  
 
     return return_type::OK;
   }

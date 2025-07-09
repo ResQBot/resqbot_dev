@@ -66,10 +66,6 @@ namespace drive_interface{
       float speed_r = 0.0;
       double torque_cmd_[2] = {0.0, 0.0};
 
-
-      float pos_prev_l = 0.0;
-      float pos_prev_r = 0.0;
-
       std::unordered_map<std::string, std::vector<std::string>> joint_interfaces = {
         {"position", {}}, {"velocity", {}}, {"torque", {}}, {"temp", {}}};
 
