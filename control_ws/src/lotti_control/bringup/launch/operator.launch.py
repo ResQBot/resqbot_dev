@@ -25,6 +25,11 @@ from launch_ros.substitutions import FindPackageShare
 from ament_index_python import get_package_share_directory
 from moveit_configs_utils import MoveItConfigsBuilder
 
+# ── NOTE ─────────────────────────────────────────────────────────────────────
+# operator.launch.py  →  runs on the OPERATOR PC (Ubuntu, same ROS_DOMAIN_ID)
+# robot.launch.py     →  runs on the ROBOT PC (NUC100 mini PC)
+# ─────────────────────────────────────────────────────────────────────────────
+
 def load_yaml(package_name, file_path):
     package_path = get_package_share_directory(package_name)
     absolute_file_path = os.path.join(package_path, file_path)
@@ -199,6 +204,47 @@ def generate_launch_description():
         executable='joy_node',
     )
 
+    # ── slam_toolbox (online async SLAM — builds map + localizes simultaneously)
+    slam_toolbox = IncludeLaunchDescription(
+        os.path.join(
+            get_package_share_directory('slam_toolbox'),
+            'launch', 'online_async_launch.py'
+        ),
+        launch_arguments={
+            'use_sim_time': 'false',
+            'slam_params_file': os.path.join(
+                get_package_share_directory('lotti_control'),
+                'config', 'slam_toolbox_params.yaml'
+            ),
+        }.items(),
+    )
+
+    # ── Nav2 navigation stack ────────────────────────────────────────────────
+    nav2_params = PathJoinSubstitution([
+        FindPackageShare("lotti_control"), "config", "nav2_params.yaml"
+    ])
+
+    nav2 = IncludeLaunchDescription(
+        os.path.join(
+            get_package_share_directory('nav2_bringup'),
+            'launch', 'navigation_launch.py'
+        ),
+        launch_arguments={
+            'use_sim_time': 'false',
+            'params_file': nav2_params,
+        }.items(),
+    )
+
+    # Nav2 publishes /cmd_vel, diff_drive_controller subscribes to
+    # /chain_controller/cmd_vel. The remapping node bridges the two.
+    cmd_vel_relay = Node(
+        package='topic_tools',
+        executable='relay',
+        name='cmd_vel_relay',
+        parameters=[{'input_topic': '/cmd_vel',
+                     'output_topic': '/chain_controller/cmd_vel'}],
+    )
+
     nodes = [
         #controller_manager,
         robot_state_pub_node,
@@ -210,6 +256,9 @@ def generate_launch_description():
         delay_servo_node,
         joy_node,
         delay_teleop,
+        slam_toolbox,
+        nav2,
+        cmd_vel_relay,
     ]
 
     return LaunchDescription(declared_arguments + nodes)

@@ -25,6 +25,11 @@ from launch_ros.substitutions import FindPackageShare
 from ament_index_python import get_package_share_directory
 from moveit_configs_utils import MoveItConfigsBuilder
 
+# ── NOTE ─────────────────────────────────────────────────────────────────────
+# robot.launch.py  →  runs on the ROBOT PC (NUC100 mini PC)
+# operator.launch.py  →  runs on the OPERATOR PC
+# ─────────────────────────────────────────────────────────────────────────────
+
 def load_yaml(package_name, file_path):
     package_path = get_package_share_directory(package_name)
     absolute_file_path = os.path.join(package_path, file_path)
@@ -197,6 +202,50 @@ def generate_launch_description():
         executable='joy_node',
     )
 
+    # ── Livox Mid-360 driver ─────────────────────────────────────────────────
+    livox_config = PathJoinSubstitution([
+        FindPackageShare("lotti_control"), "config", "MID360_config.json"
+    ])
+
+    livox_driver = Node(
+        package='livox_ros_driver2',
+        executable='livox_ros_driver2_node',
+        name='livox_lidar_publisher',
+        parameters=[{
+            'user_config_path': livox_config,
+            'xfer_format': 0,       # 0 = PointCloud2, 1 = CustomMsg
+            'multi_topic': 0,
+            'data_src': 0,
+            'publish_freq': 10.0,
+            'output_data_type': 0,
+            'frame_id': 'lidar_link',
+        }],
+        output='screen',
+    )
+
+    # ── PointCloud2 → LaserScan (for slam_toolbox on operator PC) ────────────
+    # Uses body_link as target so the horizontal slice is robot-relative
+    # regardless of the sensor's 30° pitch tilt.
+    pointcloud_to_laserscan = Node(
+        package='pointcloud_to_laserscan',
+        executable='pointcloud_to_laserscan_node',
+        name='pointcloud_to_laserscan',
+        parameters=[{
+            'target_frame': 'body_link',
+            'transform_tolerance': 0.01,
+            'min_height': 0.0,
+            'max_height': 0.5,      # horizontal band in body_link frame
+            'angle_min': -3.14159,
+            'angle_max':  3.14159,
+            'angle_increment': 0.00872,   # ~0.5 deg resolution
+            'scan_time': 0.1,
+            'range_min': 0.1,
+            'range_max': 40.0,
+            'use_inf': True,
+        }],
+        remappings=[('/cloud_in', '/livox/lidar')],
+    )
+
     nodes = [
         controller_manager,
         #robot_state_pub_node,
@@ -208,6 +257,8 @@ def generate_launch_description():
         #delay_servo_node,
         #joy_node,
         #delay_teleop,
+        livox_driver,
+        pointcloud_to_laserscan,
     ]
 
     return LaunchDescription(declared_arguments + nodes)
