@@ -1,0 +1,58 @@
+controller_manager:
+  ros__parameters:
+    update_rate: 100 #Hz
+
+    joint_state_broadcaster:
+      type: joint_state_broadcaster/JointStateBroadcaster
+      
+    arm_controller:
+      type: joint_trajectory_controller/JointTrajectoryController
+
+    flipper3_controller:
+      type: flipper3_controller/FlipperController
+
+    drive_controller:
+      type: drive_controller/DriveController
+
+arm_controller:
+  ros__parameters:
+    joints:
+      - arm_link1_joint
+      - arm_link2_joint
+      - arm_link3_joint
+      - arm_link4_joint
+      - arm_link5_joint
+    command_interfaces:
+      - position
+    state_interfaces:
+      - position
+    allow_partial_joints_goal: true
+    open_loop_control: true
+    interpolate_from_desired_state: true
+    set_last_command_interface_value_as_state_on_activation: false
+    allow_nonzero_velocity_at_trajectory_end: true
+    constraints:
+      stopped_velocity_tolerance: 0.01
+      goal_time: 0.05
+
+flipper3_controller:
+  ros__parameters:
+    joints:
+    - flipper_fr_joint
+    - flipper_fl_joint
+    - flipper_rr_joint
+    - flipper_rl_joint
+    command_interfaces:
+    - velocity
+    state_interfaces:
+    - position
+
+drive_controller:
+  ros__parameters:
+    joints:
+    - left_chain_joint
+    - right_chain_joint
+    command_interfaces:
+    - velocity
+    state_interfaces:
+    - velocity

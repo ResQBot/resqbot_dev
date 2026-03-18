@@ -1,0 +1,10 @@
+<library path="lotti_drive_controller">
+      <class name="drive_controller/DriveController"
+             type="drive_controller::DriveController"
+             base_class_type="controller_interface::ControllerInterface">
+      <description>
+      Robot controller plugin for Lotti tracks
+      </description>
+  </class>
+  
+</library>

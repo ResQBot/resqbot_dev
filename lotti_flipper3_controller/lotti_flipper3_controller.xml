@@ -1,0 +1,10 @@
+<library path="lotti_flipper3_controller">
+      <class name="flipper3_controller/FlipperController"
+             type="flipper3_controller::FlipperController"
+             base_class_type="controller_interface::ControllerInterface">
+      <description>
+      Robot controller plugin for Lotti flippers
+      </description>
+  </class>
+  
+</library>
