@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" >
+
+    <joint name="lidar_joint" type="fixed">
+        <!-- 30cm forward, 30cm left of robot origin, 0cm vertical -->
+        <!-- pitch = +0.5236 rad (30°): sensor top tilts toward rear -->
+        <origin xyz="0.30 0.30 0.0" rpy="0 0.5236 0"/>
+        <parent link="body_link"/>
+        <child link="lidar_link"/>
+    </joint>
+
+    <link name="lidar_link">
+        <visual>
+            <origin  xyz="0 0 0" rpy="0 0 0"/>
+            <geometry>
+                <cylinder radius= "0.03" length="0.08"/>
+            </geometry>
+            <material name="orange"/>
+        </visual>
+        <collision>
+            <origin  xyz="0 0 0" rpy="0 0 0"/>
+            <geometry>
+                <cylinder radius= "0.03" length="0.08"/>
+            </geometry>
+        </collision>
+        <xacro:inertial_cylinder mass="0.1" length="0.08" radius="0.03">
+            <origin  xyz="0 0 0" rpy="0 0 0"/>
+        </xacro:inertial_cylinder>
+    </link>
+</robot>

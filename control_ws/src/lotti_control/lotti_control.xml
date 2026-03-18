@@ -1,0 +1,27 @@
+<library path="lotti_control">
+  <!-- hardware interfaces-->
+  <class name="arm_interface/ArmInterface"
+         type="arm_interface::ArmInterface"
+         base_class_type="hardware_interface::SystemInterface">
+    <description>
+      Interface to drive Lotti's robot arm
+    </description>
+  </class>
+  
+  <class name="flipper_interface/FlipperInterface"
+         type="flipper_interface::FlipperInterface"
+         base_class_type="hardware_interface::SystemInterface">
+    <description>
+      Interface to drive Lotti's flippers
+    </description>
+  </class>
+  
+  <class name="diffdrive_lotti/DiffDriveLotti"
+         type="diffdrive_lotti::DiffDriveLotti"
+         base_class_type="hardware_interface::SystemInterface">
+    <description>
+      Interface to drive Lotti's chains
+    </description>
+  </class>  
+
+  </library>

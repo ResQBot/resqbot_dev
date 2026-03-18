@@ -1,0 +1,10 @@
+.vscode
+
+control_ws/build/
+control_ws/install/
+control_ws/log/
+
+eigen_ws/
+fast_lio_ws/
+livox_ws/
+audio_common_ws/
