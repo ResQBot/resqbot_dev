@@ -300,8 +300,8 @@ class TeleOp(Node):
             
         if(self.__arm_enabled == False):
             self.__flipper_cmd_fr.data = self.__button_y * self.__flipper_direction
-            self.__flipper_cmd_fl.data = self.__button_x * self.__flipper_direction
-            self.__flipper_cmd_rr.data = self.__button_b * self.__flipper_direction         
+            self.__flipper_cmd_fl.data = -(self.__button_x * self.__flipper_direction)
+            self.__flipper_cmd_rr.data = -(self.__button_b * self.__flipper_direction)        
             self.__flipper_cmd_rl.data = self.__button_a * self.__flipper_direction
         else:
             self.__flipper_cmd_fr.data = 0
