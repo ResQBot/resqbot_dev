@@ -1,19 +1,26 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="Lotti3">
 
+<!-- Simulation switch: pass use_sim:=true for Gazebo, default is real hardware -->
+    <xacro:arg name="use_sim" default="false"/>
+
 <!-- included files for properties -->
     <xacro:include filename="urdf_inertial_shapes.xacro" />
     <xacro:include filename="urdf_materials.xacro"/>
 
-<!-- include files for parts -->    
+<!-- include files for parts -->
     <xacro:include filename="Lotti_arm3.xacro"/>
     <xacro:include filename="Lotti_body.xacro"/>
     <!-- <xacro:include filename="Lotti_lidar.xacro"/> -->
 
-<!-- include controllers -->
-<!-- <xacro:include filename="Lotti_gazebo_control.xacro"/> -->
-    <xacro:include filename="$(find lotti_control3)/ros2_control/Lotti.ros2_control.xacro"/>
-
+<!-- include controllers — switches between simulation and real hardware plugins -->
+    <xacro:if value="$(arg use_sim)">
+        <xacro:include filename="Lotti_gazebo_control.xacro"/>
+        <xacro:include filename="$(find lotti_control3)/ros2_control/Lotti_sim.ros2_control.xacro"/>
+    </xacro:if>
+    <xacro:unless value="$(arg use_sim)">
+        <xacro:include filename="$(find lotti_control3)/ros2_control/Lotti.ros2_control.xacro"/>
+    </xacro:unless>
 
 <!-- world origin -->
 <!--     <link name="world"></link> -->

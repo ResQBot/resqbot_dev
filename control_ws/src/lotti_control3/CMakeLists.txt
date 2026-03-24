@@ -69,7 +69,7 @@ install(
 )
 
 install(
-  DIRECTORY description/launch description/urdf description/srdf description/meshes
+  DIRECTORY description/launch description/urdf description/srdf description/meshes description/worlds
   DESTINATION share/lotti_control3/description
 )
 
