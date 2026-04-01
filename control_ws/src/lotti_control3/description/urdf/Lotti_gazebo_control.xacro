@@ -44,10 +44,11 @@
         <mu2>0.2</mu2>
     </gazebo>
 
-    <!-- gazebo_ros2_control plugin — activates the ros2_control hardware manager inside Gazebo.
+    <!-- gz_ros2_control plugin — activates the ros2_control hardware manager inside Gazebo Harmonic.
          The controllers yaml is passed so the plugin knows which controllers to load. -->
     <gazebo>
-        <plugin filename="libgazebo_ros2_control.so" name="gazebo_ros2_control">
+        <plugin filename="gz_ros2_control-system"
+                name="gz_ros2_control::GazeboSimROS2ControlPlugin">
             <parameters>$(find lotti_control3)/config/lotti_controllers.yaml</parameters>
         </plugin>
     </gazebo>

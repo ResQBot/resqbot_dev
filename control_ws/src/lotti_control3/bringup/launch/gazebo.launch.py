@@ -1,17 +1,3 @@
-# Copyright 2023 ros2_control Development Team
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-
 import os
 import yaml
 from launch import LaunchDescription
@@ -19,10 +5,10 @@ from launch.actions import (
     RegisterEventHandler,
     DeclareLaunchArgument,
     IncludeLaunchDescription,
-    TimerAction,
 )
 from launch.conditions import IfCondition
-from launch.event_handlers import OnProcessExit
+from launch.event_handlers import OnProcessExit, OnProcessStart
+from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.substitutions import (
     Command,
     FindExecutable,
@@ -54,7 +40,7 @@ def generate_launch_description():
         DeclareLaunchArgument(
             "gui",
             default_value="true",
-            description="Open the Gazebo GUI (gzclient).",
+            description="Open the Gazebo GUI.",
         ),
         DeclareLaunchArgument(
             "use_rviz",
@@ -77,7 +63,7 @@ def generate_launch_description():
     world = LaunchConfiguration("world")
 
     # --------------------------------------------------------------------------
-    # URDF — built with use_sim:=true so Gazebo plugins are included
+    # URDF — built with use_sim:=true so Gazebo Harmonic plugins are included
     # --------------------------------------------------------------------------
     robot_description_content = Command([
         PathJoinSubstitution([FindExecutable(name="xacro")]),
@@ -92,21 +78,16 @@ def generate_launch_description():
     robot_description = {"robot_description": robot_description_content}
 
     # --------------------------------------------------------------------------
-    # Gazebo server + client
+    # Gazebo Harmonic — single gz_sim launch (replaces gzserver + gzclient)
     # --------------------------------------------------------------------------
-    gzserver_node = Node(
-        package="gazebo_ros",
-        executable="gzserver",
-        arguments=["--verbose", "-s", "libgazebo_ros_init.so",
-                   "-s", "libgazebo_ros_factory.so", world],
-        output="screen",
-    )
-
-    gzclient_node = Node(
-        package="gazebo_ros",
-        executable="gzclient",
-        condition=IfCondition(gui),
-        output="screen",
+    gz_sim = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource([
+            PathJoinSubstitution([FindPackageShare("ros_gz_sim"), "launch", "gz_sim.launch.py"])
+        ]),
+        launch_arguments={
+            "gz_args": [world, " -r"],
+            "on_exit_shutdown": "true",
+        }.items(),
     )
 
     # --------------------------------------------------------------------------
@@ -120,14 +101,14 @@ def generate_launch_description():
     )
 
     # --------------------------------------------------------------------------
-    # Spawn robot into Gazebo (delayed so gzserver is ready)
+    # Spawn robot into Gazebo Harmonic
     # --------------------------------------------------------------------------
     spawn_entity_node = Node(
-        package="gazebo_ros",
-        executable="spawn_entity.py",
+        package="ros_gz_sim",
+        executable="create",
         arguments=[
             "-topic", "robot_description",
-            "-entity", "lotti3",
+            "-name", "lotti3",
             "-x", "0.0",
             "-y", "0.0",
             "-z", "0.15",
@@ -135,7 +116,22 @@ def generate_launch_description():
         output="screen",
     )
 
-    delayed_spawn = TimerAction(period=3.0, actions=[spawn_entity_node])
+    delay_spawn = RegisterEventHandler(
+        event_handler=OnProcessStart(
+            target_action=robot_state_pub_node,
+            on_start=[spawn_entity_node],
+        )
+    )
+
+    # --------------------------------------------------------------------------
+    # Clock bridge — required for use_sim_time to work in ROS2
+    # --------------------------------------------------------------------------
+    clock_bridge = Node(
+        package="ros_gz_bridge",
+        executable="parameter_bridge",
+        arguments=["/clock@rosgraph_msgs/msg/Clock[gz.msgs.Clock"],
+        output="screen",
+    )
 
     # --------------------------------------------------------------------------
     # Controller spawners — sequenced after spawn completes
@@ -168,7 +164,6 @@ def generate_launch_description():
         parameters=[{"use_sim_time": True}],
     )
 
-    # Spawn arm_controller first (after robot is in Gazebo)
     delay_arm_controller = RegisterEventHandler(
         event_handler=OnProcessExit(
             target_action=spawn_entity_node,
@@ -176,7 +171,6 @@ def generate_launch_description():
         )
     )
 
-    # After arm_controller is up, start joint_state_broadcaster, drive, and flipper
     delay_joint_state_broadcaster = RegisterEventHandler(
         event_handler=OnProcessExit(
             target_action=arm_controller_spawner,
@@ -279,10 +273,10 @@ def generate_launch_description():
     # Launch description
     # --------------------------------------------------------------------------
     nodes = [
-        gzserver_node,
-        gzclient_node,
+        gz_sim,
         robot_state_pub_node,
-        delayed_spawn,
+        clock_bridge,
+        delay_spawn,
         delay_arm_controller,
         delay_joint_state_broadcaster,
         delay_chain_controller,
