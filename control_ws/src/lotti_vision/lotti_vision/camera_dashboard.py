@@ -6,6 +6,9 @@ from cv_bridge import CvBridge
 import cv2
 import threading
 import time
+import os
+from ultralytics import YOLO
+from ament_index_python.packages import get_package_share_directory
 
 class CameraDashboard(Node):
     def __init__(self):
@@ -16,7 +19,15 @@ class CameraDashboard(Node):
         self.frames = {'camera_1': None, 'camera_2': None, 'camera_3': None}
 
         self.detections = {'camera_1': "", 'camera_2': "", 'camera_3': "Scanning..."}
-        
+        # YOLO Model Initialization (Only for Camera 3)
+        self.get_logger().info("Locating YOLO ONNX Model...")
+
+        package_share_directory = get_package_share_directory('lotti_vision')
+        model_path = os.path.join(package_share_directory, 'models', 'best.onnx')
+
+        self.yolo_model = YOLO(model_path, task='detect')
+        self.ai_cam3_frame = None
+
         self.lock = threading.Lock()
 
         # Subscribe to the cameras
@@ -55,14 +66,19 @@ class CameraDashboard(Node):
                     cam3_frame = self.frames['camera_3'].copy()
 
             if cam3_frame is not None:
-                
-                # TODO: Add pyzbar or YOLOv8 here. 
-                # Example: results = my_yolo_model(cam3_frame)
-                
-                simulated_result = " No QR / Hazmat Detected"
+                # Run YOLO detection on the current frame from Camera 3
+                results = self.yolo_model.predict(source=cam3_frame, conf=0.6, verbose=False)
+                annotated_frame = results[0].plot() 
+                detected_count = len(results[0].boxes)
+
+                if detected_count > 0:
+                    simulated_result = f"WARNING: {detected_count} Hazard(s) Detected!"
+                else:
+                    simulated_result = "Scanning for hazards..."
                 
                 with self.lock:
                     self.detections['camera_3'] = simulated_result
+                    self.ai_cam3_frame = annotated_frame
 
 
 def main(args=None):
@@ -77,7 +93,8 @@ def main(args=None):
             with dashboard_node.lock:
                 display_frames = {k: v.copy() if v is not None else None for k, v in dashboard_node.frames.items()}
                 display_text = dashboard_node.detections.copy()
-
+            if dashboard_node.ai_cam3_frame is not None:
+                    display_frames['camera_3'] = dashboard_node.ai_cam3_frame.copy()
             for cam, frame in display_frames.items():
                 if frame is not None:
                     # Only draw text if there is actually text to draw (Camera 3)
