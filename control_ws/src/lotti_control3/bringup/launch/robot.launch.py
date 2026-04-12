@@ -10,16 +10,25 @@ from launch_ros.substitutions import FindPackageShare
 def generate_launch_description():
     declared_arguments = [
         DeclareLaunchArgument(
-            "enable_stub_body_controllers",
+            "enable_drive_controller",
             default_value="false",
             description=(
-                "Start the currently stubbed drive and flipper controllers. "
-                "Keep this disabled on the real robot until those transports are re-enabled."
+                "Start the tracked drive controller on the robot PC. "
+                "Keep this disabled until the real Unitree transport is validated on Jazzy."
+            ),
+        ),
+        DeclareLaunchArgument(
+            "enable_flipper_controller",
+            default_value="false",
+            description=(
+                "Start the flipper controller on the robot PC. "
+                "Keep this disabled until the serial transport is validated on Jazzy."
             ),
         ),
     ]
 
-    enable_stub_body_controllers = LaunchConfiguration("enable_stub_body_controllers")
+    enable_drive_controller = LaunchConfiguration("enable_drive_controller")
+    enable_flipper_controller = LaunchConfiguration("enable_flipper_controller")
 
     robot_description_content = Command([
         PathJoinSubstitution([FindExecutable(name="xacro")]),
@@ -69,14 +78,14 @@ def generate_launch_description():
         package="controller_manager",
         executable="spawner",
         arguments=["drive_controller", "-c", "/controller_manager"],
-        condition=IfCondition(enable_stub_body_controllers),
+        condition=IfCondition(enable_drive_controller),
     )
 
     flipper_controller_spawner = Node(
         package="controller_manager",
         executable="spawner",
         arguments=["flipper3_controller", "-c", "/controller_manager"],
-        condition=IfCondition(enable_stub_body_controllers),
+        condition=IfCondition(enable_flipper_controller),
     )
 
     delay_joint_state_broadcaster = RegisterEventHandler(

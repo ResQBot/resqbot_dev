@@ -50,6 +50,7 @@
         <hardware>
             <plugin>flipper3_interface/FlipperInterface</plugin>
             <param name="device">/dev/serial/by-id/usb-Arduino__www.arduino.cc__0043_035363832363516043D2-if00</param>
+            <param name="feedback_mode">write_only</param>
         </hardware>
         
         <joint name="flipper_fr_joint">
@@ -80,7 +81,9 @@
             <plugin>drive3_interface/DriveInterface</plugin>
             <param name="device">/dev/serial/by-id/usb-FTDI_USB__-__Serial_Converter_FTA362Q0-if00-port0</param>
             <param name="max_speed">6</param>
-
+            <param name="left_motor_id">2</param>
+            <param name="right_motor_id">1</param>
+            <param name="gear_ratio">6.33</param>
         </hardware>
         <joint name="left_chain_joint">
             <command_interface name="velocity"/>

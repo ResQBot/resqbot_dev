@@ -1,5 +1,6 @@
 #include "lotti_control3/arm3_interface.hpp"
 
+#include <cstdio>
 #include <string>
 #include <vector>
 #include <chrono>
@@ -13,6 +14,15 @@
 #include "hardware_interface/lexical_casts.hpp"
 #include "hardware_interface/types/hardware_interface_type_values.hpp"
 #include "rclcpp/rclcpp.hpp"
+
+namespace {
+
+rclcpp::Clock & throttle_clock(){
+  static rclcpp::Clock clock(RCL_STEADY_TIME);
+  return clock;
+}
+
+}  // namespace
 
 namespace arm3_interface{
   CallbackReturn ArmInterface::on_init(const hardware_interface::HardwareInfo & info){
@@ -111,16 +121,40 @@ namespace arm3_interface{
     }
 
     std::string arm_answer_ = arm_comms_.read_msg();
-//a    std::cout << arm_answer_ ;
+    if (arm_answer_.empty()) {
+      RCLCPP_WARN_THROTTLE(
+        rclcpp::get_logger("ArmInterface"),
+        throttle_clock(),
+        2000,
+        "Arm serial transport timed out without a feedback line. Keeping the last known joint positions."
+      );
+      return return_type::OK;
+    }
 
-    sscanf(arm_answer_.c_str(), "%i:%i:%i:%i:%i", &state_pos_[0], &state_pos_[1], &state_pos_[2], &state_pos_[3], &state_pos_[4]);
-//b    std::stringstream pos_vals;
+    const int parsed_values = std::sscanf(
+      arm_answer_.c_str(),
+      "%i:%i:%i:%i:%i",
+      &state_pos_[0],
+      &state_pos_[1],
+      &state_pos_[2],
+      &state_pos_[3],
+      &state_pos_[4]
+    );
+
+    if (parsed_values != 5) {
+      RCLCPP_WARN_THROTTLE(
+        rclcpp::get_logger("ArmInterface"),
+        throttle_clock(),
+        2000,
+        "Received malformed arm feedback '%s'. Keeping the last known joint positions.",
+        arm_answer_.c_str()
+      );
+      return return_type::OK;
+    }
+
     for (auto i = 0ul; i < joint_positions_.size(); i++){
       joint_positions_[i] = (float(state_pos_[i]) * 2 * 3.1416) / 4096;
-//b      pos_vals << joint_positions_[i] << "/";
     }
-//b      pos_vals << "\n";
-//b      std::cout << pos_vals.str();
 
     // The real feedback from Arduino is now being forwarded to ROS 2 correctly!
 

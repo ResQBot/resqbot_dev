@@ -7,6 +7,13 @@ option(
   OFF
 )
 
+set(
+  UNITREE_SDK_DIR
+  ""
+  CACHE PATH
+  "Optional directory containing libUnitreeMotorSDK_Linux64.so for the real drive transport."
+)
+
 # Compiler options for GCC/Clang
 if(CMAKE_CXX_COMPILER_ID MATCHES "(GNU|Clang)")
   add_compile_options(-Wall -Wextra)
@@ -58,18 +65,35 @@ ament_target_dependencies(
 target_link_libraries(lotti_control3 PUBLIC ${LIBSERIAL_LIBRARY})
 
 if(LOTTI_ENABLE_VENDOR_UNITREE_SDK)
-  set(UNITREE_SDK_LIB "${CMAKE_CURRENT_SOURCE_DIR}/lib/libUnitreeMotorSDK_Linux64.so")
+  set(UNITREE_SDK_SEARCH_PATHS)
 
-  if(NOT EXISTS "${UNITREE_SDK_LIB}")
+  if(UNITREE_SDK_DIR)
+    list(APPEND UNITREE_SDK_SEARCH_PATHS
+      "${UNITREE_SDK_DIR}"
+      "${UNITREE_SDK_DIR}/lib"
+    )
+  endif()
+
+  list(APPEND UNITREE_SDK_SEARCH_PATHS "${CMAKE_CURRENT_SOURCE_DIR}/lib")
+
+  find_library(
+    UNITREE_SDK_LIB
+    NAMES UnitreeMotorSDK_Linux64 libUnitreeMotorSDK_Linux64
+    PATHS ${UNITREE_SDK_SEARCH_PATHS}
+  )
+
+  if(NOT UNITREE_SDK_LIB)
     message(FATAL_ERROR
-      "LOTTI_ENABLE_VENDOR_UNITREE_SDK is ON, but ${UNITREE_SDK_LIB} was not found. "
-      "Provide the vendor SDK in control_ws/src/lotti_control3/lib/ or disable the option."
+      "LOTTI_ENABLE_VENDOR_UNITREE_SDK is ON, but libUnitreeMotorSDK_Linux64.so was not found. "
+      "Set UNITREE_SDK_DIR to the vendor SDK location, place it in control_ws/src/lotti_control3/lib/, or disable the option."
     )
   endif()
 
   target_link_libraries(lotti_control3 PUBLIC ${UNITREE_SDK_LIB})
+  target_compile_definitions(lotti_control3 PUBLIC LOTTI_HAVE_UNITREE_SDK=1)
   message(STATUS "Building lotti_control3 with vendor Unitree SDK support enabled.")
 else()
+  target_compile_definitions(lotti_control3 PUBLIC LOTTI_HAVE_UNITREE_SDK=0)
   message(STATUS "Building lotti_control3 without the vendor Unitree SDK. The drive interface stays in stub mode.")
 endif()
 

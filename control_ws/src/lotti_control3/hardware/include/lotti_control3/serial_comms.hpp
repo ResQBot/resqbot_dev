@@ -68,7 +68,8 @@ class SerialComms{
 
         void set_flipper_values(int FL, int FR, int RL, int RR){
             std::stringstream ss;
-            ss << "FL" << RR << "FR" << FR <<  "RL" << RL << "RR" << FL << "\n";
+            // The Arduino flipper firmware expects logical board order FL/FR/RL/RR.
+            ss << "FL" << FL << "FR" << FR <<  "RL" << RL << "RR" << RR << "\n";
             send_msg(ss.str());
         }
 

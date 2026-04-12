@@ -7,8 +7,12 @@ import cv2
 import threading
 import time
 import os
-from ultralytics import YOLO
 from ament_index_python.packages import get_package_share_directory
+
+try:
+    from ultralytics import YOLO
+except ImportError:  # pragma: no cover - depends on optional local install
+    YOLO = None
 
 class CameraDashboard(Node):
     def __init__(self):
@@ -18,17 +22,13 @@ class CameraDashboard(Node):
         # State Variables
         self.frames = {'camera_1': None, 'camera_2': None, 'camera_3': None}
 
-        self.detections = {'camera_1': "", 'camera_2': "", 'camera_3': "Scanning..."}
-        # YOLO Model Initialization (Only for Camera 3)
-        self.get_logger().info("Locating YOLO ONNX Model...")
-
-        package_share_directory = get_package_share_directory('lotti_vision')
-        model_path = os.path.join(package_share_directory, 'models', 'best.onnx')
-
-        self.yolo_model = YOLO(model_path, task='detect')
+        self.detections = {'camera_1': "", 'camera_2': "", 'camera_3': ""}
         self.ai_cam3_frame = None
+        self.yolo_model = None
 
         self.lock = threading.Lock()
+
+        self._configure_optional_ai()
 
         # Subscribe to the cameras
         self.create_subscription(CompressedImage, '/camera_1/image_raw/compressed',
@@ -38,11 +38,46 @@ class CameraDashboard(Node):
         self.create_subscription(CompressedImage, '/camera_3/image_raw/compressed',
                                  lambda msg: self.image_callback(msg, 'camera_3'), qos_profile_sensor_data)
 
-        self.get_logger().info("Dashboard Started. AI Scanner active ONLY on Camera 3.")
+        if self.yolo_model is None:
+            self.get_logger().info("Dashboard started in video-only mode. Camera 3 AI overlay is disabled.")
+        else:
+            self.get_logger().info("Dashboard started. AI scanner active only on Camera 3.")
+            self.ai_thread = threading.Thread(target=self.ai_processing_worker, daemon=True)
+            self.ai_thread.start()
 
-        #Start the background AI worker thread
-        self.ai_thread = threading.Thread(target=self.ai_processing_worker, daemon=True)
-        self.ai_thread.start()
+    def _configure_optional_ai(self):
+        """Load the optional YOLO model if the dependency and model file are available."""
+        if YOLO is None:
+            self.detections['camera_3'] = "YOLO unavailable: ultralytics not installed"
+            self.get_logger().warning(
+                "Optional dependency 'ultralytics' is not installed. "
+                "Camera 3 will run without hazard detection."
+            )
+            return
+
+        package_share_directory = get_package_share_directory('lotti_vision')
+        model_path = os.path.join(package_share_directory, 'models', 'best.onnx')
+
+        if not os.path.exists(model_path):
+            self.detections['camera_3'] = "YOLO unavailable: model file missing"
+            self.get_logger().warning(
+                f"Optional YOLO model was not found at {model_path}. "
+                "Camera 3 will run without hazard detection."
+            )
+            return
+
+        self.get_logger().info("Locating YOLO ONNX model for Camera 3...")
+
+        try:
+            self.yolo_model = YOLO(model_path, task='detect')
+            self.detections['camera_3'] = "Scanning for hazards..."
+        except Exception as exc:  # pragma: no cover - runtime model/backend dependent
+            self.yolo_model = None
+            self.detections['camera_3'] = "YOLO unavailable: failed to load model"
+            self.get_logger().warning(
+                f"Failed to initialize optional YOLO detector: {exc}. "
+                "Camera 3 will run without hazard detection."
+            )
 
     def image_callback(self, msg, cam_name):
         """ Instantly decodes the compressed Wi-Fi packet and saves it. """
@@ -54,11 +89,14 @@ class CameraDashboard(Node):
             self.get_logger().error(f"Failed to decode {cam_name}: {e}")
 
     def ai_processing_worker(self):
-        """ 
+        """
         BACKGROUND THREAD: Only processes Camera 3 to save massive CPU power.
         """
         while rclpy.ok():
             time.sleep(0.1) # Throttle to 10 FPS
+
+            if self.yolo_model is None:
+                continue
             
             cam3_frame = None
             with self.lock:

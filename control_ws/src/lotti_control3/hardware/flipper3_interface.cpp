@@ -1,7 +1,7 @@
 #include "lotti_control3/flipper3_interface.hpp"
-//#include "lotti_control3/flipper_comms.hpp"
-//#include "lotti_control3/RS485_comms.hpp"
 
+#include <algorithm>
+#include <exception>
 #include <string>
 #include <vector>
 #include <chrono>
@@ -16,6 +16,19 @@
 #include "hardware_interface/types/hardware_interface_type_values.hpp"
 #include "rclcpp/rclcpp.hpp"
 
+namespace {
+
+rclcpp::Clock & throttle_clock(){
+  static rclcpp::Clock clock(RCL_STEADY_TIME);
+  return clock;
+}
+
+int clamp_flipper_command(const double raw_command){
+  const auto rounded = static_cast<int>(std::lround(raw_command));
+  return std::max(-1, std::min(rounded, 1));
+}
+
+}  // namespace
 
 namespace flipper3_interface{
   CallbackReturn FlipperInterface::on_init(const hardware_interface::HardwareInfo &info){
@@ -23,8 +36,12 @@ namespace flipper3_interface{
       return CallbackReturn::ERROR;
     }
 
-    //get the Arduino ID from the ros2_control file
+    // Get the configured serial device from the ros2_control file.
     device_ = info_.hardware_parameters["device"];
+    const auto feedback_mode = info_.hardware_parameters.find("feedback_mode");
+    if (feedback_mode != info_.hardware_parameters.end() && !feedback_mode->second.empty()) {
+      feedback_mode_ = feedback_mode->second;
+    }
 
     // robot has 4 joints, 2 interfaces
     joint_positions_.assign(4, 0);
@@ -60,10 +77,28 @@ namespace flipper3_interface{
   hardware_interface::CallbackReturn FlipperInterface::on_configure(const rclcpp_lifecycle::State &previous_state){
     RCLCPP_INFO(rclcpp::get_logger("FlipperInterface"), "Configuring ...please wait...");
 
-//-    if (flipper_comms_.connected()){
-//-      flipper_comms_.disconnect();
-//-    }
-//-    flipper_comms_.connect(device_); 
+    flipper_transport_ready_ = false;
+
+    try {
+      if (flipper_comms_.connected()){
+        flipper_comms_.disconnect();
+      }
+      flipper_comms_.connect(device_);
+      flipper_transport_ready_ = flipper_comms_.connected();
+    } catch (const std::exception & exception) {
+      RCLCPP_ERROR(
+        rclcpp::get_logger("FlipperInterface"),
+        "Failed to initialize the flipper serial transport on %s: %s",
+        device_.c_str(),
+        exception.what()
+      );
+    } catch (...) {
+      RCLCPP_ERROR(
+        rclcpp::get_logger("FlipperInterface"),
+        "Failed to initialize the flipper serial transport on %s due to an unknown error",
+        device_.c_str()
+      );
+    }
  
     RCLCPP_INFO(rclcpp::get_logger("FlipperInterface"), "Successfully configured");
     return hardware_interface::CallbackReturn::SUCCESS;
@@ -72,26 +107,31 @@ namespace flipper3_interface{
   hardware_interface::CallbackReturn FlipperInterface::on_cleanup(const rclcpp_lifecycle::State &previous_state){
     RCLCPP_INFO(rclcpp::get_logger("FlipperInterface"), "Cleaning up ...please wait...");
 
- //-    if (flipper_comms_.connected()){
- //-      flipper_comms_.disconnect();
- //-    }
+    if (flipper_comms_.connected()){
+      flipper_comms_.disconnect();
+    }
+    flipper_transport_ready_ = false;
 
     RCLCPP_INFO(rclcpp::get_logger("FlipperInterface"), "Successfully cleaned up!");
     return hardware_interface::CallbackReturn::SUCCESS;
   }
 
   hardware_interface::CallbackReturn FlipperInterface::on_activate(const rclcpp_lifecycle::State &previous_state){
-    RCLCPP_INFO(rclcpp::get_logger("FlipperInterface"), "Configuring ...please wait...");
+    RCLCPP_INFO(rclcpp::get_logger("FlipperInterface"), "Activating ...please wait...");
 
-//-    if (!flipper_comms_.connected()){
-//-      RCLCPP_ERROR(rclcpp::get_logger("FlipperInterface"), "Arduino not connected");
-//-      return hardware_interface::CallbackReturn::ERROR;
-//-    }
+    flipper_transport_ready_ = flipper_comms_.connected();
 
-    RCLCPP_WARN(
-      rclcpp::get_logger("FlipperInterface"),
-      "FlipperInterface is running in stub mode. Serial transport is not enabled in this branch."
-    );
+    if (!flipper_transport_ready_){
+      RCLCPP_WARN(
+        rclcpp::get_logger("FlipperInterface"),
+        "FlipperInterface is active without a serial connection. Leave the flipper controller disabled until the Arduino transport is available."
+      );
+    } else if (feedback_mode_ == "write_only") {
+      RCLCPP_WARN(
+        rclcpp::get_logger("FlipperInterface"),
+        "Flipper transport is connected in write-only mode. Joint states remain latched because the current Arduino firmware does not publish encoder feedback."
+      );
+    }
 
     RCLCPP_INFO(rclcpp::get_logger("FlipperInterface"), "Successfully activated");
     return hardware_interface::CallbackReturn::SUCCESS;
@@ -100,40 +140,43 @@ namespace flipper3_interface{
   hardware_interface::CallbackReturn FlipperInterface::on_deactivate(const rclcpp_lifecycle::State &previous_state){
     RCLCPP_INFO(rclcpp::get_logger("FlipperInterface"), "Deactivating ...please wait...");
 
+    joint_velocities_command_.assign(4, 0.0);
+    write(rclcpp::Time{}, rclcpp::Duration::from_seconds(0.0));
+
     RCLCPP_INFO(rclcpp::get_logger("FlipperInterface"), "Successfully deactivated!");
     return hardware_interface::CallbackReturn::SUCCESS;
   }
 
-  return_type FlipperInterface::read(const rclcpp::Time & /*time*/, const rclcpp::Duration & period){    
-//-    if (!flipper_comms_.connected()){
-//-      return hardware_interface::return_type::ERROR;
-//-    }
+  return_type FlipperInterface::read(const rclcpp::Time & /*time*/, const rclcpp::Duration & /*period*/){
+    if (!flipper_transport_ready_) {
+      return return_type::OK;
+    }
 
-
-
-    fl_cmd_ = fl_cmd_ + joint_velocities_command_[1] * period.seconds() * 360/12;
-    fr_cmd_ = fr_cmd_ + joint_velocities_command_[0] * period.seconds() * 360/12;
-    rl_cmd_ = rl_cmd_ + joint_velocities_command_[3] * period.seconds() * 360/12;
-    rr_cmd_ = rr_cmd_ + joint_velocities_command_[2] * period.seconds() * 360/12;
-
-    joint_positions_[0] = (fr_cmd_ /360) * (2*3.1416);
-    joint_positions_[1] = (fl_cmd_ /360) * (2*3.1416);
-    joint_positions_[2] = (rr_cmd_ /360) * (2*3.1416);
-    joint_positions_[3] = (rl_cmd_ /360) * (2*3.1416);
+    if (feedback_mode_ == "write_only") {
+      RCLCPP_WARN_THROTTLE(
+        rclcpp::get_logger("FlipperInterface"),
+        throttle_clock(),
+        5000,
+        "FlipperInterface is running with write-only Arduino firmware. Joint positions stay at their last reported values until real feedback is added."
+      );
+      return return_type::OK;
+    }
      
     return return_type::OK;
   }
 
   return_type FlipperInterface::write(const rclcpp::Time & /*time*/, const rclcpp::Duration &){
+    if (!flipper_transport_ready_) {
+      return return_type::OK;
+    }
 
-    //std::cout << std::to_string(joint_velocities_command_[0]) << "\n";
-
-//-     flipper_comms_.set_flipper_values(
-//-      joint_velocities_command_[0],
-//-      joint_velocities_command_[1],
-//-      joint_velocities_command_[2],
-//-      joint_velocities_command_[3]
-//-    ); 
+    // The controller already presents commands in logical FL/FR/RL/RR order.
+    flipper_comms_.set_flipper_values(
+      clamp_flipper_command(joint_velocities_command_[0]),
+      clamp_flipper_command(joint_velocities_command_[1]),
+      clamp_flipper_command(joint_velocities_command_[2]),
+      clamp_flipper_command(joint_velocities_command_[3])
+    );
 
     return return_type::OK;
   }

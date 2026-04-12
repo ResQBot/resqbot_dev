@@ -3,6 +3,7 @@
 #define DRIVE3_INTERFACE__DRIVE3_INTERFACE_HPP_
 
 #include "string"
+#include "memory"
 #include "unordered_map"
 #include "vector"
 
@@ -22,6 +23,14 @@
 #include "rclcpp_lifecycle/state.hpp"
 
 #include "unitreeMotor/unitreeMotor.h"
+
+#ifndef LOTTI_HAVE_UNITREE_SDK
+#define LOTTI_HAVE_UNITREE_SDK 0
+#endif
+
+#if LOTTI_HAVE_UNITREE_SDK
+#include "serialPort/SerialPort.h"
+#endif
 
 using hardware_interface::return_type;
 
@@ -54,6 +63,10 @@ namespace drive3_interface{
       std::string device_ = "";
       int max_speed_ = 0;
       float gearRatio = 6.33;
+      int left_motor_id_ = 2;
+      int right_motor_id_ = 1;
+      bool drive_transport_ready_ = false;
+      bool drive_feedback_valid_ = false;
 
       float speed_l = 0.0;
       float speed_r = 0.0;
@@ -65,6 +78,10 @@ namespace drive3_interface{
       // --- Add Unitree SDK members here ---
       MotorCmd cmd_l_, cmd_r_;  // Motor commands for left and right motors
       MotorData data_l_, data_r_; // Motor data feedback for left and right motors
+
+#if LOTTI_HAVE_UNITREE_SDK
+      std::unique_ptr<SerialPort> serial_port_;
+#endif
   };
 }  // namespace drive3_interface
 

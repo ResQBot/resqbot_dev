@@ -51,6 +51,8 @@ namespace flipper3_interface{
       std::vector<double> joint_positions_;
 
       std::string device_ = "";
+      std::string feedback_mode_ = "write_only";
+      bool flipper_transport_ready_ = false;
 
       float fr_cmd_ = 0;
       float fl_cmd_ = 0;
@@ -65,7 +67,7 @@ namespace flipper3_interface{
       std::unordered_map<std::string, std::vector<std::string>> joint_interfaces = {
         {"position", {}}, {"velocity", {}}};
 
-//-      SerialComms flipper_comms_;
+      SerialComms flipper_comms_;
   };
 }  // namespace flipper3_interface
 

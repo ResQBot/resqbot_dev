@@ -35,17 +35,26 @@ def generate_launch_description():
             description="Start RViz2 automatically in full debug mode.",
         ),
         DeclareLaunchArgument(
-            "enable_stub_body_controllers",
+            "enable_drive_controller",
             default_value="true",
             description=(
-                "Start the currently stubbed drive and flipper controllers. "
-                "Full launch is intended for single-machine debug and keeps these enabled by default."
+                "Start the tracked drive controller. "
+                "Full launch is intended for single-machine debug and keeps this enabled by default."
+            ),
+        ),
+        DeclareLaunchArgument(
+            "enable_flipper_controller",
+            default_value="true",
+            description=(
+                "Start the flipper controller. "
+                "Full launch is intended for single-machine debug and keeps this enabled by default."
             ),
         ),
     ]
 
     gui = LaunchConfiguration("gui")
-    enable_stub_body_controllers = LaunchConfiguration("enable_stub_body_controllers")
+    enable_drive_controller = LaunchConfiguration("enable_drive_controller")
+    enable_flipper_controller = LaunchConfiguration("enable_flipper_controller")
 
     robot_description_content = Command([
         PathJoinSubstitution([FindExecutable(name="xacro")]),
@@ -101,14 +110,14 @@ def generate_launch_description():
         package="controller_manager",
         executable="spawner",
         arguments=["drive_controller", "-c", "/controller_manager"],
-        condition=IfCondition(enable_stub_body_controllers),
+        condition=IfCondition(enable_drive_controller),
     )
 
     flipper_controller_spawner = Node(
         package="controller_manager",
         executable="spawner",
         arguments=["flipper3_controller", "-c", "/controller_manager"],
-        condition=IfCondition(enable_stub_body_controllers),
+        condition=IfCondition(enable_flipper_controller),
     )
 
     delay_joint_state_broadcaster = RegisterEventHandler(

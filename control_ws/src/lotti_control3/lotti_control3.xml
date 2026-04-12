@@ -13,7 +13,7 @@
     type="flipper3_interface::FlipperInterface"
     base_class_type="hardware_interface::SystemInterface">
     <description>
-      ros2_control hardware interface for the Lotti3 flippers. The current branch keeps this path in stub mode by default.
+      ros2_control hardware interface for the Lotti3 flippers over serial transport. The current firmware is command-only and therefore exposes limited state feedback.
     </description>
   </class>
 
@@ -22,7 +22,7 @@
     type="drive3_interface::DriveInterface"
     base_class_type="hardware_interface::SystemInterface">
     <description>
-      ros2_control hardware interface for the Lotti3 tracked drive. The current branch keeps this path in stub mode unless the vendor SDK is enabled.
+      ros2_control hardware interface for the Lotti3 tracked drive. Real transport is available when the optional vendor Unitree SDK is enabled at build time.
     </description>
   </class>
 </library>
