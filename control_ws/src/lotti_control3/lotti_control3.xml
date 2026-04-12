@@ -1,0 +1,28 @@
+<library path="lotti_control3">
+  <class
+    name="arm3_interface/ArmInterface"
+    type="arm3_interface::ArmInterface"
+    base_class_type="hardware_interface::SystemInterface">
+    <description>
+      ros2_control hardware interface for the Lotti3 arm over serial transport.
+    </description>
+  </class>
+
+  <class
+    name="flipper3_interface/FlipperInterface"
+    type="flipper3_interface::FlipperInterface"
+    base_class_type="hardware_interface::SystemInterface">
+    <description>
+      ros2_control hardware interface for the Lotti3 flippers. The current branch keeps this path in stub mode by default.
+    </description>
+  </class>
+
+  <class
+    name="drive3_interface/DriveInterface"
+    type="drive3_interface::DriveInterface"
+    base_class_type="hardware_interface::SystemInterface">
+    <description>
+      ros2_control hardware interface for the Lotti3 tracked drive. The current branch keeps this path in stub mode unless the vendor SDK is enabled.
+    </description>
+  </class>
+</library>

@@ -88,6 +88,11 @@ namespace flipper3_interface{
 //-      return hardware_interface::CallbackReturn::ERROR;
 //-    }
 
+    RCLCPP_WARN(
+      rclcpp::get_logger("FlipperInterface"),
+      "FlipperInterface is running in stub mode. Serial transport is not enabled in this branch."
+    );
+
     RCLCPP_INFO(rclcpp::get_logger("FlipperInterface"), "Successfully activated");
     return hardware_interface::CallbackReturn::SUCCESS;
   }

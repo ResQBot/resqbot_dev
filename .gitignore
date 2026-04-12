@@ -1,1 +1,4 @@
 CLAUDE.md
+CODEX.md
+__pycache__/
+*.pyc

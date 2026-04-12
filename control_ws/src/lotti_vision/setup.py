@@ -1,6 +1,8 @@
-from setuptools import find_packages, setup
-import os
 from glob import glob
+import os
+
+from setuptools import find_packages, setup
+
 package_name = 'lotti_vision'
 
 setup(
@@ -17,8 +19,8 @@ setup(
     zip_safe=True,
     maintainer='resqbots',
     maintainer_email='150353740+ResQBot@users.noreply.github.com',
-    description='TODO: Package description',
-    license='TODO: License declaration',
+    description='Multi-camera dashboard and optional YOLO-based hazard detection for the Lotti3 operator station.',
+    license='Apache-2.0',
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [

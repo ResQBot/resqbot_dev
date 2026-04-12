@@ -15,8 +15,8 @@ setup(
     zip_safe=True,
     maintainer='paul',
     maintainer_email='73643665+PaulKupka@users.noreply.github.com',
-    description='TODO: Package description',
-    license='TODO: License declaration',
+    description='Static TF broadcaster for the Lotti3 body and lidar frame alignment.',
+    license='Apache-2.0',
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [

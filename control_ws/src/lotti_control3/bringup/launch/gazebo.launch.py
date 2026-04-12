@@ -1,10 +1,11 @@
 import os
 import yaml
+
 from launch import LaunchDescription
 from launch.actions import (
-    RegisterEventHandler,
     DeclareLaunchArgument,
     IncludeLaunchDescription,
+    RegisterEventHandler,
 )
 from launch.conditions import IfCondition
 from launch.event_handlers import OnProcessExit, OnProcessStart
@@ -12,35 +13,35 @@ from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.substitutions import (
     Command,
     FindExecutable,
-    PathJoinSubstitution,
     LaunchConfiguration,
+    PathJoinSubstitution,
 )
-
 from launch_ros.actions import Node
 from launch_ros.substitutions import FindPackageShare
 from ament_index_python import get_package_share_directory
 from moveit_configs_utils import MoveItConfigsBuilder
 
 
-def load_yaml(package_name, file_path):
+def load_servo_params(package_name, file_path, overrides=None):
     package_path = get_package_share_directory(package_name)
     absolute_file_path = os.path.join(package_path, file_path)
-    try:
-        with open(absolute_file_path, "r") as file:
-            return yaml.safe_load(file)
-    except EnvironmentError:
-        return None
+
+    with open(absolute_file_path, "r", encoding="utf-8") as file:
+        raw_config = yaml.safe_load(file) or {}
+
+    servo_config = dict(raw_config.get("moveit_servo", raw_config))
+    if overrides:
+        servo_config.update(overrides)
+
+    return {"moveit_servo": servo_config}
 
 
 def generate_launch_description():
-    # --------------------------------------------------------------------------
-    # Arguments
-    # --------------------------------------------------------------------------
     declared_arguments = [
         DeclareLaunchArgument(
             "gui",
             default_value="true",
-            description="Open the Gazebo GUI.",
+            description="Open the Gazebo GUI if the selected Gazebo launch supports it.",
         ),
         DeclareLaunchArgument(
             "use_rviz",
@@ -51,38 +52,37 @@ def generate_launch_description():
             "world",
             default_value=PathJoinSubstitution([
                 FindPackageShare("lotti_control3"),
-                "description/worlds",
+                "description",
+                "worlds",
                 "lotti_world.world",
             ]),
             description="Path to the Gazebo world file.",
         ),
     ]
 
-    gui = LaunchConfiguration("gui")
     use_rviz = LaunchConfiguration("use_rviz")
     world = LaunchConfiguration("world")
 
-    # --------------------------------------------------------------------------
-    # URDF — built with use_sim:=true so Gazebo Harmonic plugins are included
-    # --------------------------------------------------------------------------
     robot_description_content = Command([
         PathJoinSubstitution([FindExecutable(name="xacro")]),
         " ",
         PathJoinSubstitution([
             FindPackageShare("lotti_control3"),
-            "description/urdf",
+            "description",
+            "urdf",
             "Lotti.urdf.xacro",
         ]),
         " use_sim:=true",
     ])
     robot_description = {"robot_description": robot_description_content}
 
-    # --------------------------------------------------------------------------
-    # Gazebo Harmonic — single gz_sim launch (replaces gzserver + gzclient)
-    # --------------------------------------------------------------------------
     gz_sim = IncludeLaunchDescription(
         PythonLaunchDescriptionSource([
-            PathJoinSubstitution([FindPackageShare("ros_gz_sim"), "launch", "gz_sim.launch.py"])
+            PathJoinSubstitution([
+                FindPackageShare("ros_gz_sim"),
+                "launch",
+                "gz_sim.launch.py",
+            ])
         ]),
         launch_arguments={
             "gz_args": [world, " -r"],
@@ -90,9 +90,6 @@ def generate_launch_description():
         }.items(),
     )
 
-    # --------------------------------------------------------------------------
-    # Robot state publisher
-    # --------------------------------------------------------------------------
     robot_state_pub_node = Node(
         package="robot_state_publisher",
         executable="robot_state_publisher",
@@ -100,9 +97,6 @@ def generate_launch_description():
         parameters=[robot_description, {"use_sim_time": True}],
     )
 
-    # --------------------------------------------------------------------------
-    # Spawn robot into Gazebo Harmonic
-    # --------------------------------------------------------------------------
     spawn_entity_node = Node(
         package="ros_gz_sim",
         executable="create",
@@ -123,9 +117,6 @@ def generate_launch_description():
         )
     )
 
-    # --------------------------------------------------------------------------
-    # Clock bridge — required for use_sim_time to work in ROS2
-    # --------------------------------------------------------------------------
     clock_bridge = Node(
         package="ros_gz_bridge",
         executable="parameter_bridge",
@@ -133,9 +124,6 @@ def generate_launch_description():
         output="screen",
     )
 
-    # --------------------------------------------------------------------------
-    # Controller spawners — sequenced after spawn completes
-    # --------------------------------------------------------------------------
     arm_controller_spawner = Node(
         package="controller_manager",
         executable="spawner",
@@ -150,7 +138,7 @@ def generate_launch_description():
         parameters=[{"use_sim_time": True}],
     )
 
-    chain_controller_spawner = Node(
+    drive_controller_spawner = Node(
         package="controller_manager",
         executable="spawner",
         arguments=["drive_controller", "-c", "/controller_manager"],
@@ -178,10 +166,10 @@ def generate_launch_description():
         )
     )
 
-    delay_chain_controller = RegisterEventHandler(
+    delay_drive_controller = RegisterEventHandler(
         event_handler=OnProcessExit(
             target_action=arm_controller_spawner,
-            on_exit=[chain_controller_spawner],
+            on_exit=[drive_controller_spawner],
         )
     )
 
@@ -191,12 +179,6 @@ def generate_launch_description():
             on_exit=[flipper_controller_spawner],
         )
     )
-
-    # --------------------------------------------------------------------------
-    # MoveIt Servo (use_gazebo overridden to True)
-    # --------------------------------------------------------------------------
-    servo_yaml = load_yaml("lotti_control3", "config/lotti_servo_config.yaml")
-    servo_params = {"moveit_servo": {**servo_yaml["moveit_servo"], "use_gazebo": True}}
 
     moveit_config = (
         MoveItConfigsBuilder("lotti3")
@@ -208,7 +190,11 @@ def generate_launch_description():
         package="moveit_servo",
         executable="servo_node_main",
         parameters=[
-            servo_params,
+            load_servo_params(
+                "lotti_control3",
+                "config/lotti_servo_config.yaml",
+                overrides={"use_gazebo": True},
+            ),
             moveit_config.robot_description,
             moveit_config.robot_description_semantic,
             moveit_config.robot_description_kinematics,
@@ -224,32 +210,26 @@ def generate_launch_description():
         )
     )
 
-    # --------------------------------------------------------------------------
-    # Teleop
-    # --------------------------------------------------------------------------
-    teleop_package = get_package_share_directory("lotti_teleop")
-
-    teleop_node = IncludeLaunchDescription(
-        os.path.join(teleop_package, "launch", "teleop_launch.py"),
-    )
-
-    delay_teleop = RegisterEventHandler(
-        event_handler=OnProcessExit(
-            target_action=servo_node,
-            on_exit=[teleop_node],
-        )
-    )
-
     joy_node = Node(
         package="joy",
         executable="joy_node",
+        output="screen",
     )
 
-    # --------------------------------------------------------------------------
-    # RViz
-    # --------------------------------------------------------------------------
+    teleop_launch = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(
+            os.path.join(
+                get_package_share_directory("lotti_teleop"),
+                "launch",
+                "teleop_launch.py",
+            )
+        )
+    )
+
     rviz_config_file = PathJoinSubstitution([
-        FindPackageShare("lotti_control3"), "config", "view_lotti.rviz"
+        FindPackageShare("lotti_control3"),
+        "config",
+        "view_lotti.rviz",
     ])
 
     rviz_node = Node(
@@ -262,16 +242,6 @@ def generate_launch_description():
         parameters=[{"use_sim_time": True}],
     )
 
-    delay_rviz = RegisterEventHandler(
-        event_handler=OnProcessExit(
-            target_action=joint_state_broadcaster_spawner,
-            on_exit=[rviz_node],
-        )
-    )
-
-    # --------------------------------------------------------------------------
-    # Launch description
-    # --------------------------------------------------------------------------
     nodes = [
         gz_sim,
         robot_state_pub_node,
@@ -279,12 +249,12 @@ def generate_launch_description():
         delay_spawn,
         delay_arm_controller,
         delay_joint_state_broadcaster,
-        delay_chain_controller,
+        delay_drive_controller,
         delay_flipper_controller,
         delay_servo_node,
         joy_node,
-        delay_teleop,
-        delay_rviz,
+        teleop_launch,
+        rviz_node,
     ]
 
     return LaunchDescription(declared_arguments + nodes)

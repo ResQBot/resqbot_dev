@@ -1,11 +1,9 @@
 #ifndef LOTTI_DRIVE_CONTROLLER__DRIVE_CONTROLLER_HPP_
 #define LOTTI_DRIVE_CONTROLLER__DRIVE_CONTROLLER_HPP_
 
-#include <chrono>
-#include <memory>
+#include <functional>
 #include <string>
 #include <unordered_map>
-#include <utility>
 #include <vector>
 
 #include "controller_interface/controller_interface.hpp"
@@ -13,10 +11,7 @@
 #include "rclcpp/duration.hpp"
 #include "rclcpp/subscription.hpp"
 #include "rclcpp/time.hpp"
-#include "rclcpp/timer.hpp"
-#include "rclcpp_lifecycle/lifecycle_publisher.hpp"
-#include "rclcpp_lifecycle/node_interfaces/lifecycle_node_interface.hpp"
-#include "realtime_tools/realtime_buffer.hpp"
+#include "rclcpp_lifecycle/state.hpp"
 #include "geometry_msgs/msg/twist.hpp"
 
 
@@ -58,10 +53,6 @@ namespace drive_controller{
         command_interface_map_ = {
           {"velocity", &joint_velocity_command_interface_}};
 
-/*       std::unordered_map<
-        std::string, std::vector<std::reference_wrapper<hardware_interface::LoanedStateInterface>> *>
-        state_interface_map_ = {
-          {"position", &joint_position_state_interface_}}; */
   };
 
 }  // namespace drive_controller

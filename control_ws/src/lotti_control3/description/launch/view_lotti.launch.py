@@ -42,8 +42,9 @@ def generate_launch_description():
             PathJoinSubstitution(
                 [
                     FindPackageShare("lotti_control3"),
+                    "description",
                     "urdf",
-                    "lotti_main.urdf.xacro",
+                    "Lotti.urdf.xacro",
                 ]
             ),
         ]

@@ -13,13 +13,12 @@ set(CONTROLLER_INCLUDE_DEPENDS
   pluginlib
   rcpputils
   controller_interface
-  realtime_tools
-  std_msgs
+  geometry_msgs
   rclcpp
+  rclcpp_lifecycle
 )
 
 # find dependencies
-find_package(backward_ros REQUIRED)
 find_package(ament_cmake REQUIRED)
 foreach(Dependency IN ITEMS ${CONTROLLER_INCLUDE_DEPENDS})
   find_package(${Dependency} REQUIRED)

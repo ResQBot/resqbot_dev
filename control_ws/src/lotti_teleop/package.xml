@@ -3,24 +3,21 @@
 <package format="3">
   <name>lotti_teleop</name>
   <version>0.0.0</version>
-  <description>TODO: Package description</description>
+  <description>Xbox-based teleoperation node for the Lotti3 drive, flippers, and MoveIt Servo arm control.</description>
   <maintainer email="73643665+PaulKupka@users.noreply.github.com">paul</maintainer>
   <license>Apache-2.0</license>
 
+  <buildtool_depend>ament_python</buildtool_depend>
 
-  <exec_depend>rclpy</exec_depend>
-  <exec_depend>time</exec_depend>
-  <exec_depend>math</exec_depend>
-  <exec_depend>numpy</exec_depend>
-  <exec_depend>sensor_msgs</exec_depend>
-  <exec_depend>geometry_msgs</exec_depend>
   <exec_depend>control_msgs</exec_depend>
-  <exec_depend>std_msgs</exec_depend>
-  <exec_depend>threading</exec_depend>
-  <exec_depend>time</exec_depend>
-  <exec_depend>ros2launch</exec_depend>
-  <exec_depend>launch_ros</exec_depend>
+  <exec_depend>geometry_msgs</exec_depend>
   <exec_depend>launch</exec_depend>
+  <exec_depend>launch_ros</exec_depend>
+  <exec_depend>rclpy</exec_depend>
+  <exec_depend>ros2launch</exec_depend>
+  <exec_depend>sensor_msgs</exec_depend>
+  <exec_depend>std_msgs</exec_depend>
+  <exec_depend>std_srvs</exec_depend>
 
   <test_depend>ament_copyright</test_depend>
   <test_depend>ament_flake8</test_depend>

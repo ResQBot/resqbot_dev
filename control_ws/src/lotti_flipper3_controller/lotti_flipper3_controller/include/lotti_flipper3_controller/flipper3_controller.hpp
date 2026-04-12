@@ -1,25 +1,17 @@
 #ifndef LOTTI_FLIPPER3_CONTROLLER__FLIPPER3_CONTROLLER_HPP_
 #define LOTTI_FLIPPER3_CONTROLLER__FLIPPER3_CONTROLLER_HPP_
 
-#include <chrono>
-#include <memory>
-//#include <mutex>
+#include <functional>
 #include <string>
 #include <unordered_map>
-#include <utility>
 #include <vector>
 
-//#include "control_msgs/action/follow_joint_trajectory.hpp"
-//#include "control_msgs/msg/joint_trajectory_controller_state.hpp"
 #include "controller_interface/controller_interface.hpp"
 #include "hardware_interface/types/hardware_interface_type_values.hpp"
 #include "rclcpp/duration.hpp"
 #include "rclcpp/subscription.hpp"
 #include "rclcpp/time.hpp"
-#include "rclcpp/timer.hpp"
-#include "rclcpp_lifecycle/lifecycle_publisher.hpp"
-#include "rclcpp_lifecycle/node_interfaces/lifecycle_node_interface.hpp"
-#include "realtime_tools/realtime_buffer.hpp"
+#include "rclcpp_lifecycle/state.hpp"
 #include "std_msgs/msg/int8.hpp"
 
 

@@ -1,6 +1,7 @@
-from setuptools import find_packages, setup
-import os
 from glob import glob
+import os
+
+from setuptools import find_packages, setup
 
 package_name = 'lotti_teleop'
 
@@ -18,7 +19,7 @@ setup(
     zip_safe=True,
     maintainer='paul',
     maintainer_email='73643665+PaulKupka@users.noreply.github.com',
-    description='TODO: Package description',
+    description='Xbox-based teleoperation node for the Lotti3 drive, flippers, and arm servo control.',
     license='Apache-2.0',
     tests_require=['pytest'],
     entry_points={

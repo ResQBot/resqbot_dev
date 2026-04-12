@@ -5,7 +5,6 @@
 #include "string"
 #include "unordered_map"
 #include "vector"
-#include <bits/stdc++.h>
 
 #include "hardware_interface/handle.hpp"
 #include "hardware_interface/hardware_info.hpp"
@@ -22,8 +21,6 @@
 #include "rclcpp_lifecycle/node_interfaces/lifecycle_node_interface.hpp"
 #include "rclcpp_lifecycle/state.hpp"
 
-#include <unistd.h>
-#include "serialPort/SerialPort.h"
 #include "unitreeMotor/unitreeMotor.h"
 
 using hardware_interface::return_type;
@@ -66,7 +63,6 @@ namespace drive3_interface{
         {"velocity", {}}};
 
       // --- Add Unitree SDK members here ---
-//-      std::unique_ptr<SerialPort> serial_;
       MotorCmd cmd_l_, cmd_r_;  // Motor commands for left and right motors
       MotorData data_l_, data_r_; // Motor data feedback for left and right motors
   };

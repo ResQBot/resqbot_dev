@@ -15,8 +15,6 @@
 #include "hardware_interface/types/hardware_interface_type_values.hpp"
 #include "rclcpp/rclcpp.hpp"
 
-#include <unistd.h>
-#include "serialPort/SerialPort.h"
 #include "unitreeMotor/unitreeMotor.h"
 
 
@@ -79,7 +77,10 @@ namespace drive3_interface{
   hardware_interface::CallbackReturn DriveInterface::on_activate(const rclcpp_lifecycle::State &previous_state){
     RCLCPP_INFO(rclcpp::get_logger("DriveInterface"), "Configuring ...please wait...");
 
-//-    serial_ = std::make_unique<SerialPort>(device_);
+    RCLCPP_WARN(
+      rclcpp::get_logger("DriveInterface"),
+      "DriveInterface is running in stub mode. Vendor Unitree transport is disabled in this branch."
+    );
 
     RCLCPP_INFO(rclcpp::get_logger("DriveInterface"), "Successfully activated");
     return hardware_interface::CallbackReturn::SUCCESS;
@@ -122,7 +123,8 @@ namespace drive3_interface{
     // Set commands
     cmd_l_.motorType = MotorType::GO_M8010_6;
     data_l_.motorType = MotorType::GO_M8010_6;
-    cmd_l_.mode = queryMotorMode(MotorType::GO_M8010_6, MotorMode::FOC);
+    // The vendor transport is currently disabled, so only the command structure is populated.
+    cmd_l_.mode = 1;
     cmd_l_.id   = 2;
     cmd_l_.kp   = 0.0;
     cmd_l_.kd   = 0.05;
@@ -132,7 +134,7 @@ namespace drive3_interface{
 
     cmd_r_.motorType = MotorType::GO_M8010_6;
     data_r_.motorType = MotorType::GO_M8010_6;
-    cmd_r_.mode = queryMotorMode(MotorType::GO_M8010_6, MotorMode::FOC);
+    cmd_r_.mode = 1;
     cmd_r_.id   = 1;
     cmd_r_.kp   = 0.0;
     cmd_r_.kd   = 0.05;
