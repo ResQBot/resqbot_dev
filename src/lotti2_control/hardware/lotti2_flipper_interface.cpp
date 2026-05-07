@@ -48,7 +48,7 @@ hardware_interface::CallbackReturn FlipperInterface::on_init(
 
     // get the parameters from the ros2_control file
     device_       = info_.hardware_parameters["device"];
-    flipper_kp_   = stof(info_.hardware_parameters["positional_stiffness"]);
+    max_torque_   = stof(info_.hardware_parameters["max_torque"]);
     gear_ratio_   = stof(info_.hardware_parameters["gear_ratio"]) * unitree_ratio_;
     use_hardware_ = stoi(info_.hardware_parameters["use_hardware"]);
     if (!(use_hardware_ == 0 || use_hardware_ == 1)) {
@@ -66,26 +66,27 @@ hardware_interface::CallbackReturn FlipperInterface::on_configure(
         motor_data_[i].motor_id  = static_cast<unsigned char>(i);
         motor_data_[i].temp      = 0;
         motor_data_[i].merror    = 0;
+        motor_data_[i].tau       = 0.0;
+        motor_data_[i].dq        = 0.0;
+        motor_data_[i].q         = 0.0;
         motor_error_type_[i]     = 0;
         motor_cmd_[i].motorType  = MotorType::GO_M8010_6;
         motor_cmd_[i].mode       = static_cast<unsigned short>(queryMotorMode(MotorType::GO_M8010_6, MotorMode::FOC));
-        motor_cmd_[i].kp         = static_cast<float>(flipper_kp_);  // positional stiffness
-        motor_cmd_[i].kd         = 0.0;                              // velocity stiffness
-        motor_cmd_[i].q          = 0.0;                              // position []
-        motor_cmd_[i].dq         = 0.0;                              // speed    [Rads/s]
-        motor_cmd_[i].tau        = 0.0;                              // torque  [Nm]
+        motor_cmd_[i].kp         = 0.0;  // positional stiffness
+        motor_cmd_[i].kd         = 0.0;  // velocity stiffness
+        motor_cmd_[i].q          = 0.0;  // position []
+        motor_cmd_[i].dq         = 0.0;  // speed    [Rads/s]
+        motor_cmd_[i].tau        = 0.0;  // torque  [Nm]
 
         // setting motor IDs.
-        // Since IDs can only be 0, 1 or 2 and there can only be 3 motors connected to one of our USB-RS485 converters, the motors are devided into 2 groups.
-        //  construct groups according to USB adaptors
         switch (i) {
             case 0:  // front_right_flipper
                 motor_cmd_[i].id        = 0;
                 motor_data_[i].motor_id = 0;
                 break;
             case 1:  // front_left_flipper
-                motor_cmd_[i].id        = 1;
-                motor_data_[i].motor_id = 1;
+                motor_cmd_[i].id        = 4;
+                motor_data_[i].motor_id = 4;
                 break;
             case 2:  // rear_right_flipper
                 motor_cmd_[i].id        = 2;
@@ -158,10 +159,10 @@ hardware_interface::return_type FlipperInterface::read(
                 }
                 motor_error_type_[i] = motor_data_[i].merror;
 
-                set_state(info_.joints[i].name + "/position", motor_data_[i].q);
-                set_state(info_.joints[i].name + "/velocity", motor_data_[i].dq / gear_ratio_);
-                set_state(info_.joints[i].name + "/effort", motor_data_[i].tau);
-                set_state(info_.joints[i].name + "/temp", motor_data_[i].temp);
+                set_state(info_.joints[i].name + "/position", static_cast<double>(motor_data_[i].q));
+                set_state(info_.joints[i].name + "/velocity", static_cast<double>(motor_data_[i].dq / gear_ratio_));
+                set_state(info_.joints[i].name + "/effort", static_cast<double>(motor_data_[i].tau));
+                set_state(info_.joints[i].name + "/temp", static_cast<double>(motor_data_[i].temp));
             }
             else {
                 switch (i) {
@@ -202,13 +203,10 @@ hardware_interface::return_type FlipperInterface::write(
             // check if motors are close to overheating
             if (motor_error_type_[i] == 0) {
                 // set command values
-                motor_cmd_[i].q   = static_cast<float>(get_command(info_.joints[i].name + "/position"));  // position [rad]
-                motor_cmd_[i].tau = static_cast<float>(get_command(info_.joints[i].name + "/effort"));    // torque [Nm]
+                motor_cmd_[i].tau = static_cast<float>(get_command(info_.joints[i].name + "/effort"));  // torque [Nm]
             }
             // if motor has returned error -> stop
             else {
-                motor_cmd_[i].q = static_cast<float>(get_state(info_.joints[i].name + "/position"));
-                // cmd_[i].kp  = 0.0;
                 motor_cmd_[i].tau = 0.0;
             }
         }

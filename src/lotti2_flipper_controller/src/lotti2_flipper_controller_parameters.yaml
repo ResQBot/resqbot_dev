@@ -1,7 +1,7 @@
 lotti2_flipper_controller:
     max_vel:
         type: double
-        default_value: 0.0
+        default_value: 0.5
         description: "maximum rotational velocity for flippers [rad/s]"
 
     update_rate:

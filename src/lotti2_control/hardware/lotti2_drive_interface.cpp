@@ -206,8 +206,8 @@ hardware_interface::return_type DriveInterface::read(
                 auto velo = get_command(descr.get_prefix_name() + "/" + hardware_interface::HW_IF_VELOCITY);
                 set_state(name, get_state(name) + period.seconds() * velo);
             }
-            else {
-                set_state(name, get_command(name));
+            else if (descr.get_interface_name() == hardware_interface::HW_IF_VELOCITY) {
+                set_state(name, get_state(name));
             }
         }
     }

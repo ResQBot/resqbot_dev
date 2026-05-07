@@ -14,57 +14,58 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// Changes made to the example by the Res.Q Bots Austria Team 
+// Changes made to the example by the Res.Q Bots Austria Team
 // of Vienna University of Applied Sciences
 
 #include "lotti2_flipper_controller/lotti2_flipper_controller.hpp"
-#include <lotti2_flipper_controller/lotti2_flipper_controller_parameters.hpp>
+// #include <lotti2_flipper_controller/lotti2_flipper_controller_parameters.hpp>
 
 #include <stddef.h>
 #include <algorithm>
+#include <cstddef>
+#include <iomanip>
 #include <memory>
+#include <sstream>
 #include <string>
 #include <vector>
-#include <cstddef>
-#include <sstream>
-#include <iomanip>
 
-#include "rclcpp/rclcpp.hpp"
 #include "rclcpp/qos.hpp"
+#include "rclcpp/rclcpp.hpp"
 #include "rclcpp/time.hpp"
 #include "rclcpp_lifecycle/node_interfaces/lifecycle_node_interface.hpp"
 #include "rclcpp_lifecycle/state.hpp"
 
 #include "std_msgs/msg/float32.h"
-//#include "lotti2_msgs/msg/flipper.hpp"
+// #include "lotti2_msgs/msg/flipper.hpp"
 
 
 using config_type = controller_interface::interface_configuration_type;
 
-namespace lotti2_flipper_controller{    
-FlipperController::FlipperController() : controller_interface::ControllerInterface() {}
+namespace lotti2_flipper_controller {
+FlipperController::FlipperController()
+    : controller_interface::ControllerInterface() {}
 
 controller_interface::CallbackReturn FlipperController::on_init() {
     // should have error handling
     joint_names_ = auto_declare<std::vector<std::string>>("joints", joint_names_);
     command_interface_types_ =
-        auto_declare<std::vector<std::string>>("command_interfaces", command_interface_types_);
+      auto_declare<std::vector<std::string>>("command_interfaces", command_interface_types_);
     state_interface_types_ =
-        auto_declare<std::vector<std::string>>("state_interfaces", state_interface_types_);
+      auto_declare<std::vector<std::string>>("state_interfaces", state_interface_types_);
 
-    // get parameters
-    try {
-        auto parameter_handler_ = std::make_shared<lotti2_flipper_controller::ParamListener>(get_node());
-        auto params_ = parameter_handler_->get_params();
-        max_speed_ = params_.max_vel;
-        update_rate_ = static_cast<double>(params_.update_rate);
-    }
-    catch (const std::exception & e) {
-        RCLCPP_ERROR(
-            get_node()->get_logger(), "Exception thrown during init stage with message: %s \n", e.what());
-        return controller_interface::CallbackReturn::ERROR;
-    }
-
+    /*
+  // get parameters
+  try {
+      auto parameter_handler_ = std::make_shared<lotti2_flipper_controller::ParamListener>(get_node());
+      auto params_            = parameter_handler_->get_params();
+      max_speed_              = params_.max_vel;
+      update_rate_            = static_cast<double>(params_.update_rate);
+  } catch (const std::exception &e) {
+      RCLCPP_ERROR(
+        get_node()->get_logger(), "Exception thrown during init stage with message: %s \n", e.what());
+      return controller_interface::CallbackReturn::ERROR;
+  }
+*/
     return CallbackReturn::SUCCESS;
 }
 
@@ -72,8 +73,8 @@ controller_interface::InterfaceConfiguration FlipperController::command_interfac
     controller_interface::InterfaceConfiguration conf = {config_type::INDIVIDUAL, {}};
 
     conf.names.reserve(joint_names_.size() * command_interface_types_.size());
-    for (const auto & joint_name : joint_names_) {
-        for (const auto & interface_type : command_interface_types_) {
+    for (const auto &joint_name : joint_names_) {
+        for (const auto &interface_type : command_interface_types_) {
             conf.names.push_back(joint_name + "/" + interface_type);
         }
     }
@@ -85,8 +86,8 @@ controller_interface::InterfaceConfiguration FlipperController::state_interface_
     controller_interface::InterfaceConfiguration conf = {config_type::INDIVIDUAL, {}};
 
     conf.names.reserve(joint_names_.size() * state_interface_types_.size());
-    for (const auto & joint_name : joint_names_) {
-        for (const auto & interface_type : state_interface_types_) {
+    for (const auto &joint_name : joint_names_) {
+        for (const auto &interface_type : state_interface_types_) {
             conf.names.push_back(joint_name + "/" + interface_type);
         }
     }
@@ -95,7 +96,6 @@ controller_interface::InterfaceConfiguration FlipperController::state_interface_
 }
 
 controller_interface::CallbackReturn FlipperController::on_configure(const rclcpp_lifecycle::State &) {
-
     // define callbacks for subscribers
     auto fr_callback = [this](std_msgs::msg::Float32 fr_flipper_msg_) -> void {
         flipper_cmd_[0] = fr_flipper_msg_.data;
@@ -115,25 +115,23 @@ controller_interface::CallbackReturn FlipperController::on_configure(const rclcp
 
     // configure subscribers to listen to command topics from teleop node
     fr_flipper_command_subscriber_ =
-        get_node()->create_subscription<std_msgs::msg::Float32>(
-            "/cmd/fr_flipper", 1, fr_callback);
+      get_node()->create_subscription<std_msgs::msg::Float32>(
+        "/cmd/fr_flipper", 1, fr_callback);
 
     fl_flipper_command_subscriber_ =
-    get_node()->create_subscription<std_msgs::msg::Float32>(
+      get_node()->create_subscription<std_msgs::msg::Float32>(
         "/cmd/fl_flipper", 1, fl_callback);
 
     rr_flipper_command_subscriber_ =
-        get_node()->create_subscription<std_msgs::msg::Float32>(
-            "/cmd/rr_flipper", 1, rr_callback);
+      get_node()->create_subscription<std_msgs::msg::Float32>(
+        "/cmd/rr_flipper", 1, rr_callback);
 
     rl_flipper_command_subscriber_ =
-        get_node()->create_subscription<std_msgs::msg::Float32>(
-            "/cmd/rl_flipper", 1, rl_callback);
+      get_node()->create_subscription<std_msgs::msg::Float32>(
+        "/cmd/rl_flipper", 1, rl_callback);
 
 
-    for (std::size_t i = 0; i < joint_names_.size(); i++){
-        flipper_pos_cmd_[i] = 0.0;
-        flipper_tor_cmd_[i] = 0.0;
+    for (std::size_t i = 0; i < joint_names_.size(); i++) {
         flipper_cmd_[i] = 0.0;
     }
 
@@ -141,15 +139,7 @@ controller_interface::CallbackReturn FlipperController::on_configure(const rclcp
 }
 
 controller_interface::CallbackReturn FlipperController::on_activate(const rclcpp_lifecycle::State &) {
-    
-    for (std::size_t i = 0; i < joint_names_.size(); i++){
-        flipper_pos_cmd_[i] = 0.0;
-        flipper_tor_cmd_[i] = 0.0;
-        flipper_cmd_[i] = 0.0;
-    }
-
     // clear out vectors in case of restart
-    joint_position_command_interface_.clear();
     joint_effort_command_interface_.clear();
     joint_position_state_interface_.clear();
     joint_velocity_state_interface_.clear();
@@ -157,12 +147,12 @@ controller_interface::CallbackReturn FlipperController::on_activate(const rclcpp
     joint_temp_state_interface_.clear();
 
     // assign command interfaces
-    for (auto & interface : command_interfaces_) {
+    for (auto &interface : command_interfaces_) {
         command_interface_map_[interface.get_interface_name()]->push_back(interface);
     }
 
     // assign state interfaces
-    for (auto & interface : state_interfaces_) {
+    for (auto &interface : state_interfaces_) {
         state_interface_map_[interface.get_interface_name()]->push_back(interface);
     }
 
@@ -171,31 +161,8 @@ controller_interface::CallbackReturn FlipperController::on_activate(const rclcpp
 
 controller_interface::return_type FlipperController::update(
   const rclcpp::Time & /*time*/, const rclcpp::Duration & /*period*/) {
-    
-    for (std::size_t i = 0; i < joint_names_.size(); i++){
-        
-        // normal controller command
-        flipper_pos_cmd_[i] = joint_position_state_interface_[i].get().get_optional().value() + (flipper_cmd_[i] * (max_speed_ / update_rate_)); 
-        flipper_tor_cmd_[i] = 0.0;
-
-/*
-    // fixed position
-    for (int i = 0; i < 4; i++) {
-        flipper_pos_cmd_[i] = ; 
-        flipper_tor_cmd_[i] = 0.0;
-    }
-    
-    // flipper fixed contact:
-    for (int i = 0; i < 4; i++) {
-        flipper_pos_cmd_[i] = ; 
-        flipper_tor_cmd_[i] = ;
-    }
-*/
-    }
-
     for (std::size_t i = 0; i < joint_names_.size(); i++) {
-        (void)joint_position_command_interface_[i].get().set_value(flipper_pos_cmd_[i]);
-        (void)joint_effort_command_interface_[i].get().set_value(flipper_tor_cmd_[i]);
+        (void)joint_effort_command_interface_[i].get().set_value(flipper_cmd_[i]);
     }
 
     return controller_interface::return_type::OK;
@@ -204,7 +171,7 @@ controller_interface::return_type FlipperController::update(
 controller_interface::CallbackReturn FlipperController::on_deactivate(const rclcpp_lifecycle::State &) {
     return CallbackReturn::SUCCESS;
 }
-}    // namespace lotti2_flipper_controll
+}  // namespace lotti2_flipper_controller
 
 #include "pluginlib/class_list_macros.hpp"
 PLUGINLIB_EXPORT_CLASS(lotti2_flipper_controller::FlipperController, controller_interface::ControllerInterface)
