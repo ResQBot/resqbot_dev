@@ -44,8 +44,8 @@
 #include "rclcpp_lifecycle/node_interfaces/lifecycle_node_interface.hpp"
 #include "rclcpp_lifecycle/state.hpp"
 // hardware
-#include "lotti2_control/can_interface.hpp"
 #include "lotti2_control/cubeMars_motor.h"
+#include "lotti2_control/drive_comms.hpp"
 
 
 namespace lotti2_drive_interface {
@@ -75,17 +75,16 @@ class DriveInterface : public hardware_interface::SystemInterface {
 
   private:
     // ROS2 parameters
-    const char* device_;
+    std::string device_;
     float e_conv_;
     float gear_ratio_;
     float kt_;
     int use_hardware_;
 
-    motorParams current_params_;
     motorState motorStates_[2];
     motorCommand motorCommands_[2];
 
-    CANInterface can_interface_;
+    DriveComms drive_comms_;
 };
 
 }  // namespace lotti2_drive_interface

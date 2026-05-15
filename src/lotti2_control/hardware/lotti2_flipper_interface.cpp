@@ -185,7 +185,7 @@ hardware_interface::return_type FlipperInterface::read(
     // if use_hardware is set to 0 -> pretend all commands are executed instantly
     else {
         for (std::size_t i = 0; i < info_.joints.size(); i++) {
-            set_state(info_.joints[i].name + "/position", get_command(info_.joints[i].name + "/position"));
+            set_state(info_.joints[i].name + "/position", get_state(info_.joints[i].name + "/position") + get_command(info_.joints[i].name + "/effort"));
             set_state(info_.joints[i].name + "/effort", get_command(info_.joints[i].name + "/effort"));
             set_state(info_.joints[i].name + "/velocity", 0.0);
             set_state(info_.joints[i].name + "/temp", 22.0);

@@ -34,8 +34,7 @@
 // hardware
 #include <unistd.h>
 #include "lotti2_control/cubeMars_motor.h"
-#include "serialPort/SerialPort.h"
-#include "unitreeMotor/unitreeMotor.h"
+#include "lotti2_control/drive_comms.hpp"
 
 namespace lotti2_drive_interface {
 hardware_interface::CallbackReturn DriveInterface::on_init(
@@ -97,15 +96,11 @@ hardware_interface::CallbackReturn DriveInterface::on_configure(
     // set default motor states
     for (std::size_t i = 0; i < info_.joints.size(); i++) {
         uint8_t motor_id;
-        switch (i) {
-            case 0:
-                motor_id = 2;
-                break;
-            case 1:
-                motor_id = 4;
-                break;
-            default:
-                break;
+        if (i == 0) {
+            motor_id = 7;
+        }
+        else if (i == 1) {
+            motor_id = 63;
         }
         motorStates_[i].motor_id = motor_id;
         // set all states to 0
@@ -138,7 +133,7 @@ hardware_interface::CallbackReturn DriveInterface::on_activate(
   const rclcpp_lifecycle::State& /*previous_state*/) {
     // only prepare can connection, if use_hardware is set to 1
     if (use_hardware_ == 1) {
-        can_interface_.connect(device_);
+        drive_comms_.open(device_);
     }
 
     // command and state should be equal when starting
@@ -153,7 +148,7 @@ hardware_interface::CallbackReturn DriveInterface::on_deactivate(
   const rclcpp_lifecycle::State& /*previous_state*/) {
     // only necessary, if use_hardware is set to 1
     if (use_hardware_ == 1) {
-        can_interface_.disconnect();
+        drive_comms_.close();
     }
 
     return hardware_interface::CallbackReturn::SUCCESS;
@@ -162,9 +157,9 @@ hardware_interface::CallbackReturn DriveInterface::on_deactivate(
 hardware_interface::return_type DriveInterface::read(
   const rclcpp::Time& /*time*/, const rclcpp::Duration& period) {
     // if use_hardware is set to 1 -> read real data
-    if (use_hardware_ == 1) {
+    if (use_hardware_ == 2) {
         // read can buffer and extract motor states
-        can_interface_.receiveCANFrame(motorStates_);
+        drive_comms_.readCANFrame(motorStates_);
 
         for (size_t i = 0; i < info_.joints.size(); i++) {
             switch (motorStates_[i].error_code) {
@@ -204,7 +199,7 @@ hardware_interface::return_type DriveInterface::read(
         for (const auto& [name, descr] : joint_state_interfaces_) {
             if (descr.get_interface_name() == hardware_interface::HW_IF_POSITION) {
                 auto velo = get_command(descr.get_prefix_name() + "/" + hardware_interface::HW_IF_VELOCITY);
-                set_state(name, get_state(name) + period.seconds() * velo);
+                set_state(name, get_state(name) + period.seconds() * velo * 2);
             }
             else if (descr.get_interface_name() == hardware_interface::HW_IF_VELOCITY) {
                 set_state(name, get_state(name));
@@ -219,12 +214,12 @@ hardware_interface::return_type DriveInterface::write(
   const rclcpp::Time& /*time*/, const rclcpp::Duration& /*period*/) {
     // if use_hardware is set to 1 -> use real hardware
     if (use_hardware_ == 1) {
-        for (std::size_t i = 0; i < info_.joints.size(); i++) {
-            // caluclate motor eRPM to send: * (60/2Pi) to convert from rad/s to rpm, gear ratio for the gear box, e_conv_ is the factor between eRPM and motor rpm
-            motorCommands_[i].speed = static_cast<int32_t>(get_command(info_.joints[i].name + "/velocity") * (60 / 2 * M_PI) * gear_ratio_ * e_conv_);
-            // send command to motor via can interface
-        }
-        can_interface_.sendSpd(motorCommands_);
+        // caluclate motor eRPM to send: * (60/2Pi) to convert from rad/s to rpm, gear ratio for the gear box, e_conv_ is the factor between eRPM and motor rpm
+        motorCommands_[0].speed = static_cast<int32_t>(get_command(info_.joints[0].name + "/velocity") * -24000);
+        motorCommands_[1].speed = static_cast<int32_t>(get_command(info_.joints[1].name + "/velocity") * 24000);
+        // send command to motor via can interface
+        drive_comms_.sendSpd(motorCommands_[0].motor_id, motorCommands_[0].speed);
+        drive_comms_.sendSpd(motorCommands_[1].motor_id, motorCommands_[1].speed);
     }
 
     return hardware_interface::return_type::OK;

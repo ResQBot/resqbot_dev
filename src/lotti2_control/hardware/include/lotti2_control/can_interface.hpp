@@ -4,6 +4,8 @@
 #ifndef CAN_INTERFACE_HPP
 #define CAN_INTERFACE_HPP
 
+#pragma once
+
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>

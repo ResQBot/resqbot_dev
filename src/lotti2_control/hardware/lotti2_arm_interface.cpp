@@ -46,11 +46,11 @@ hardware_interface::CallbackReturn ArmInterface::on_init(
     }
 
     // get the parameters from the ros2_control file
-    device_ = info_.hardware_parameters["device"];
-    gear_ratio_ = stof(info_.hardware_parameters["gear_ratio"]);
-    motor_resolution_ = stoi(info_.hardware_parameters["resolution"]);
+    device_             = info_.hardware_parameters["device"];
+    gear_ratio_         = stof(info_.hardware_parameters["gear_ratio"]);
+    motor_resolution_   = stoi(info_.hardware_parameters["resolution"]);
     motor_acceleration_ = static_cast<uint8_t>(stoi(info_.hardware_parameters["acceleration"]));
-    use_hardware_ = stoi(info_.hardware_parameters["use_hardware"]);
+    use_hardware_       = stoi(info_.hardware_parameters["use_hardware"]);
     if (!(use_hardware_ == 0 || use_hardware_ == 1)) {
         RCLCPP_ERROR(get_logger(), "ArmInterface: Invalid value for \"use_hardware\" in ros2_control file");
     }
@@ -66,8 +66,8 @@ hardware_interface::CallbackReturn ArmInterface::on_configure(
   const rclcpp_lifecycle::State& /*previous_state*/) {
     // set current positional buffer and command buffer to 0
     for (std::size_t i = 0; i < info_.joints.size(); i++) {
-        arm_pos_[i] = 0;
-        arm_spd_[i] = 0;
+        arm_pos_[i]     = 0;
+        arm_spd_[i]     = 0;
         arm_pos_cmd_[i] = 0;
         arm_spd_cmd_[i] = 0;
     }
@@ -78,6 +78,8 @@ hardware_interface::CallbackReturn ArmInterface::on_configure(
             arm_comms_.disconnect();
         }
         arm_comms_.connect(device_);
+        // set motor command mode
+        arm_comms_.setReq(0x82, info_.joints.size(), 0x05);
     }
 
     // always reset values when configuring hardware
@@ -104,14 +106,18 @@ hardware_interface::CallbackReturn ArmInterface::on_cleanup(
 
 hardware_interface::CallbackReturn ArmInterface::on_activate(
   const rclcpp_lifecycle::State& /*previous_state*/) {
-    if (!arm_comms_.connected()) {
-        RCLCPP_ERROR(rclcpp::get_logger("ArmInterface"), "Motors not connected");
-        return hardware_interface::CallbackReturn::ERROR;
+    if (use_hardware_ == 1) {
+        if (!arm_comms_.connected()) {
+            RCLCPP_ERROR(rclcpp::get_logger("ArmInterface"), "Motors not connected");
+            return hardware_interface::CallbackReturn::ERROR;
+        }
+        // enable motors
+        arm_comms_.setReq(0xF3, info_.joints.size(), 1);
+        // set synchronous movement flag
+        arm_comms_.setReq(0x4A, info_.joints.size(), use_sync_);
+        // set zero positions
+        arm_comms_.setReq(0x92, info_.joints.size(), 0);
     }
-
-    // set synchronous movement flag
-    arm_comms_.setSync(use_sync_, info_.joints.size());
-
     // command and state should be equal when starting
     for (const auto& [name, descr] : joint_command_interfaces_) {
         set_command(name, get_state(name));
@@ -169,7 +175,7 @@ hardware_interface::return_type ArmInterface::write(
             // convert arm speed from rad/s to rpm
             arm_spd_cmd_[i] = static_cast<uint16_t>((get_command(info_.joints[i].name + "/velocity") * 60 * gear_ratio_) / (2 * M_PI));
             // send commands to arm comms
-            arm_comms_.set_arm_values(motor_id, arm_spd_cmd_[i], motor_acceleration_, arm_pos_cmd_[i]);
+            arm_comms_.setArmValues(motor_id, arm_spd_cmd_[i], motor_acceleration_, arm_pos_cmd_[i]);
         }
 
         // the motors can be programmed to start movement on a command (this enables better synchronization)
