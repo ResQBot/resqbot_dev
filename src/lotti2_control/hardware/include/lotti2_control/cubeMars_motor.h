@@ -9,6 +9,7 @@ struct motorState {
     double current;     // -60 to +60 A
     double motor_temp;  // -20 to +127 °C
     int error_code;     // 0 = no error, 1 = over temperature, 2 = over current, 3 = over voltage, 4 = under voltage, 5 = encoder error, 6 = phase current unbalance (The hardware may be damaged)
+    bool newdata;       // check if new data has been read in curren read cycle
 };
 
 struct motorCommand {

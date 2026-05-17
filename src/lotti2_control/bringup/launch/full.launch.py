@@ -235,7 +235,7 @@ def generate_launch_description():
         delay_rviz_after_joint_state_broadcaster_spawner,
         #delay_arm_controller,
         delay_drive_controller,
-        #delay_flipper_controller,
+        delay_flipper_controller,
         #delay_servo_node,
         joy_node,
         delay_teleop,

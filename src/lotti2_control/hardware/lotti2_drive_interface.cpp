@@ -108,6 +108,7 @@ hardware_interface::CallbackReturn DriveInterface::on_configure(
         motorStates_[i].current    = 0.0;
         motorStates_[i].motor_temp = 0.0;
         motorStates_[i].error_code = 0;
+        motorStates_[i].newdata    = false;
         // set all commands to 0
         motorCommands_[i].motor_id = motor_id;
         motorCommands_[i].speed    = 0.0;
@@ -157,11 +158,25 @@ hardware_interface::CallbackReturn DriveInterface::on_deactivate(
 hardware_interface::return_type DriveInterface::read(
   const rclcpp::Time& /*time*/, const rclcpp::Duration& period) {
     // if use_hardware is set to 1 -> read real data
-    if (use_hardware_ == 2) {
-        // read can buffer and extract motor states
-        drive_comms_.readCANFrame(motorStates_);
-
+    if (use_hardware_ == 1) {
+        // set flag for new data to false
+        motorStates_[0].newdata = false;
+        motorStates_[1].newdata = false;
+        // read can buffer until new data for both motors has been read
+        while (motorStates_[0].newdata != true && motorStates_[0].newdata != true) {
+            motorState buffer_state_ = drive_comms_.readCANFrame();
+            if (buffer_state_.motor_id == motorStates_[0].motor_id) {
+                motorStates_[0]         = buffer_state_;
+                motorStates_[0].newdata = true;
+            }
+            else if (buffer_state_.motor_id == motorStates_[1].motor_id) {
+                motorStates_[1]         = buffer_state_;
+                motorStates_[1].newdata = true;
+            }
+        }
+        // extract state interface data from motorStates_
         for (size_t i = 0; i < info_.joints.size(); i++) {
+            // switch for error cases
             switch (motorStates_[i].error_code) {
                 case 1:
                     RCLCPP_ERROR(get_logger(), "DriveInterface: Motror with ID %d overheating!", motorStates_[i].motor_id);
@@ -181,8 +196,9 @@ hardware_interface::return_type DriveInterface::read(
                 case 6:
                     RCLCPP_ERROR(get_logger(), "DriveInterface: Motror with ID %d phase current unbalanced. Hardware might be damaged!", motorStates_[i].motor_id);
                     break;
+                // if no errors occurred, parse motorStates data to state interfaces
                 default:
-                    // get actual speed from eRPM: / (e_conv * gear_ratio) to get motor rpm, then axis rpm, * (2Pi/60) to get from RPM to rad/s
+                    // get actual speed from eRPM: / (e_conv * gear_ratio) to get motor rpm, then axis rpm, * (2Pi/60) to convert RPM into rad/s
                     set_state(info_.joints[i].name + "/velocity", (motorStates_[i].velocity / (e_conv_ * gear_ratio_)) * (2 * M_PI / 60));
                     // calc torque from current using Kt value
                     set_state(info_.joints[i].name + "/effort", motorStates_[i].current * kt_);
@@ -199,10 +215,10 @@ hardware_interface::return_type DriveInterface::read(
         for (const auto& [name, descr] : joint_state_interfaces_) {
             if (descr.get_interface_name() == hardware_interface::HW_IF_POSITION) {
                 auto velo = get_command(descr.get_prefix_name() + "/" + hardware_interface::HW_IF_VELOCITY);
-                set_state(name, get_state(name) + period.seconds() * velo * 2);
+                set_state(name, get_state(name) + period.seconds() * velo);
             }
             else if (descr.get_interface_name() == hardware_interface::HW_IF_VELOCITY) {
-                set_state(name, get_state(name));
+                set_state(name, get_command(name));
             }
         }
     }
@@ -215,8 +231,8 @@ hardware_interface::return_type DriveInterface::write(
     // if use_hardware is set to 1 -> use real hardware
     if (use_hardware_ == 1) {
         // caluclate motor eRPM to send: * (60/2Pi) to convert from rad/s to rpm, gear ratio for the gear box, e_conv_ is the factor between eRPM and motor rpm
-        motorCommands_[0].speed = static_cast<int32_t>(get_command(info_.joints[0].name + "/velocity") * -24000);
-        motorCommands_[1].speed = static_cast<int32_t>(get_command(info_.joints[1].name + "/velocity") * 24000);
+        motorCommands_[0].speed = static_cast<int32_t>(get_command(info_.joints[0].name + "/velocity") * (60 / (2 * M_PI)) * gear_ratio_ * e_conv_ * (-1));
+        motorCommands_[1].speed = static_cast<int32_t>(get_command(info_.joints[1].name + "/velocity") * (60 / (2 * M_PI)) * gear_ratio_ * e_conv_);
         // send command to motor via can interface
         drive_comms_.sendSpd(motorCommands_[0].motor_id, motorCommands_[0].speed);
         drive_comms_.sendSpd(motorCommands_[1].motor_id, motorCommands_[1].speed);

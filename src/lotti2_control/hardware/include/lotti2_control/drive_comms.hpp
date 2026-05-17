@@ -103,31 +103,21 @@ class DriveComms {
         }
     }
 
-    void
-    readCANFrame(motorState states[2]) {
-        tcflush(fd_, TCIFLUSH);
-        int ind;
+    motorState readCANFrame() {
+        motorState state;
         std::pair<uint32_t, std::vector<uint8_t>> rxMessage = receive();
-        if ((((rxMessage.first) >> 8) & 0xFF) != 0x29) {
-            throw std::runtime_error("Received wrong message description");
+        if ((((rxMessage.first) >> 8) & 0xFF) == 0x29) {
+            state.motor_id = rxMessage.first & 0xFF;
+            // int16_t pos_int = (rxMessage.data[0] << 8 | rxMessage.data[1]);
+            int16_t spd_int = (rxMessage.second[2] << 8 | rxMessage.second[3]);
+            int16_t cur_int = (rxMessage.second[4] << 8 | rxMessage.second[5]);
+            //*motor_pos      = static_cast<double>(pos_int * 0.1f);   // motor position
+            state.velocity   = static_cast<double>(spd_int) * 10;    // motor velocity in eRPM
+            state.current    = static_cast<double>(cur_int) * 0.01;  // motor current in A
+            state.motor_temp = rxMessage.second[6];                  // motor temperature in °C
+            state.error_code = rxMessage.second[7];                  // motor error code
         }
-        if (((rxMessage.first) & 0xFF) == states[0].motor_id) {
-            ind = 0;
-        }
-        else if (((rxMessage.first) & 0xFF) == states[1].motor_id) {
-            ind = 1;
-        }
-        else {
-            throw std::runtime_error("Received ID does not exist");
-        }
-        // int16_t pos_int = (rxMessage.data[0] << 8 | rxMessage.data[1]);
-        int16_t spd_int = (rxMessage.second[2] << 8 | rxMessage.second[3]);
-        int16_t cur_int = (rxMessage.second[4] << 8 | rxMessage.second[5]);
-        //*motor_pos      = static_cast<double>(pos_int * 0.1f);   // motor position
-        states[ind].velocity   = static_cast<double>(spd_int) * 10;    // motor velocity in eRPM
-        states[ind].current    = static_cast<double>(cur_int) * 0.01;  // motor current in A
-        states[ind].motor_temp = rxMessage.second[6];                  // motor temperature in °C
-        states[ind].error_code = rxMessage.second[7];                  // motor error code
+        return state;
     }
 
 
@@ -139,16 +129,6 @@ class DriveComms {
     std::atomic<bool> rx_running_;
     std::unique_ptr<std::thread> rx_thread_;
 
-    /*     void start_receive_loop(Callback callback) {
-            if (rx_thread_ && rx_thread_->joinable()) {
-                std::cout << "Receive loop already running.\n";
-                return;
-            }
-
-            rx_running_ = true;
-            rx_thread_  = std::make_unique<std::thread>(
-              &DriveComms::receive_worker, this, callback);
-        } */
 
     std::pair<uint32_t, std::vector<uint8_t>> receive() {
         if (fd_ == -1) {
@@ -186,6 +166,7 @@ class DriveComms {
         return {can_id, data};
     }
 
+
     bool read_exact(uint8_t *buffer, size_t len) {
         size_t bytes_read = 0;
         auto start_time   = std::chrono::steady_clock::now();
@@ -212,19 +193,5 @@ class DriveComms {
         }
         return true;
     }
-
-    /*     void receive_worker(Callback callback) {
-            while (rx_running_) {
-                try {
-                    auto [can_id, data] = receive();
-                    callback(can_id, data);
-                } catch (const std::exception &e) {
-                    std::cerr << "Error in receive loop: " << e.what() << ". Retrying...\n";
-                    // Clear input buffer to resynchronize
-                    tcflush(fd_, TCIFLUSH);
-                    std::this_thread::sleep_for(std::chrono::milliseconds(100));
-                }
-            }
-        } */
 };
 #endif  // LOTTI2-CONTROL__DRIVE_COMMS_HPP
