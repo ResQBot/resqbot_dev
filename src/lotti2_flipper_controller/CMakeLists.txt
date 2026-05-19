@@ -32,12 +32,6 @@ foreach(Dependency IN ITEMS ${THIS_PACKAGE_INCLUDE_DEPENDS})
     find_package(${Dependency} REQUIRED)
 endforeach()
 
-# for parameter creation
-find_package(generate_parameter_library REQUIRED)
-generate_parameter_library(lotti2_flipper_controller_parameters
-    src/lotti2_flipper_controller_parameters.yaml # path to input yaml file
-)
-
 add_library(lotti2_flipper_controller SHARED
     src/lotti2_flipper_controller.cpp
 )
@@ -53,7 +47,6 @@ target_include_directories(lotti2_flipper_controller PUBLIC
 )
 
 target_link_libraries(lotti2_flipper_controller PUBLIC
-                      lotti2_flipper_controller_parameters
                       control_toolbox::control_toolbox
                       controller_interface::controller_interface
                       hardware_interface::hardware_interface
@@ -79,7 +72,6 @@ install(
 )
 install(TARGETS
         lotti2_flipper_controller
-        lotti2_flipper_controller_parameters
     EXPORT export_lotti2_flipper_controller
     RUNTIME DESTINATION bin
     ARCHIVE DESTINATION lib

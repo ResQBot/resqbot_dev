@@ -18,7 +18,6 @@
 // of Vienna University of Applied Sciences
 
 #include "lotti2_flipper_controller/lotti2_flipper_controller.hpp"
-// #include <lotti2_flipper_controller/lotti2_flipper_controller_parameters.hpp>
 
 #include <stddef.h>
 #include <algorithm>
@@ -53,19 +52,6 @@ controller_interface::CallbackReturn FlipperController::on_init() {
     state_interface_types_ =
       auto_declare<std::vector<std::string>>("state_interfaces", state_interface_types_);
 
-    /*
-  // get parameters
-  try {
-      auto parameter_handler_ = std::make_shared<lotti2_flipper_controller::ParamListener>(get_node());
-      auto params_            = parameter_handler_->get_params();
-      max_speed_              = params_.max_vel;
-      update_rate_            = static_cast<double>(params_.update_rate);
-  } catch (const std::exception &e) {
-      RCLCPP_ERROR(
-        get_node()->get_logger(), "Exception thrown during init stage with message: %s \n", e.what());
-      return controller_interface::CallbackReturn::ERROR;
-  }
-*/
     return CallbackReturn::SUCCESS;
 }
 
@@ -140,7 +126,7 @@ controller_interface::CallbackReturn FlipperController::on_configure(const rclcp
 
 controller_interface::CallbackReturn FlipperController::on_activate(const rclcpp_lifecycle::State &) {
     // clear out vectors in case of restart
-    joint_effort_command_interface_.clear();
+    joint_position_command_interface_.clear();
     joint_position_state_interface_.clear();
     joint_velocity_state_interface_.clear();
     joint_effort_state_interface_.clear();
@@ -162,7 +148,9 @@ controller_interface::CallbackReturn FlipperController::on_activate(const rclcpp
 controller_interface::return_type FlipperController::update(
   const rclcpp::Time & /*time*/, const rclcpp::Duration & /*period*/) {
     for (std::size_t i = 0; i < joint_names_.size(); i++) {
-        (void)joint_effort_command_interface_[i].get().set_value(flipper_cmd_[i]);
+        double pos_cmd = joint_position_state_interface_[i].get().get_optional().value();
+        pos_cmd += flipper_cmd_[i] * (max_speed_ / update_rate_);
+        (void)joint_position_command_interface_[i].get().set_value(pos_cmd);
     }
 
     return controller_interface::return_type::OK;

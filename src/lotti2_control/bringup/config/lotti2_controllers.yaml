@@ -24,7 +24,7 @@ lotti2_flipper_controller:
     - flipper_rr_joint
     - flipper_rl_joint
     command_interfaces:
-    - effort
+    - position
     state_interfaces:
     - position
     - effort
@@ -32,7 +32,6 @@ lotti2_flipper_controller:
     - temp
 
     update_rate: 50
-    max_vel: 2.0
 
 
 
