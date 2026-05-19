@@ -91,7 +91,7 @@
         <origin xyz="0 ${wheel_seperation/2} ${wheel_radius}" rpy="0 0 0"/>
         <parent link="body_link"/>
         <child link="left_chain_link"/>
-        <axis xyz="0 1 0"/>
+        <axis xyz="0 -1 0"/>
     </joint>
 
     <xacro:chain_link position="left"/>

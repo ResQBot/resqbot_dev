@@ -108,7 +108,6 @@ hardware_interface::CallbackReturn DriveInterface::on_configure(
         motorStates_[i].current    = 0.0;
         motorStates_[i].motor_temp = 0.0;
         motorStates_[i].error_code = 0;
-        motorStates_[i].newdata    = false;
         // set all commands to 0
         motorCommands_[i].motor_id = motor_id;
         motorCommands_[i].speed    = 0.0;
@@ -159,23 +158,9 @@ hardware_interface::return_type DriveInterface::read(
   const rclcpp::Time& /*time*/, const rclcpp::Duration& period) {
     // if use_hardware is set to 1 -> read real data
     if (use_hardware_ == 1) {
-        // set flag for new data to false
-        motorStates_[0].newdata = false;
-        motorStates_[1].newdata = false;
-        // read can buffer until new data for both motors has been read
-        while (motorStates_[0].newdata != true && motorStates_[0].newdata != true) {
-            motorState buffer_state_ = drive_comms_.readCANFrame();
-            if (buffer_state_.motor_id == motorStates_[0].motor_id) {
-                motorStates_[0]         = buffer_state_;
-                motorStates_[0].newdata = true;
-            }
-            else if (buffer_state_.motor_id == motorStates_[1].motor_id) {
-                motorStates_[1]         = buffer_state_;
-                motorStates_[1].newdata = true;
-            }
-        }
-        // extract state interface data from motorStates_
+        // read can buffer and extract state interface data from motorStates_
         for (size_t i = 0; i < info_.joints.size(); i++) {
+            motorStates_[i] = drive_comms_.readCANFrame(motorStates_[i].motor_id);
             // switch for error cases
             switch (motorStates_[i].error_code) {
                 case 1:

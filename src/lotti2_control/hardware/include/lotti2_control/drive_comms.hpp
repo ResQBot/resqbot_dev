@@ -42,6 +42,7 @@ class DriveComms {
         close();
     }
 
+
     void open(std::string device) {
         fd_ = ::open(device.c_str(), O_RDWR | O_NOCTTY);
         if (fd_ == -1) {
@@ -69,6 +70,7 @@ class DriveComms {
         std::cout << "Serial port opened: " << device << " @ " << baudrate_ << " baud\n";
     }
 
+
     void close() {
         rx_running_ = false;
         if (rx_thread_ && rx_thread_->joinable()) {
@@ -79,6 +81,11 @@ class DriveComms {
             fd_ = -1;
             std::cout << "Serial port closed\n";
         }
+    }
+
+
+    void clearBuffer() {
+        tcflush(fd_, TCIFLUSH);
     }
 
 
@@ -103,19 +110,24 @@ class DriveComms {
         }
     }
 
-    motorState readCANFrame() {
+
+    motorState readCANFrame(uint8_t motor_id) {
         motorState state;
-        std::pair<uint32_t, std::vector<uint8_t>> rxMessage = receive();
-        if ((((rxMessage.first) >> 8) & 0xFF) == 0x29) {
-            state.motor_id = rxMessage.first & 0xFF;
-            // int16_t pos_int = (rxMessage.data[0] << 8 | rxMessage.data[1]);
-            int16_t spd_int = (rxMessage.second[2] << 8 | rxMessage.second[3]);
-            int16_t cur_int = (rxMessage.second[4] << 8 | rxMessage.second[5]);
-            //*motor_pos      = static_cast<double>(pos_int * 0.1f);   // motor position
-            state.velocity   = static_cast<double>(spd_int) * 10;    // motor velocity in eRPM
-            state.current    = static_cast<double>(cur_int) * 0.01;  // motor current in A
-            state.motor_temp = rxMessage.second[6];                  // motor temperature in °C
-            state.error_code = rxMessage.second[7];                  // motor error code
+        while (state.motor_id != motor_id) {
+            std::pair<uint32_t, std::vector<uint8_t>> rxMessage = receive();
+            if ((((rxMessage.first) >> 8) & 0xFF) == 0x29) {
+                if (((rxMessage.first) & 0xFF) == motor_id) {
+                    state.motor_id = motor_id;
+                    // int16_t pos_int = (rxMessage.data[0] << 8 | rxMessage.data[1]);
+                    int16_t spd_int = (rxMessage.second[2] << 8 | rxMessage.second[3]);
+                    int16_t cur_int = (rxMessage.second[4] << 8 | rxMessage.second[5]);
+                    //*motor_pos      = static_cast<double>(pos_int * 0.1f);   // motor position
+                    state.velocity   = static_cast<double>(spd_int) * 10;    // motor velocity in eRPM
+                    state.current    = static_cast<double>(cur_int) * 0.01;  // motor current in A
+                    state.motor_temp = rxMessage.second[6];                  // motor temperature in °C
+                    state.error_code = rxMessage.second[7];                  // motor error code
+                }
+            }
         }
         return state;
     }
