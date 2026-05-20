@@ -340,7 +340,7 @@ Packages sind Programme, die im ROS2 Framework ausgeführt werden können. Für 
 &nbsp; &nbsp; &nbsp; &nbsp; [**Steuerung**](#steuerung)  
 &nbsp; &nbsp; &nbsp; &nbsp; [joy](#joy) -> liest Controllerdaten aus   
 &nbsp; &nbsp; &nbsp; &nbsp; [robot_state_publisher](#robot-state-publisher) -> zeigt Position und Lage des Roboters an  
-&nbsp; &nbsp; &nbsp; &nbsp; [ros2_control und ros2_controller](#ros2_control-und-ros2_controller) -> Motoren ansteuern und Feedback einholen  
+&nbsp; &nbsp; &nbsp; &nbsp; [ros2_control und ros2_controllers](#ros2_control-und-ros2_controller) -> Motoren ansteuern und Feedback einholen  
 &nbsp; &nbsp; &nbsp; &nbsp; [moveit2](#moveit2) -> Armkinematik  
   
 &nbsp; &nbsp; &nbsp; &nbsp; [**Sensorik**](#sensorik)  
