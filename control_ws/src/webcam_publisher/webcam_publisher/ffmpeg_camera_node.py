@@ -1,12 +1,9 @@
 import subprocess
 import threading
-import numpy as np
-import cv2
 import rclpy
 from rclpy.node import Node
 from rclpy.qos import QoSProfile, ReliabilityPolicy, HistoryPolicy
-from sensor_msgs.msg import Image
-import struct
+from sensor_msgs.msg import CompressedImage
 
 class FFmpegCameraNode(Node):
     def __init__(self):
@@ -27,11 +24,10 @@ class FFmpegCameraNode(Node):
             history=HistoryPolicy.KEEP_LAST,
             depth=1
         )
-        self.publisher_ = self.create_publisher(Image, '/camera/image_raw', qos)
-        self.width = width
-        self.height = height
+        
+        # FIX: Match the CompressedImage topic type of your subscriber
+        self.publisher_ = self.create_publisher(CompressedImage, '/camera_1/image_raw/compressed', qos)
 
-        # Pipe MJPEG frames directly — much smaller than raw BGR
         ffmpeg_cmd = [
             'ffmpeg',
             '-fflags', 'nobuffer',
@@ -45,8 +41,8 @@ class FFmpegCameraNode(Node):
             '-video_size', f'{width}x{height}',
             '-i', device,
             '-err_detect', 'ignore_err',
-            '-vcodec', 'copy',      # no decode — pass MJPEG straight through
-            '-f', 'mjpeg',          # output as MJPEG stream
+            '-vcodec', 'copy',      
+            '-f', 'mjpeg',          
             'pipe:1'
         ]
 
@@ -54,56 +50,52 @@ class FFmpegCameraNode(Node):
             ffmpeg_cmd,
             stdout=subprocess.PIPE,
             stderr=subprocess.DEVNULL,
-            bufsize=0
+            bufsize=65536 # Increase internal pipe buffer allocation
         )
 
         self.thread = threading.Thread(target=self._capture_loop, daemon=True)
         self.thread.start()
-        self.get_logger().info(f'Streaming {device} @ {width}x{height} {fps}fps (MJPEG pipe)')
-
-    def _read_mjpeg_frame(self):
-        """Read one complete MJPEG frame by scanning for SOI/EOI markers."""
-        buf = bytearray()
-        while True:
-            byte = self.process.stdout.read(1)
-            if not byte:
-                return None
-            buf.extend(byte)
-            # MJPEG frame ends with EOI marker 0xFF 0xD9
-            if len(buf) >= 2 and buf[-2] == 0xFF and buf[-1] == 0xD9:
-                # Check it also starts with SOI marker 0xFF 0xD8
-                soi = buf.find(b'\xff\xd8')
-                if soi > 0:
-                    buf = buf[soi:]  # trim garbage before SOI
-                return bytes(buf)
+        self.get_logger().info(f'Streaming {device} natively as CompressedImage @ {fps}fps')
 
     def _capture_loop(self):
-        self.get_logger().info('Capture loop started')
+        # Read chunks rather than individual bytes to stop thread starvation
+        buffer = bytearray()
+        chunk_size = 4096 
+
         while rclpy.ok():
             if self.process.poll() is not None:
-                self.get_logger().error('FFmpeg died')
+                self.get_logger().error('FFmpeg process terminated unexpectedly.')
                 break
 
-            jpeg_data = self._read_mjpeg_frame()
-            if jpeg_data is None:
+            chunk = self.process.stdout.read(chunk_size)
+            if not chunk:
                 continue
+            
+            buffer.extend(chunk)
 
-            # Decode MJPEG → BGR with OpenCV
-            arr = np.frombuffer(jpeg_data, dtype=np.uint8)
-            frame = cv2.imdecode(arr, cv2.IMREAD_COLOR)
-            if frame is None:
-                continue
+            # Find JPEG Start and End of Image Markers within the buffer stream
+            while True:
+                soi = buffer.find(b'\xff\xd8')
+                eoi = buffer.find(b'\xff\xd9')
 
-            msg = Image()
-            msg.header.stamp = self.get_clock().now().to_msg()
-            msg.header.frame_id = 'camera'
-            msg.height = frame.shape[0]
-            msg.width = frame.shape[1]
-            msg.encoding = 'bgr8'
-            msg.is_bigendian = 0
-            msg.step = frame.shape[1] * 3
-            msg.data = frame.tobytes()
-            self.publisher_.publish(msg)
+                if soi != -1 and eoi != -1 and eoi > soi:
+                    # Extract the complete JPEG image frame block
+                    jpeg_data = buffer[soi:eoi+2]
+                    # Retain remaining buffer contents for next validation sequence
+                    buffer = buffer[eoi+2:]
+
+                    # Directly package into ROS message without wasting cycles decoding to BGR
+                    msg = CompressedImage()
+                    msg.header.stamp = self.get_clock().now().to_msg()
+                    msg.header.frame_id = 'camera'
+                    msg.format = 'jpeg'
+                    msg.data = bytes(jpeg_data)
+                    self.publisher_.publish(msg)
+                else:
+                    # Clean up orphaned buffer chunks if no markers are visible
+                    if soi == -1 and len(buffer) > chunk_size * 2:
+                        buffer.clear()
+                    break
 
     def destroy_node(self):
         self.process.terminate()

@@ -21,22 +21,32 @@ class CameraDashboard(Node):
 
         # State Variables
         self.frames = {'camera_1': None, 'camera_2': None, 'camera_3': None}
-
         self.detections = {'camera_1': "", 'camera_2': "", 'camera_3': ""}
         self.ai_cam3_frame = None
         self.yolo_model = None
 
         self.lock = threading.Lock()
-
         self._configure_optional_ai()
 
-        # Subscribe to the cameras
-        self.create_subscription(CompressedImage, '/camera_1/image_raw/compressed',
-                                 lambda msg: self.image_callback(msg, 'camera_1'), qos_profile_sensor_data)
-        self.create_subscription(CompressedImage, '/camera_2/image_raw/compressed',
-                                 lambda msg: self.image_callback(msg, 'camera_2'), qos_profile_sensor_data)
-        self.create_subscription(CompressedImage, '/camera_3/image_raw/compressed',
-                                 lambda msg: self.image_callback(msg, 'camera_3'), qos_profile_sensor_data)
+        # Subscribe to the compressed camera feeds natively
+        self.create_subscription(
+            CompressedImage, 
+            '/camera_1/image_raw/compressed',
+            lambda msg: self.image_callback(msg, 'camera_1'), 
+            qos_profile_sensor_data
+        )
+        self.create_subscription(
+            CompressedImage, 
+            '/camera_2/image_raw/compressed',
+            lambda msg: self.image_callback(msg, 'camera_2'), 
+            qos_profile_sensor_data
+        )
+        self.create_subscription(
+            CompressedImage, 
+            '/camera_3/image_raw/compressed',
+            lambda msg: self.image_callback(msg, 'camera_3'), 
+            qos_profile_sensor_data
+        )
 
         if self.yolo_model is None:
             self.get_logger().info("Dashboard started in video-only mode. Camera 3 AI overlay is disabled.")
@@ -80,8 +90,17 @@ class CameraDashboard(Node):
             )
 
     def image_callback(self, msg, cam_name):
-        """ Instantly decodes the compressed Wi-Fi packet and saves it. """
+        """ Decodes the compressed Wi-Fi packet and saves it, dropping stale frames to prevent lag accumulation. """
         try:
+            # LATENCY SANITY CHECK: Drop frame if it took longer than 100ms to arrive
+            now = self.get_clock().now()
+            msg_time = rclpy.time.Time.from_msg(msg.header.stamp)
+            latency = (now - msg_time).nanoseconds / 1e9
+            
+            if latency > 0.1:  # 100ms threshold
+                # Frame is old / queue is backed up. Drop it to catch up to real-time.
+                return
+
             cv_image = self.bridge.compressed_imgmsg_to_cv2(msg, desired_encoding='bgr8')
             with self.lock:
                 self.frames[cam_name] = cv_image
@@ -93,7 +112,7 @@ class CameraDashboard(Node):
         BACKGROUND THREAD: Only processes Camera 3 to save massive CPU power.
         """
         while rclpy.ok():
-            time.sleep(0.1) # Throttle to 10 FPS
+            time.sleep(0.05)  # Throttled to ~20 FPS max processing to prevent thread starvation
 
             if self.yolo_model is None:
                 continue
@@ -123,19 +142,25 @@ def main(args=None):
     rclpy.init(args=args)
     dashboard_node = CameraDashboard()
 
+    # Spin ROS 2 callbacks in a separate background thread
     ros_thread = threading.Thread(target=rclpy.spin, args=(dashboard_node,), daemon=True)
     ros_thread.start()
 
     try:
         while rclpy.ok():
+            # FIX: Sleep ~16ms to cap the rendering window loop to roughly 60Hz.
+            # Without this, this loop hogs 100% CPU core spinning infinitely, causing DDS lag.
+            time.sleep(0.016)
+
             with dashboard_node.lock:
                 display_frames = {k: v.copy() if v is not None else None for k, v in dashboard_node.frames.items()}
                 display_text = dashboard_node.detections.copy()
+            
             if dashboard_node.ai_cam3_frame is not None:
-                    display_frames['camera_3'] = dashboard_node.ai_cam3_frame.copy()
+                display_frames['camera_3'] = dashboard_node.ai_cam3_frame.copy()
+            
             for cam, frame in display_frames.items():
                 if frame is not None:
-                    # Only draw text if there is actually text to draw (Camera 3)
                     text = display_text[cam]
                     if text: 
                         cv2.putText(frame, text, (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 
