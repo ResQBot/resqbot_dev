@@ -1,0 +1,88 @@
+
+#ifndef DRIVE3_INTERFACE__DRIVE3_INTERFACE_HPP_
+#define DRIVE3_INTERFACE__DRIVE3_INTERFACE_HPP_
+
+#include "string"
+#include "memory"
+#include "unordered_map"
+#include "vector"
+
+#include "hardware_interface/handle.hpp"
+#include "hardware_interface/hardware_info.hpp"
+#include "hardware_interface/system_interface.hpp"
+#include "hardware_interface/types/hardware_interface_return_values.hpp"
+#include "hardware_interface/types/hardware_interface_type_values.hpp"
+
+#include "rclcpp/clock.hpp"
+#include "rclcpp/duration.hpp"
+#include "rclcpp/logger.hpp"
+#include "rclcpp/macros.hpp"
+#include "rclcpp/time.hpp"
+#include "rclcpp/rclcpp.hpp"
+#include "rclcpp_lifecycle/node_interfaces/lifecycle_node_interface.hpp"
+#include "rclcpp_lifecycle/state.hpp"
+
+#include "unitreeMotor/unitreeMotor.h"
+
+#ifndef LOTTI_HAVE_UNITREE_SDK
+#define LOTTI_HAVE_UNITREE_SDK 0
+#endif
+
+#if LOTTI_HAVE_UNITREE_SDK
+#include "serialPort/SerialPort.h"
+#endif
+
+using hardware_interface::return_type;
+
+namespace drive3_interface{
+  
+  using CallbackReturn = rclcpp_lifecycle::node_interfaces::LifecycleNodeInterface::CallbackReturn;
+
+  class HARDWARE_INTERFACE_PUBLIC DriveInterface : public hardware_interface::SystemInterface {
+    
+    public:
+      CallbackReturn on_init(const hardware_interface::HardwareInfo & info) override;
+
+      std::vector<hardware_interface::StateInterface> export_state_interfaces() override;
+      std::vector<hardware_interface::CommandInterface> export_command_interfaces() override;
+
+      hardware_interface::CallbackReturn on_configure(const rclcpp_lifecycle::State & previous_state) override;
+      hardware_interface::CallbackReturn on_cleanup(const rclcpp_lifecycle::State & previous_state) override;
+
+      hardware_interface::CallbackReturn on_activate(const rclcpp_lifecycle::State & previous_state) override;    
+      hardware_interface::CallbackReturn on_deactivate(const rclcpp_lifecycle::State & previous_state) override;
+
+      return_type read(const rclcpp::Time & time, const rclcpp::Duration & period) override;
+      return_type write(const rclcpp::Time & /*time*/, const rclcpp::Duration & /*period*/) override;
+    
+    protected:
+      /// The size of this vector is (standard_interfaces_.size() x nr_joints)
+      std::vector<double> joint_velocities_command_;
+      std::vector<double> joint_velocities_;
+
+      std::string device_ = "";
+      int max_speed_ = 0;
+      float gearRatio = 6.33;
+      int left_motor_id_ = 2;
+      int right_motor_id_ = 1;
+      bool drive_transport_ready_ = false;
+      bool drive_feedback_valid_ = false;
+
+      float speed_l = 0.0;
+      float speed_r = 0.0;
+
+      std::unordered_map<std::string, std::vector<std::string>> joint_interfaces = {
+        //{"position", {}}, 
+        {"velocity", {}}};
+
+      // --- Add Unitree SDK members here ---
+      MotorCmd cmd_l_, cmd_r_;  // Motor commands for left and right motors
+      MotorData data_l_, data_r_; // Motor data feedback for left and right motors
+
+#if LOTTI_HAVE_UNITREE_SDK
+      std::unique_ptr<SerialPort> serial_port_;
+#endif
+  };
+}  // namespace drive3_interface
+
+#endif  // DRIVE_INTERFACE__DRIVE_INTERFACE_HPP_

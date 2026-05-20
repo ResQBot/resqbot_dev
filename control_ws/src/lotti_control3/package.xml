@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
+<package format="3">
+  <name>lotti_control3</name>
+  <version>0.3.0</version>
+  <description>
+    Hardware interfaces, URDF description, controllers, and bringup launch files for the Lotti3 rescue robot.
+  </description>
+  <maintainer email="office@campus-robo.at">Res.Q Bots</maintainer>
+  <license>BSD</license>
+  <author email="office@campus-robo.at">Res.Q Bots</author>
+
+  <buildtool_depend>ament_cmake</buildtool_depend>
+
+  <depend>ament_index_python</depend>
+  <depend>controller_manager</depend>
+  <depend>gz_ros2_control</depend>
+  <depend>hardware_interface</depend>
+  <depend>joint_state_publisher_gui</depend>
+  <depend>joy</depend>
+  <depend>launch</depend>
+  <depend>launch_ros</depend>
+  <depend>libserial-dev</depend>
+  <depend>lotti_drive_controller</depend>
+  <depend>lotti_flipper3_controller</depend>
+  <depend>lotti_teleop</depend>
+  <depend>moveit_configs_utils</depend>
+  <depend>moveit_servo</depend>
+  <depend>pluginlib</depend>
+  <depend>python3-yaml</depend>
+  <depend>rclcpp</depend>
+  <depend>rclcpp_lifecycle</depend>
+  <depend>rcpputils</depend>
+  <depend>robot_state_publisher</depend>
+  <depend>ros_gz_bridge</depend>
+  <depend>ros_gz_sim</depend>
+  <depend>rviz2</depend>
+  <depend>xacro</depend>
+
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
+</package>

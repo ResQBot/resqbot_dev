@@ -1,0 +1,28 @@
+<library path="lotti_control3">
+  <class
+    name="arm3_interface/ArmInterface"
+    type="arm3_interface::ArmInterface"
+    base_class_type="hardware_interface::SystemInterface">
+    <description>
+      ros2_control hardware interface for the Lotti3 arm over serial transport.
+    </description>
+  </class>
+
+  <class
+    name="flipper3_interface/FlipperInterface"
+    type="flipper3_interface::FlipperInterface"
+    base_class_type="hardware_interface::SystemInterface">
+    <description>
+      ros2_control hardware interface for the Lotti3 flippers over serial transport. The current firmware is command-only and therefore exposes limited state feedback.
+    </description>
+  </class>
+
+  <class
+    name="drive3_interface/DriveInterface"
+    type="drive3_interface::DriveInterface"
+    base_class_type="hardware_interface::SystemInterface">
+    <description>
+      ros2_control hardware interface for the Lotti3 tracked drive. Real transport is available when the optional vendor Unitree SDK is enabled at build time.
+    </description>
+  </class>
+</library>
